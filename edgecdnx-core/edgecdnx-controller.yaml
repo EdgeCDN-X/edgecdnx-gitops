@@ -1,0 +1,81 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-controller
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          chart: edgecdnx-controller
+          chartVersion: 0.5.6
+          chartRepository: https://edgecdn-x.github.io/helm-charts/
+          namespace: edgecdnx-controller-system
+          role: cache-controller
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/caching
+              operator: In
+              values:
+                - "true"
+                - "yes"
+    - clusters:
+        values:
+          chart: edgecdnx-controller
+          chartVersion: 0.5.6
+          chartRepository: https://edgecdn-x.github.io/helm-charts/
+          namespace: edgecdnx-controller-system
+          role: router
+          consulEndpoint: http://edgecdnx-consul-consul-server.edgecdnx-routing.svc.cluster.local:8500
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/routing
+              operator: In
+              values:
+                - "true"
+                - "yes"
+    - clusters:
+        values:
+          chart: edgecdnx-controller
+          chartVersion: 0.5.6
+          chartRepository: https://edgecdn-x.github.io/helm-charts/
+          namespace: edgecdnx-controller-system
+          role: controller
+          targetNamespace: "edgecdnx"
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: edgecdnx-{{ .values.role }}{{ if ne .name "in-cluster" }}-{{ .name }}{{ end }}
+    spec:
+      project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: edgecdnx-controller-caching
+            ignoreMissingValueFiles: true
+            valuesObject:
+              role: "{{ .values.role }}"
+              targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
+              consulEndpoint: '{{ .values.consulEndpoint | default "http://consul:8500" }}'
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big controller.
+      ignoreDifferences: []
