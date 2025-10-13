@@ -68,16 +68,16 @@ spec:
                       parameters: '{{ index .metadata.annotations "edgecdnx.com/namespace" }}'
                     - name: geoip
                       parameters: /etc/edgecdnx/geolookup/GeoLite2-City.mmdb
-                      configBlock: |
+                      configBlock: |-
                         edns-subnet
                     - name: edgecdnxgeolookup
-                      configBlock: |
+                      configBlock: |-
                         namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         consulEndpoint http://edgecdnx-consul-consul-server:8500
                         consulcachettl 5s
                         recordttl 30
                     - name: edgecdnxservices
-                      configBlock: |
+                      configBlock: |-
                         namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         soa {{- range .clusters -}}{{ if eq .name $.name }} ns{{ index .metadata.annotations "edgecdnx.com/ns" }}{{ end -}}{{- end }}
                         email {{ index .metadata.annotations "edgecdnx.com/domainemail" }}
