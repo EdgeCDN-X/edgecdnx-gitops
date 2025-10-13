@@ -1,0 +1,90 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-cache
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          chart: ingress-nginx
+          chartVersion: 4.12.1
+          chartRepository: https://kubernetes.github.io/ingress-nginx
+          namespace: edgecdnx-cache
+          caches: '{{ index .metadata.annotations "edgecdnx.com/caches" }}'
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/caching
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: edgecdnx-cache-{{ .name }}
+    spec:
+      project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: edgecdnx-cache
+            ignoreMissingValueFiles: true
+            values: |
+              controller:
+                metrics:
+                  enabled: false
+                  serviceMonitor:
+                    enabled: false
+                    additionalLabels:
+                      release: prometheus-stack
+                allowSnippetAnnotations: true
+                ingressClass: cache
+                ingressClassResource:
+                  enabled: true
+                  default: false
+                  name: cache
+                  controllerValue: "edgecdnx.com/cache"
+                # TODO template this
+                service:
+                  enabled: true
+                # TODO template this
+                hostPort:
+                  enabled: false
+                kind: DaemonSet
+                # TODO template nodeselector
+                extraVolumes:
+                {{- range $cache := .values.caches }}
+                  - name: cache-{{ $cache.name }}
+                    hostPath:
+                      path: "{{ $cache.path }}"
+                      type: DirectoryOrCreate
+                {{- end }}
+                extraVolumeMounts:
+                {{- range $cache := .values.caches }}
+                  - name: cache-{{ $cache.name }}
+                    mountPath: "{{ $cache.path }}"
+                {{- end }}
+                config:
+                  proxy-buffering: "on"
+                  annotations-risk-level: "Critical"
+                  http-snippet: |
+                    {{- range $cache := .values.caches }}
+                    # Cache configuration for {{ $cache.name }}
+                    proxy_cache_path {{ $cache.path }} levels=1:2 keys_zone={{ $cache.name }}:100m inactive=10080m use_temp_path=off;
+                    {{- end }}
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
