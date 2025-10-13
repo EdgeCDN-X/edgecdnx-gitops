@@ -15,7 +15,7 @@ spec:
           chartVersion: 4.12.1
           chartRepository: https://kubernetes.github.io/ingress-nginx
           namespace: edgecdnx-cache
-          caches: '{{ index .metadata.annotations "edgecdnx.com/caches" }}'
+          caches: '{{ fromJson (index .metadata.annotations "edgecdnx.com/caches") }}'
         selector:
           matchExpressions:
             - key: edgecdnx.com/caching
