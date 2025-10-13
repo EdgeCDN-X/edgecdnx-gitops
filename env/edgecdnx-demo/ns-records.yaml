@@ -2,16 +2,23 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: ns-records
+  name: democdn-a
 spec:
   endpoints:
-  - dnsName: ns1.democdn.edgecdnx.com
-    recordTTL: 300
-    recordType: A
-    targets:
-    - 74.220.30.181
-  - dnsName: democdn.edgecdnx.com
-    recordTTL: 300
-    recordType: NS
-    targets:
-    - ns1.democdn.edgecdnx.com
+    - dnsName: ns1.democdn.edgecdnx.com
+      recordTTL: 300
+      recordType: A
+      targets:
+        - 74.220.30.181
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: democdn-ns
+spec:
+  endpoints:
+    - dnsName: democdn.edgecdnx.com
+      recordTTL: 300
+      recordType: NS
+      targets:
+        - ns1.democdn.edgecdnx.com
