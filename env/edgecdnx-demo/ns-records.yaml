@@ -10,15 +10,16 @@ spec:
       recordType: A
       targets:
         - 74.220.30.181
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
-  name: democdn-ns
-spec:
-  endpoints:
-    - dnsName: democdn.edgecdnx.com.
-      recordTTL: 300
-      recordType: NS
-      targets:
-        - ns1.democdn.edgecdnx.com
+# For some reason this is not working with ExternalDNS and DigitalOcean.
+# ---
+# apiVersion: externaldns.k8s.io/v1alpha1
+# kind: DNSEndpoint
+# metadata:
+#   name: democdn-ns
+# spec:
+#   endpoints:
+#     - dnsName: democdn.edgecdnx.com
+#       recordTTL: 300
+#       recordType: NS
+#       targets:
+#         - ns1.democdn.edgecdnx.com.
