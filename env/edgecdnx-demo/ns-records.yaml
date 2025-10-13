@@ -17,7 +17,7 @@ metadata:
   name: democdn-ns
 spec:
   endpoints:
-    - dnsName: democdn.edgecdnx.com
+    - dnsName: zone.democdn.edgecdnx.com
       recordTTL: 300
       recordType: NS
       targets:
