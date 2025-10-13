@@ -15,7 +15,7 @@ spec:
           chartVersion: 4.12.1
           chartRepository: https://kubernetes.github.io/ingress-nginx
           namespace: edgecdnx-cache
-          caches: '{{ fromJson (index .metadata.annotations "edgecdnx.com/caches") }}'
+          caches: '{{ index .metadata.annotations "edgecdnx.com/caches" }}'
         selector:
           matchExpressions:
             - key: edgecdnx.com/caching
@@ -59,14 +59,14 @@ spec:
                 kind: DaemonSet
                 # TODO template nodeselector
                 extraVolumes:
-                {{- range $cache := .values.caches }}
+                {{- range $cache := fromJson .values.caches }}
                   - name: cache-{{ $cache.name }}
                     hostPath:
                       path: "{{ $cache.path }}"
                       type: DirectoryOrCreate
                 {{- end }}
                 extraVolumeMounts:
-                {{- range $cache := .values.caches }}
+                {{- range $cache := fromJson .values.caches }}
                   - name: cache-{{ $cache.name }}
                     mountPath: "{{ $cache.path }}"
                 {{- end }}
@@ -74,7 +74,7 @@ spec:
                   proxy-buffering: "on"
                   annotations-risk-level: "Critical"
                   http-snippet: |
-                    {{- range $cache := .values.caches }}
+                    {{- range $cache := fromJson .values.caches }}
                     # Cache configuration for {{ $cache.name }}
                     proxy_cache_path {{ $cache.path }} levels=1:2 keys_zone={{ $cache.name }}:100m inactive=10080m use_temp_path=off;
                     {{- end }}
