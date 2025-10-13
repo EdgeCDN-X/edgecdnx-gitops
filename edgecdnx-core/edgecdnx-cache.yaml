@@ -50,14 +50,11 @@ spec:
                   default: false
                   name: cache
                   controllerValue: "edgecdnx.com/cache"
-                # TODO template this
                 service:
                   enabled: true
-                # TODO template this
                 hostPort:
                   enabled: false
                 kind: DaemonSet
-                # TODO template nodeselector
                 extraVolumes:
                 {{- range $cache := (fromJson .values.caches) }}
                   - name: cache-{{ $cache.name }}
