@@ -62,7 +62,7 @@ spec:
                     - name: debug
                     - name: metadata
                     - name: log
-                      parameters: "{combined}"
+                      parameters: . "{combined}"
                     - name: errors
                       configBlock: |-
                         stacktrace
