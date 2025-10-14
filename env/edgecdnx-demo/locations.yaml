@@ -2,7 +2,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
   name: fra1-c1
-  namespace: edgecdnx
+  namespace: argocd
 spec:
   fallbackLocations: []
   geoLookup:
