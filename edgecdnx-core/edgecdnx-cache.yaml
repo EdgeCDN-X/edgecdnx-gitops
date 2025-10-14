@@ -44,12 +44,12 @@ spec:
                     additionalLabels:
                       release: prometheus-stack
                 allowSnippetAnnotations: true
-                ingressClass: cache
+                ingressClass: ssd
                 ingressClassResource:
                   enabled: true
                   default: false
-                  name: cache
-                  controllerValue: "edgecdnx.com/cache"
+                  name: ssd
+                  controllerValue: "edgecdnx.com/ssd"
                 service:
                   enabled: true
                 hostPort:
