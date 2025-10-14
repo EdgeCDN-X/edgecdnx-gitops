@@ -67,6 +67,19 @@ spec:
                   - name: cache-{{ $cache.name }}
                     mountPath: "{{ $cache.path }}"
                 {{- end }}
+                extraInitContainers:
+                  - name: init-cache-dirs
+                    image: busybox:1.34
+                    command: ["/bin/sh", "-c"]
+                    args:
+                    {{- range $cache := (fromJson .values.caches) }}
+                      - "mkdir -p {{ $cache.path }} && chmod -R 777 {{ $cache.path }};"
+                    {{- end }}
+                    volumeMounts:
+                    {{- range $cache := (fromJson .values.caches) }}
+                      - name: cache-{{ $cache.name }}
+                        mountPath: "{{ $cache.path }}"
+                    {{- end }}
                 config:
                   proxy-buffering: "on"
                   annotations-risk-level: "Critical"
