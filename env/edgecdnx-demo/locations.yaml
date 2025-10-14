@@ -10,8 +10,12 @@ spec:
       geoip/continent/code:
         values:
         - value: EU
-          weight: 10
         - value: AF
+        - value: AN
+        - value: AS
+        - value: NA
+        - value: OC
+        - value: SA
         weight: 1000
     weight: 50
   nodes:
