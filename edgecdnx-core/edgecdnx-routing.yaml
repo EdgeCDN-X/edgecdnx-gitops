@@ -61,6 +61,11 @@ spec:
                     - name: ready
                     - name: debug
                     - name: metadata
+                    - name: log
+                      parameters: "{combined}"
+                    - name: errors
+                      configBlock: |-
+                        stacktrace
                     - name: health
                       configBlock: |-
                         lameduck 5s
