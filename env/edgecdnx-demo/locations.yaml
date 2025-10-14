@@ -1,0 +1,21 @@
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Location
+metadata:
+  name: fra1-c1
+  namespace: edgecdnx
+spec:
+  fallbackLocations: []
+  geoLookup:
+    attributes:
+      geoip/continent/code:
+        values:
+        - value: EU
+          weight: 10
+        - value: AF
+        weight: 1000
+    weight: 50
+  nodes:
+  - caches:
+    - ssd
+    ipv4: 74.220.29.158
+    name: n1
