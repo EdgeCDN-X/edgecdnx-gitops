@@ -50,9 +50,9 @@ spec:
                 repository: fr6nco/coredns
                 tag: 1.12.1-ex-1
                 pullPolicy: Always
-              serviceType: LoadBalancer
+              serviceType: NodePort
               service:
-                serviceType: NodePort
+                serviceType: 
                 externalTrafficPolicy: Local
                 annotations:
                   kubernetes.civo.com/loadbalancer-enable-proxy-protocol: send-proxy-v2
