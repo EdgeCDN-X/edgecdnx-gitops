@@ -9,7 +9,7 @@ spec:
       recordTTL: 300
       recordType: A
       targets:
-        - 74.220.24.205
+        - 74.220.29.245
 # For some reason this is not working with ExternalDNS and DigitalOcean.
 # ---
 # apiVersion: externaldns.k8s.io/v1alpha1
