@@ -50,9 +50,8 @@ spec:
                 repository: fr6nco/coredns
                 tag: 1.12.1-ex-1
                 pullPolicy: Always
-              serviceType: NodePort
+              serviceType: LoadBalancer
               service:
-                serviceType: 
                 externalTrafficPolicy: Local
                 annotations:
                   kubernetes.civo.com/loadbalancer-enable-proxy-protocol: send-proxy-v2
@@ -93,7 +92,7 @@ spec:
                         {{- range .clusters }}
                         ns ns{{ index .metadata.annotations "edgecdnx.com/ns" }} {{ index .metadata.annotations "edgecdnx.com/public-ip" }}
                         {{- end }}
-                  zones:  
+                  zones:
                     - zone: '{{ index .metadata.annotations "edgecdnx.com/basedomain" }}.'
               initContainers:
                 - name: edgecdnx-mmdb-init
