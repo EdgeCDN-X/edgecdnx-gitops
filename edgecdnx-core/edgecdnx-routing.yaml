@@ -125,7 +125,7 @@ spec:
         server: "{{ .server }}"
       syncPolicy:
         automated:
-          selfHeal: true
+          selfHeal: false
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true # Big CRDs.
