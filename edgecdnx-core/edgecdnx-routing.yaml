@@ -60,7 +60,7 @@ spec:
               replicaCount: 2
               servers:
                 - port: 53
-                  nodePort: 53
+                  nodePort: 30053
                   plugins:
                     - name: ready
                     - name: debug
