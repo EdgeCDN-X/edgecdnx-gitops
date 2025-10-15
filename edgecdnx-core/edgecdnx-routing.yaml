@@ -52,6 +52,7 @@ spec:
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
+                serviceType: NodePort
                 externalTrafficPolicy: Local
                 annotations:
                   kubernetes.civo.com/loadbalancer-enable-proxy-protocol: send-proxy-v2
@@ -59,6 +60,7 @@ spec:
               replicaCount: 2
               servers:
                 - port: 53
+                  nodePort: 53
                   plugins:
                     - name: ready
                     - name: debug
