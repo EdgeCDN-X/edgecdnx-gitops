@@ -1,3 +1,4 @@
+---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
@@ -11,8 +12,27 @@ spec:
         values:
         - value: EU
         - value: AF
-        - value: AN
         - value: AS
+        weight: 1000
+    weight: 50
+  nodes:
+  - caches:
+    - ssd
+    ipv4: 74.220.29.158
+    name: n1
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Location
+metadata:
+  name: nyc1-c1
+  namespace: argocd
+spec:
+  fallbackLocations: []
+  geoLookup:
+    attributes:
+      geoip/continent/code:
+        values:
+        - value: AN
         - value: NA
         - value: OC
         - value: SA
@@ -21,5 +41,5 @@ spec:
   nodes:
   - caches:
     - ssd
-    ipv4: 74.220.29.158
+    ipv4: 74.220.29.173
     name: n1
