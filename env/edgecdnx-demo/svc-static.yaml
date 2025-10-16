@@ -29,7 +29,7 @@ spec:
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Service
 metadata:
-  name: akldjgsofheiwu.democdn.edgecdnx.com
+  name: ae4aesee9cooqu.democdn.edgecdnx.com
   namespace: argocd
   labels:
     type: signed
