@@ -5,12 +5,7 @@ metadata:
   name: democdn-a
 spec:
   endpoints:
-    # - dnsName: ns1.democdn.edgecdnx.com
-    #   recordTTL: 300
-    #   recordType: A
-    #   targets:
-    #     - 74.220.29.245
-    - dnsName: ns1-democdn.edgecdnx.com
+    - dnsName: ns1.democdn.edgecdnx.com
       recordTTL: 300
       recordType: A
       targets:
