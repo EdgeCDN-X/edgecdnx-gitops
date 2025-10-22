@@ -66,9 +66,6 @@ spec:
             releaseName: edgecdnx-controller-caching
             ignoreMissingValueFiles: true
             valuesObject:
-              image:
-                tag: latest
-                pullPolicy: Always
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
               consulEndpoint: '{{ .values.consulEndpoint | default "http://consul:8500" }}'
