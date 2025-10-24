@@ -5,7 +5,8 @@ metadata:
   name: fra1-c1
   namespace: argocd
 spec:
-  fallbackLocations: []
+  fallbackLocations:
+    - nyc1-c1
   geoLookup:
     attributes:
       geoip/continent/code:
@@ -27,7 +28,8 @@ metadata:
   name: nyc1-c1
   namespace: argocd
 spec:
-  fallbackLocations: []
+  fallbackLocations:
+    - fra1-c1
   geoLookup:
     attributes:
       geoip/continent/code:
