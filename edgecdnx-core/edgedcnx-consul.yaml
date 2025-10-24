@@ -55,6 +55,10 @@ spec:
                     operator: "Exists"
                     effect: "NoSchedule"
                 exposeGossipAndRPCPorts: false
+                exposeService:
+                  enabled: true
+                  nodePort:
+                    http: 8500
               client:
                 enabled: false
               dns:
