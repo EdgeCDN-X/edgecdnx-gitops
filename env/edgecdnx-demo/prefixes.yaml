@@ -21,6 +21,6 @@ spec:
   destination: nyc1-c1
   prefix:
     v4:
-      - address: 85.50.24.0
+      - address: 85.50.16.0
         size: 22
     v6: []
