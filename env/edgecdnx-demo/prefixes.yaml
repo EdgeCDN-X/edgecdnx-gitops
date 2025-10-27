@@ -11,3 +11,16 @@ spec:
       - address: 85.50.20.0
         size: 22
     v6: []
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: PrefixList
+metadata:
+  name: nyc1-c1-p2
+spec:
+  source: Static
+  destination: nyc1-c1
+  prefix:
+    v4:
+      - address: 85.50.24.0
+        size: 22
+    v6: []
