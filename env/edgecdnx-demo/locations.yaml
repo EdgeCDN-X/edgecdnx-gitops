@@ -13,7 +13,6 @@ spec:
         values:
         - value: EU
         - value: AF
-        - value: AS
         weight: 1000
     weight: 50
   nodes:
@@ -38,6 +37,7 @@ spec:
         - value: NA
         - value: OC
         - value: SA
+        - value: AS
         weight: 1000
     weight: 50
   nodes:
