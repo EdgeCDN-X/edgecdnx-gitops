@@ -1,0 +1,27 @@
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Service
+metadata:
+  name: telekom.democdn.edgecdnx.com
+  namespace: argocd
+  labels:
+    type: static
+spec:
+  cache: ssd
+  cacheKey:
+    queryParams:
+    - v
+    - ver
+    - version
+  certificate: {}
+  customer:
+    id: 1
+    name: tbotech
+  domain: telekom.democdn.edgecdnx.com
+  name: telekom.democdn.edgecdnx.com
+  originType: static
+  staticOrigins:
+  - hostHeader: tbotech.sk
+    port: 443
+    scheme: Https
+    upstream: tbotech.sk
