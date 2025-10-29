@@ -1,0 +1,85 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-controller
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: edgecdnx-monitoring
+    spec:
+      project: default
+      sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: pki-root
+            valuesObject:
+              resources:
+                - apiVersion: cert-manager.io/v1
+                  kind: ClusterIssuer
+                  metadata:
+                    name: edgecdnx-pki
+                  spec:
+                    selfSigned: {}
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
+                    name: edgecdnx-ca
+                    namespace: cert-manager
+                  spec:
+                    isCA: true
+                    commonName: {{ .metadata.annotations.basedomain }}
+                    secretName: edgecdnx-root-ca
+                    privateKey:
+                      algorithm: ECDSA
+                      size: 256
+                    issuerRef:
+                      name: edgecdnx-pki
+                      kind: ClusterIssuer
+                      group: cert-manager.io
+                - apiVersion: cert-manager.io/v1
+                  kind: Issuer
+                  metadata:
+                    name: mon-tls-issuer
+                    namespace: monitoring
+                  spec:
+                    ca:
+                      secretName: edgecdnx-root-ca
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big controller.
+      ignoreDifferences: []
+
+
+
+
+
+
+
+
+
+
+
+
+
