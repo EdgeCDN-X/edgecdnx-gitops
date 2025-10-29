@@ -19,7 +19,7 @@ spec:
                 - "yes"
   template:
     metadata:
-      name: edgecdnx-pki-{{ if ne .name "in-cluster" }}-{{.name}}{{ end }}
+      name: edgecdnx-pki{{ if ne .name "in-cluster" }}-{{.name}}{{ end }}
     spec:
       project: default
       sources:
