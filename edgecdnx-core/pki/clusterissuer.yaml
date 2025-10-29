@@ -41,7 +41,7 @@ spec:
                     namespace: cert-manager
                   spec:
                     isCA: true
-                    commonName: {{ .metadata.annotations.basedomain }}
+                    commonName: "{{ .metadata.annotations.basedomain }}"
                     secretName: edgecdnx-root-ca
                     privateKey:
                       algorithm: ECDSA
