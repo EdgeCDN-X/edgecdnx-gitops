@@ -25,13 +25,7 @@ spec:
                 - ALL
           prometheus:
             ingress:
-              enabled: true
-              hosts:
-                - prometheus.{{ metadata.annotations.basedomain }}
-              # tls:
-              #   - hosts:
-              #       - prometheus.{{ metadata.annotations.basedomain }}
-              #     secretName: prometheus-cert-tls
+              enabled: false
             prometheusSpec:
               storageSpec:
                 volumeClaimTemplate:
