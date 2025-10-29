@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: edgecdnx-monitoring
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  project: default
+  sources:
+    - chart: kube-prometheus-stack
+      helm:
+        ignoreMissingValueFiles: true
+        releaseName: edgecdnx-monitoring
+        valuesObject:
+          alertmanager:
+            enabled: false
+          grafana:
+            sidecar:
+              dashboards:
+                searchNamespace:
+                - ALL
+          prometheus:
+            ingress:
+              hosts:
+                - prometheus.{{ metadata.annotations.basedomain }}
+              # tls:
+              #   - hosts:
+              #       - prometheus.{{ metadata.annotations.basedomain }}
+              #     secretName: prometheus-cert-tls
+            prometheusSpec:
+              storageSpec:
+                volumeClaimTemplate:
+                  spec:
+                    resources:
+                      requests:
+                        storage: 4Gi
+                    storageClassName: civo-volume
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 58.3.3
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
