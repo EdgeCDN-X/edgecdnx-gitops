@@ -23,7 +23,7 @@ spec:
             values: |
               resources:
               {{- range $cluster := .clusters }}
-                {{- if $cluster.name == "in-cluster" }}
+                {{- if eq $cluster.name "in-cluster" }}
                 - apiVersion: argoproj.io/v1alpha1
                   kind: EventBus
                   metadata:
