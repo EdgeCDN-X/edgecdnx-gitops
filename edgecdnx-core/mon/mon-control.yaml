@@ -1,43 +1,65 @@
+---
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
   name: edgecdnx-monitoring
-  namespace: argocd
 spec:
-  destination:
-    name: in-cluster
-    namespace: monitoring
-  project: default
-  sources:
-    - chart: kube-prometheus-stack
-      helm:
-        ignoreMissingValueFiles: true
-        releaseName: edgecdnx-monitoring
-        valuesObject:
-          alertmanager:
-            enabled: false
-          grafana:
-            sidecar:
-              dashboards:
-                searchNamespace:
-                - ALL
-          prometheus:
-            ingress:
-              enabled: false
-            prometheusSpec:
-              storageSpec:
-                volumeClaimTemplate:
-                  spec:
-                    resources:
-                      requests:
-                        storage: 4Gi
-                    storageClassName: civo-volume
-      repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 58.3.3
   syncPolicy:
-    automated: {}
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: edgecdnx-monitoring
+    spec:
+      project: default
+      sources:
+        - chart: "{{values.addonChart}}"
+          repoURL: "{{values.addonChartRepository}}"
+          targetRevision: "{{values.addonChartVersion}}"
+          helm:
+            releaseName: edgecdnx-monitoring
+            valuesObject:
+              kubeApiServer:
+                enabled: false
+              kubeProxy:
+                enabled: false
+              alertmanager:
+                enabled: false
+              grafana:
+                enabled: false
+              prometheus:
+                enabled: true
+                ingress:
+                  enabled: true
+                  annotations:
+                    cert-manager.io/issuer: mon-tls-issuer
+                    cert-manager.io/subject-organizations: "EdgeCDNX"
+                    cert-manager.io/subject-countries: "SK"
+                    cert-manager.io/usages: "digital signature,key encipherment,server auth,client auth"
+                    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+                    nginx.ingress.kubernetes.io/auth-tls-secret: monitoring/edgecdnx-root-ca-monitoring
+                    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+                    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+                  hosts:
+                  - prometheus.{{ metadata.annotations.basedomain }}
+                  tls:
+                  - hosts:
+                    - prometheus.{{ metadata.annotations.basedomain }}
+                    secretName: prometheus-cert-tls
+      destination:
+        namespace: monitoring
+        name: {{ .name }}
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
