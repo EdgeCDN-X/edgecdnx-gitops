@@ -42,8 +42,8 @@ spec:
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
       destination:
-        namespace: cert-manager
-        server: "{{ .server }}"
+        namespace: monitoring
+        server: https://kubernetes.default.svc
       syncPolicy:
         automated:
           selfHeal: true
