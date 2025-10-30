@@ -49,14 +49,14 @@ spec:
                     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
                     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
                   hosts:
-                  - prometheus.{{ metadata.annotations.basedomain }}
+                  - "prometheus.{{ metadata.annotations.basedomain }}"
                   tls:
                   - hosts:
-                    - prometheus.{{ metadata.annotations.basedomain }}
+                    - "prometheus.{{ metadata.annotations.basedomain }}"
                     secretName: prometheus-cert-tls
       destination:
         namespace: monitoring
-        name: {{ .name }}
+        name: "{{ name }}"
       syncPolicy:
         automated: {}
         syncOptions:
