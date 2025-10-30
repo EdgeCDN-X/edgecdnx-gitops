@@ -21,7 +21,9 @@ spec:
           targetRevision: 0.1.1
           repoURL: https://edgecdn-x.github.io/helm-charts
           helm:
-            valuesObject: {}
+            valuesObject:
+              eventBus:
+                replicas: 3
         - chart: resource-thrower
           helm:
             releaseName: edgecdnx-mon-certs
