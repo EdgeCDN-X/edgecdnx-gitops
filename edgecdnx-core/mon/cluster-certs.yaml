@@ -40,7 +40,7 @@ spec:
                       annotations:
                         target: "{{ $cluster.server }}"
                         targetName: "{{ $cluster.name }}"
-                        recreate: "again3"
+                        recreate: "again4"
                       labels:
                         edgecdnx.com/resource-type: monitoring-tls
                     usages:
