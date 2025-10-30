@@ -31,7 +31,7 @@ spec:
                     namespace: monitoring
                   spec:
                     jetstream:
-                      version: 2.12.1
+                      version: 2.10.10
                       replicas: 1
                 {{- end }}
                 - apiVersion: cert-manager.io/v1
