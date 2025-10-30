@@ -22,6 +22,10 @@ spec:
           repoURL: https://edgecdn-x.github.io/helm-charts
           helm:
             valuesObject:
+              source: 
+                eventTypes:
+                  - ADD
+                  - UPDATE
               eventBus:
                 replicas: 3
         - chart: resource-thrower
