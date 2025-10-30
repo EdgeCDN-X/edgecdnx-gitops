@@ -18,7 +18,7 @@ spec:
       project: default
       sources:
         - chart: tls-cert-thrower
-          targetRevision: 0.1.9
+          targetRevision: 0.1.10
           repoURL: https://edgecdn-x.github.io/helm-charts
           helm:
             valuesObject: {}
@@ -39,6 +39,7 @@ spec:
                     secretTemplate:
                       annotations:
                         target: "{{ $cluster.server }}"
+                        targetName: "{{ $cluster.name }}"
                         recreate: "again2"
                       labels:
                         edgecdnx.com/resource-type: monitoring-tls
