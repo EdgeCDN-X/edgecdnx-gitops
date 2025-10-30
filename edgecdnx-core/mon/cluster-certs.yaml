@@ -18,21 +18,10 @@ spec:
       project: default
       sources:
         - chart: tls-cert-thrower
-          targetRevision: 0.1.1
+          targetRevision: 0.1.3
           repoURL: https://edgecdn-x.github.io/helm-charts
           helm:
-            valuesObject:
-              source: 
-                eventTypes:
-                  - ADD
-                  - UPDATE
-                filter:
-                  labels:
-                    - key: edgecdnx.com/resource-type
-                      value: monitoring-tls
-                      operation: "=="
-              eventBus:
-                replicas: 3
+            valuesObject: {}
         - chart: resource-thrower
           helm:
             releaseName: edgecdnx-mon-certs
