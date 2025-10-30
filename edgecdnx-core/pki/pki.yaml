@@ -32,6 +32,7 @@ spec:
                   kind: ClusterIssuer
                   metadata:
                     name: edgecdnx-pki
+                    namespace: cert-manager
                   spec:
                     selfSigned: {}
                 - apiVersion: cert-manager.io/v1
