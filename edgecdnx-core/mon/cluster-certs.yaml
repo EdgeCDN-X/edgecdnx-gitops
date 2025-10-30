@@ -29,7 +29,6 @@ spec:
                     name: edgecdnx-tls-monitoring-{{ $cluster.name }}-client
                     namespace: monitoring
                   spec:
-                    isCA: false
                     secretName: edgecdnx-tls-monitoring-{{ $cluster.name }}-client
                     commonName: prometheus-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}
                     usages:
