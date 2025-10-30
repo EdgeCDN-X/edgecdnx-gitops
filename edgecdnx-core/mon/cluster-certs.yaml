@@ -26,6 +26,11 @@ spec:
                 eventTypes:
                   - ADD
                   - UPDATE
+                filter:
+                  labels:
+                    - key: edgecdnx.com/resource-type
+                      value: monitoring-tls
+                      operation: "=="
               eventBus:
                 replicas: 3
         - chart: resource-thrower
