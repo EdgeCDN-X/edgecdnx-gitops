@@ -21,9 +21,9 @@ spec:
     spec:
       project: default
       sources:
-        - chart: "{{values.addonChart}}"
-          repoURL: "{{values.addonChartRepository}}"
-          targetRevision: "{{values.addonChartVersion}}"
+        - chart: "kube-prometheus-stack"
+          repoURL: "https://prometheus-community.github.io/helm-charts"
+          targetRevision: 79.0.1
           helm:
             releaseName: edgecdnx-monitoring
             valuesObject:
