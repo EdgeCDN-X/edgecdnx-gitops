@@ -17,23 +17,17 @@ spec:
     spec:
       project: default
       sources:
+        - chart: tls-cert-thrower
+          targetRevision: 0.1.0
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          helm:
+            valuesObject: {}
         - chart: resource-thrower
           helm:
             releaseName: edgecdnx-mon-certs
             values: |
               resources:
               {{- range $cluster := .clusters }}
-                {{- if eq $cluster.name "in-cluster" }}
-                - apiVersion: argoproj.io/v1alpha1
-                  kind: EventBus
-                  metadata:
-                    name: edgecdnx-mon-eventbus
-                    namespace: monitoring
-                  spec:
-                    jetstream:
-                      version: 2.10.10
-                      replicas: 1
-                {{- end }}
                 - apiVersion: cert-manager.io/v1
                   kind: Certificate
                   metadata:
@@ -42,6 +36,11 @@ spec:
                   spec:
                     secretName: edgecdnx-tls-monitoring-{{ $cluster.name }}-client
                     commonName: prometheus-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}
+                    secretTemplate:
+                      annotations:
+                        target: "{{ $cluster.name }}"
+                      labels:
+                        edgecdnx.com/resource-type: monitoring-tls
                     usages:
                       - client auth
                     issuerRef:
