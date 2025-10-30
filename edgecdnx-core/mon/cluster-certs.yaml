@@ -18,7 +18,7 @@ spec:
       project: default
       sources:
         - chart: tls-cert-thrower
-          targetRevision: 0.1.10
+          targetRevision: 0.1.11
           repoURL: https://edgecdn-x.github.io/helm-charts
           helm:
             valuesObject: {}
