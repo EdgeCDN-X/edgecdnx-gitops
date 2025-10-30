@@ -1,0 +1,53 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-mon-cluster-certs
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        flatList: true
+  template:
+    metadata:
+      name: edgecdnx-mon-certs
+    spec:
+      project: default
+      sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: edgecdnx-mon-certs
+            values: |
+              resources:
+              {{- range $cluster := .clusters }}
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
+                    name: edgecdnx-tls-monitoring-{{ $cluster.name }}-client
+                    namespace: monitoring
+                  spec:
+                    isCA: false
+                    secretName: edgecdnx-tls-monitoring-{{ $cluster.name }}-client
+                    commonName: prometheus-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}
+                    usages:
+                      - client auth
+                    issuerRef:
+                      name: mon-tls-issuer
+                      kind: Issuer
+                      group: cert-manager.io
+              {{- end }}
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
+      destination:
+        namespace: cert-manager
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big controller.
+      ignoreDifferences: []
