@@ -22,20 +22,18 @@ spec:
             releaseName: edgecdnx-mon-certs
             values: |
               resources:
-              {{- toYaml . | nindent 14 }}
-              - apiVersion: argoproj.io/v1alpha1
-                kind: EventBus
-                metadata:
-                  name: default
-                spec:
-                  jetstream:
-                    version: 2.12.1
-                    replicas: 1
-                    persistence: # optional
-                        storageClassName: {{ .default_sc }}
-                        accessMode: ReadWriteOnce
-                        volumeSize: 1Gi
               {{- range $cluster := .clusters }}
+                {{- if $cluster.name == "in-cluster" }}
+                - apiVersion: argoproj.io/v1alpha1
+                  kind: EventBus
+                  metadata:
+                    name: edgecdnx-mon-eventbus
+                    namespace: monitoring
+                  spec:
+                    jetstream:
+                      version: 2.12.1
+                      replicas: 1
+                {{- end }}
                 - apiVersion: cert-manager.io/v1
                   kind: Certificate
                   metadata:
