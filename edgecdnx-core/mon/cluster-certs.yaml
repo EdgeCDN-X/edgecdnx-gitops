@@ -38,7 +38,7 @@ spec:
                     commonName: prometheus-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}
                     secretTemplate:
                       annotations:
-                        target: "{{ $cluster.name }}"
+                        target: "{{ $cluster.server }}"
                         recreate: "again2"
                       labels:
                         edgecdnx.com/resource-type: monitoring-tls
