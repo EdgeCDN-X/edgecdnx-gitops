@@ -41,6 +41,7 @@ spec:
                     secretTemplate:
                       annotations:
                         target: "{{ $cluster.name }}"
+                        recreate: now
                       labels:
                         edgecdnx.com/resource-type: monitoring-tls
                     usages:
