@@ -75,6 +75,14 @@ spec:
                         - targetLabel: role
                           replacement: "{{ values.role }}"
                           action: replace
+                  storageSpec:
+                    retention: 60d
+                    volumeClaimTemplate:
+                      spec:
+                        storageClassName: "{{ metadata.annotations.default_sc }}"
+                        resources:
+                          requests:
+                            storage: 10Gi
       destination:
         namespace: monitoring
         name: "{{ name }}"
