@@ -51,7 +51,7 @@ spec:
                 agentMode: true
                 prometheusSpec:
                   remoteWrite:
-                    - url: "prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
+                    - url: "https://prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
       destination:
         namespace: monitoring
         name: "{{ .name }}"
