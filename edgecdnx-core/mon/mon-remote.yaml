@@ -54,6 +54,8 @@ spec:
                 prometheusSpec:
                   remoteWrite:
                     - url: "https://prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
+                      tlsConfig:
+                        insecureSkipVerify: true
       destination:
         namespace: monitoring
         name: "{{ .name }}"
