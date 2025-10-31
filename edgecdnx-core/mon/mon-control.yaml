@@ -55,6 +55,7 @@ spec:
                     - "prometheus.{{ metadata.annotations.basedomain }}"
                     secretName: prometheus-cert-tls
                 prometheusSpec:
+                  enableRemoteWriteReceiver: true
                   enableFeatures: 
                     - metadata-wal-records
       destination:
