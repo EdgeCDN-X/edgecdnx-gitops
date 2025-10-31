@@ -32,9 +32,9 @@ spec:
               kubeProxy:
                 enabled: false
               alertmanager:
-                enabled: false
+                enabled: true
               grafana:
-                enabled: false
+                enabled: true
               prometheus:
                 enabled: true
                 ingress:
