@@ -64,7 +64,10 @@ spec:
                   remoteWrite:
                     - url: "https://prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
                       tlsConfig:
-                        insecureSkipVerify: true
+                        insecureSkipVerify: false
+                        ca_file: /etc/prometheus/secrets/edgecdnx-tls-monitoring-{{ .name }}-client/ca.crt
+                        cert_file: /etc/prometheus/secrets/edgecdnx-tls-monitoring-{{ .name }}-client/tls.crt
+                        key_file: /etc/prometheus/secrets/edgecdnx-tls-monitoring-{{ .name }}-client/tls.key
       destination:
         namespace: monitoring
         name: "{{ .name }}"

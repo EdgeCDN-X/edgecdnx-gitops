@@ -46,7 +46,7 @@ spec:
                     cert-manager.io/usages: "digital signature,key encipherment,server auth,client auth"
                     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
                     nginx.ingress.kubernetes.io/auth-tls-secret: monitoring/edgecdnx-root-ca-monitoring
-                    nginx.ingress.kubernetes.io/auth-tls-verify-client: "off"
+                    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
                     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
                   hosts:
                   - "prometheus.{{ metadata.annotations.basedomain }}"
