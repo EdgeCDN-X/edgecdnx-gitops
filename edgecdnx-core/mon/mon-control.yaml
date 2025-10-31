@@ -8,6 +8,8 @@ spec:
     preserveResourcesOnDeletion: false
   generators:
     - clusters:
+        values:
+          role: control
         selector:
           matchExpressions:
             - key: edgecdnx.com/control
@@ -58,6 +60,16 @@ spec:
                   enableRemoteWriteReceiver: true
                   enableFeatures: 
                     - metadata-wal-records
+                  scrapeClasses:
+                    - default: true
+                      name: local-cluster
+                      relabelings:
+                        - targetLabel: cluster
+                          replacement: "{{ name }}"
+                          action: replace
+                        - targetLabel: role
+                          replacement: "{{ values.role }}"
+                          action: replace
       destination:
         namespace: monitoring
         name: "{{ name }}"
