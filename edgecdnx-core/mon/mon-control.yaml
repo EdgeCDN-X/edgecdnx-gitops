@@ -37,6 +37,11 @@ spec:
                 enabled: true
               grafana:
                 enabled: true
+                sidecar:
+                  dashboards:
+                    multicluster:
+                      global:
+                        enabled: true
               prometheus:
                 enabled: true
                 ingress:
