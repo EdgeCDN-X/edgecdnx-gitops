@@ -44,6 +44,8 @@ spec:
                 enabled: false
               grafana:
                 enabled: false
+              defaultRules:
+                create: false
               prometheus:
                 enabled: true
                 ingress:
