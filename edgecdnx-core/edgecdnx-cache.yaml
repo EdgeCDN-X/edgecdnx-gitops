@@ -38,11 +38,11 @@ spec:
             values: |
               controller:
                 metrics:
-                  enabled: false
+                  enabled: true
                   serviceMonitor:
-                    enabled: false
+                    enabled: true
                     additionalLabels:
-                      release: prometheus-stack
+                      release: edgecdnx-monitoring
                 allowSnippetAnnotations: true
                 ingressClass: ssd
                 ingressClassResource:
