@@ -2,22 +2,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: edgecdnx-monitoring
+  name: edgecdnx-monitoring-remote
 spec:
+  goTemplate: true
   syncPolicy:
     preserveResourcesOnDeletion: false
   generators:
     - clusters:
         selector:
           matchExpressions:
-            - key: edgecdnx.com/control
+            - key: edgecdnx.com/caching
+              operator: In
+              values:
+                - "true"
+                - "yes"
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/routing
               operator: In
               values:
                 - "true"
                 - "yes"
   template:
     metadata:
-      name: edgecdnx-monitoring
+      name: edgecdnx-monitoring-remote-{{ name }}
     spec:
       project: default
       sources:
@@ -38,25 +47,11 @@ spec:
               prometheus:
                 enabled: true
                 ingress:
-                  enabled: true
-                  annotations:
-                    cert-manager.io/issuer: mon-tls-issuer
-                    cert-manager.io/subject-organizations: "EdgeCDNX"
-                    cert-manager.io/subject-countries: "SK"
-                    cert-manager.io/usages: "digital signature,key encipherment,server auth,client auth"
-                    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-                    nginx.ingress.kubernetes.io/auth-tls-secret: monitoring/edgecdnx-root-ca-monitoring
-                    nginx.ingress.kubernetes.io/auth-tls-verify-client: "off"
-                    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
-                  hosts:
-                  - "prometheus.{{ metadata.annotations.basedomain }}"
-                  tls:
-                  - hosts:
-                    - "prometheus.{{ metadata.annotations.basedomain }}"
-                    secretName: prometheus-cert-tls
+                  enabled: false
+                agentMode: true
                 prometheusSpec:
-                  enableFeatures: 
-                    - metadata-wal-records
+                  remoteWrite:
+                    - url: "prometheus.{{ metadata.annotations.basedomain }}/api/v1/write"
       destination:
         namespace: monitoring
         name: "{{ name }}"
