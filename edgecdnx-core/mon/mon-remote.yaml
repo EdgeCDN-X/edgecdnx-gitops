@@ -26,7 +26,7 @@ spec:
                 - "yes"
   template:
     metadata:
-      name: edgecdnx-monitoring-remote-{{ name }}
+      name: edgecdnx-monitoring-remote-{{ .name }}
     spec:
       project: default
       sources:
@@ -51,10 +51,10 @@ spec:
                 agentMode: true
                 prometheusSpec:
                   remoteWrite:
-                    - url: "prometheus.{{ metadata.annotations.basedomain }}/api/v1/write"
+                    - url: "prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
       destination:
         namespace: monitoring
-        name: "{{ name }}"
+        name: "{{ .name }}"
       syncPolicy:
         automated: {}
         syncOptions:
