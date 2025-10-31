@@ -9,6 +9,8 @@ spec:
     preserveResourcesOnDeletion: false
   generators:
     - clusters:
+        values:
+          role: caching
         selector:
           matchExpressions:
             - key: edgecdnx.com/caching
@@ -17,6 +19,8 @@ spec:
                 - "true"
                 - "yes"
     - clusters:
+        values:
+          role: routing
         selector:
           matchExpressions:
             - key: edgecdnx.com/routing
@@ -52,6 +56,9 @@ spec:
                   enabled: false
                 agentMode: true
                 prometheusSpec:
+                  externalLabels:
+                    cluster: "{{ .name }}"
+                    role: "{{ .values.role }}"
                   remoteWrite:
                     - url: "https://prometheus.{{ .metadata.annotations.basedomain }}/api/v1/write"
                       tlsConfig:
