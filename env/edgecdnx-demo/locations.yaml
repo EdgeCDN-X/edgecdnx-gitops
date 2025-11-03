@@ -20,7 +20,6 @@ spec:
     - ssd
     ipv4: 74.220.29.158
     name: n1
-    maintenanceMode: true
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
