@@ -55,8 +55,6 @@ spec:
                 hostPort:
                   enabled: false
                 kind: DaemonSet
-                extraArgs:
-                  v: 5
                 extraVolumes:
                 {{- range $cache := (fromJson .values.caches) }}
                   - name: cache-{{ $cache.name }}
