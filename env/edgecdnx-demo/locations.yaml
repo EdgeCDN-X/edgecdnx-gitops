@@ -5,6 +5,7 @@ metadata:
   name: fra1-c1
   namespace: argocd
 spec:
+  maintenanceMode: true
   fallbackLocations:
     - nyc1-c1
   geoLookup:
