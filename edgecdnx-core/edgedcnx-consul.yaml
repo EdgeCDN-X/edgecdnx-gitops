@@ -56,7 +56,7 @@ spec:
                     effect: "NoSchedule"
                 exposeGossipAndRPCPorts: false
                 exposeService:
-                  enabled: true
+                  enabled: false
                   nodePort:
                     http: 8500
               client:
