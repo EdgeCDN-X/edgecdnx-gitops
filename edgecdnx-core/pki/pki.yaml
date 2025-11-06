@@ -44,6 +44,11 @@ spec:
                     isCA: true
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
                     secretName: edgecdnx-root-ca-analytics
+                    dnsNames:
+                      - analytics.{{ .metadata.annotations.basedomain }}
+                      - nats-analytics-0.nats-analytics-headless
+                      - nats-analytics-1.nats-analytics-headless
+                      - nats-analytics-2.nats-analytics-headless
                     privateKey:
                       algorithm: ECDSA
                       size: 256
