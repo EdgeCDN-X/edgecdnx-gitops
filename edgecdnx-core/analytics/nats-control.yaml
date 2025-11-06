@@ -31,6 +31,9 @@ spec:
             valuesObject: 
               service:
                 merge:
+                  metadata:
+                    annotations:
+                      external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
                   spec:
                     type: LoadBalancer
               config:
