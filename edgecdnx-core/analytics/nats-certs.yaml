@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: edgecdnx-mon-cluster-certs
+  name: edgecdnx-analytics-cluster-certs
   namespace: argocd
 spec:
   goTemplate: true
