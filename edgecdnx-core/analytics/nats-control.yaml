@@ -43,7 +43,7 @@ spec:
                 nats:
                   tls:
                     enabled: true
-                    secretName: edgecdnx-root-ca-analytics
+                    secretName: edgecdnx-tls-analytics-node
                 cluster:
                   enabled: true
                   tls:
