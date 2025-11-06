@@ -42,6 +42,7 @@ spec:
                   tls:
                     enabled: true
                     secretName: edgecdnx-root-ca-analytics
+                    ca: ca.crt
                 jetstream:
                   enabled: true
                   fileStore:
