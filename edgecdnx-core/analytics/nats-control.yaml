@@ -52,7 +52,7 @@ spec:
                       size: 10Gi
                       storageClassName: "{{ metadata.annotations.default_sc }}"
       destination:
-        namespace: monitoring
+        namespace: analytics
         name: "{{ name }}"
       syncPolicy:
         automated: {}
