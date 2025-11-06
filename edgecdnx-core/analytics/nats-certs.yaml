@@ -40,6 +40,8 @@ spec:
                     usages:
                       - server auth
                       - client auth
+                      - digital signature
+                      - key encipherment
                     issuerRef:
                       name: analytics-tls-issuer
                       kind: Issuer
@@ -61,6 +63,8 @@ spec:
                         edgecdnx.com/resource-type: analytics-tls
                     usages:
                       - client auth
+                      - digital signature
+                      - key encipherment
                     issuerRef:
                       name: analytics-tls-issuer
                       kind: Issuer
