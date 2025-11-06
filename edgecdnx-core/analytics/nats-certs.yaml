@@ -37,6 +37,7 @@ spec:
                       - nats-analytics-2.nats-analytics-headless
                     usages:
                       - server auth
+                      - client auth
                     issuerRef:
                       name: analytics-tls-issuer
                       kind: Issuer
