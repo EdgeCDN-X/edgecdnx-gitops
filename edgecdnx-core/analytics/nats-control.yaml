@@ -28,7 +28,10 @@ spec:
           targetRevision: 2.12.1
           helm:
             releaseName: nats-analytics
-            valuesObject: 
+            valuesObject:
+              tlsCA:
+                enabled: true
+                secretName: edgecdnx-root-ca-analytics
               service:
                 merge:
                   metadata:
@@ -41,8 +44,7 @@ spec:
                   enabled: true
                   tls:
                     enabled: true
-                    secretName: edgecdnx-root-ca-analytics
-                    ca: ca.crt
+                    secretName: edgecdnx-tls-analytics-node
                 jetstream:
                   enabled: true
                   fileStore:

@@ -22,6 +22,23 @@ spec:
             releaseName: edgecdnx-analytics-certs
             values: |
               resources:
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
+                    name: edgecdnx-tls-analytics-node
+                    namespace: analytics
+                  spec:
+                    secretName: edgecdnx-tls-analytics-node
+                    commonName: "analytics.{{ .metadata.annotations.basedomain }}"
+                    dnsNames:
+                      - analytics.{{ .metadata.annotations.basedomain }}
+                      - nats-analytics-0.nats-analytics-headless
+                      - nats-analytics-1.nats-analytics-headless
+                      - nats-analytics-2.nats-analytics-headless
+                    issuerRef:
+                      name: analytics-tls-issuer
+                      kind: Issuer
+                      group: cert-manager.io
               {{- range $cluster := .clusters }}
                 - apiVersion: cert-manager.io/v1
                   kind: Certificate
