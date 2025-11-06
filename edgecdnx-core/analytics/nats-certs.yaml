@@ -30,8 +30,6 @@ spec:
                   spec:
                     secretName: edgecdnx-tls-analytics-node
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
-                    usages:
-                      - client auth
                     dnsNames:
                       - analytics.{{ .metadata.annotations.basedomain }}
                       - nats-analytics-0.nats-analytics-headless
