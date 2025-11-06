@@ -38,6 +38,30 @@ spec:
                 - apiVersion: cert-manager.io/v1
                   kind: Certificate
                   metadata:
+                    name: edgecdnx-ca-analytics
+                    namespace: analytics
+                  spec:
+                    isCA: true
+                    commonName: "analytics.{{ .metadata.annotations.basedomain }}"
+                    secretName: edgecdnx-root-ca-analytics
+                    privateKey:
+                      algorithm: ECDSA
+                      size: 256
+                    issuerRef:
+                      name: edgecdnx-pki
+                      kind: ClusterIssuer
+                      group: cert-manager.io
+                - apiVersion: cert-manager.io/v1
+                  kind: Issuer
+                  metadata:
+                    name: analytics-tls-issuer
+                    namespace: analytics
+                  spec:
+                    ca:
+                      secretName: edgecdnx-root-ca-analytics
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
                     name: edgecdnx-ca-monitoring
                     namespace: monitoring
                   spec:
