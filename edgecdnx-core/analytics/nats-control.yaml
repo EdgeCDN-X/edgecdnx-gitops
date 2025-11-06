@@ -39,6 +39,9 @@ spec:
               config:
                 cluster:
                   enabled: true
+                  tls:
+                    enabled: true
+                    secretName: edgecdnx-root-ca-analytics
                 jetstream:
                   enabled: true
                   fileStore:
