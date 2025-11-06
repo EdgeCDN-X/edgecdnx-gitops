@@ -29,23 +29,22 @@ spec:
           helm:
             releaseName: nats-analytics
             valuesObject: 
-              nats:
-                service:
-                  merge:
-                    spec:
-                      type: LoadBalancer
-                config:
-                  cluster:
+              service:
+                merge:
+                  spec:
+                    type: LoadBalancer
+              config:
+                cluster:
+                  enabled: true
+                jetstream:
+                  enabled: true
+                  fileStore:
                     enabled: true
-                  jetstream:
-                    enabled: true
-                    fileStore:
+                    dir: /data
+                    pvc:
                       enabled: true
-                      dir: /data
-                      pvc:
-                        enabled: true
-                        size: 10Gi
-                        storageClassName: "{{ metadata.annotations.default_sc }}"
+                      size: 10Gi
+                      storageClassName: "{{ metadata.annotations.default_sc }}"
       destination:
         namespace: monitoring
         name: "{{ name }}"
