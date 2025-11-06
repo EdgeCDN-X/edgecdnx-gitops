@@ -1,0 +1,58 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-mon-cluster-certs
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        flatList: true
+  template:
+    metadata:
+      name: edgecdnx-analytics-certs
+    spec:
+      project: default
+      sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: edgecdnx-analytics-certs
+            values: |
+              resources:
+              {{- range $cluster := .clusters }}
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
+                    name: edgecdnx-tls-analytics-{{ $cluster.name }}-client
+                    namespace: analytics
+                  spec:
+                    secretName: edgecdnx-tls-analytics-{{ $cluster.name }}-client
+                    commonName: analytics-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}
+                    secretTemplate:
+                      annotations:
+                        target: "{{ $cluster.server }}"
+                        targetName: "{{ $cluster.name }}"
+                      labels:
+                        edgecdnx.com/resource-type: analytics-tls
+                    usages:
+                      - client auth
+                    issuerRef:
+                      name: analytics-tls-issuer
+                      kind: Issuer
+                      group: cert-manager.io
+              {{- end }}
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
+      destination:
+        namespace: monitoring
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big controller.
+      ignoreDifferences: []

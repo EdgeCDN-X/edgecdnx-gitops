@@ -1,0 +1,57 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: analytics
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: nats-analytics
+    spec:
+      project: default
+      sources:
+        - chart: nats
+          repoURL: https://nats-io.github.io/k8s/helm/charts/
+          targetRevision: 2.12.1
+          helm:
+            releaseName: nats-analytics
+            valuesObject: 
+              nats:
+                service:
+                  merge:
+                    spec:
+                      type: LoadBalancer
+                config:
+                  cluster:
+                    enabled: true
+                  jetstream:
+                    enabled: true
+                    fileStore:
+                      enabled: true
+                      dir: /data
+                      pvc:
+                        enabled: true
+                        size: 10Gi
+                        storageClassName: "{{ metadata.annotations.default_sc }}"
+      destination:
+        namespace: monitoring
+        name: "{{ name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []

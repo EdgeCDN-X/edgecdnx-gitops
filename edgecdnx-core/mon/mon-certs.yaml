@@ -35,7 +35,6 @@ spec:
                       annotations:
                         target: "{{ $cluster.server }}"
                         targetName: "{{ $cluster.name }}"
-                        recreate: "again5"
                       labels:
                         edgecdnx.com/resource-type: monitoring-tls
                     usages:
