@@ -39,6 +39,7 @@ spec:
                         edgecdnx.com/resource-type: monitoring-tls
                     usages:
                       - client auth
+                    duration: 8760h0m0s
                     issuerRef:
                       name: mon-tls-issuer
                       kind: Issuer
