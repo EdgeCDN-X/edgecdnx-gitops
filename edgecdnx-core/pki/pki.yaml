@@ -44,7 +44,7 @@ spec:
                     isCA: true
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
                     secretName: edgecdnx-root-ca-analytics
-                    duration: 26280h # 3 years
+                    duration: 26280h0m0s # 3 years
                     privateKey:
                       algorithm: ECDSA
                       size: 256
@@ -69,7 +69,7 @@ spec:
                     isCA: true
                     commonName: "prometheus.{{ .metadata.annotations.basedomain }}"
                     secretName: edgecdnx-root-ca-monitoring
-                    duration: 26280h # 3 years
+                    duration: 26280h0m0s # 3 years
                     privateKey:
                       algorithm: ECDSA
                       size: 256
