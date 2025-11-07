@@ -46,9 +46,13 @@ spec:
                     secretName: edgecdnx-tls-analytics-node
                     merge:
                       verify: true
-                    verify: true
                 cluster:
                   enabled: true
+                  tls:
+                    enabled: true
+                    secretName: edgecdnx-tls-analytics-node
+                    merge:
+                      verify: true
                 jetstream:
                   enabled: true
                   fileStore:
