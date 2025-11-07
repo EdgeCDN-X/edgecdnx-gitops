@@ -45,6 +45,7 @@ spec:
                     enabled: true
                     secretName: edgecdnx-tls-analytics-node
                     merge:
+                      verify_cert_and_check_known_urls: true
                       verify: true
                     verify: true
                 cluster:
