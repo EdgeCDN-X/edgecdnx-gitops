@@ -34,9 +34,7 @@ spec:
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
                     dnsNames:
                       - analytics.{{ .metadata.annotations.basedomain }}
-                      - nats-analytics-0.nats-analytics-headless
-                      - nats-analytics-1.nats-analytics-headless
-                      - nats-analytics-2.nats-analytics-headless
+                      - *.nats-analytics-headless
                     usages:
                       - server auth
                       - client auth
