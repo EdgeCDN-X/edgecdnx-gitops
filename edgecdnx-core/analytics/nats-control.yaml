@@ -31,7 +31,7 @@ spec:
             valuesObject:
               tlsCA:
                 enabled: true
-                # secretName: edgecdnx-root-ca-analytics
+                secretName: edgecdnx-root-ca-analytics
               service:
                 merge:
                   metadata:
@@ -43,10 +43,9 @@ spec:
                 nats:
                   tls:
                     enabled: true
-                    # secretName: edgecdnx-tls-analytics-node
+                    secretName: edgecdnx-tls-analytics-node
                     merge:
                       verify: true
-                      # verify_cert_and_check_known_urls: true
                     verify: true
                 cluster:
                   enabled: true
