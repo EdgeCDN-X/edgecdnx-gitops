@@ -45,6 +45,7 @@ spec:
                       Tag raw.cache
                       Read_From_Head true
                       Mem_Buf_Limit 150MB
+
                 customParsers: |
                   [PARSER]
                     Name        json
@@ -54,6 +55,12 @@ spec:
                   [FILTER]
                       Name stdout
                       Match raw.cache
+
+                  [FILTER]
+                      Name       parser
+                      Match      raw.cache
+                      Key_Name   log
+                      Parser     json
 
                   [FILTER]
                       Name rewrite_tag
