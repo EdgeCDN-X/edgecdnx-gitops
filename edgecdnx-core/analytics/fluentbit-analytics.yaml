@@ -1,0 +1,62 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: fluentbit-analytics
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: caching
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/caching
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: fluentbit-analytics-{{ .name }}
+    spec:
+      project: default
+      sources:
+        - chart: fluent-bit
+          repoURL: https://fluent.github.io/helm-charts
+          targetRevision: 0.54.0
+          helm:
+            releaseName: fluentbit-analytics
+            valuesObject:
+              testFamework:
+                enabled: false
+              serviceMonitor:
+                enabled: true
+                selector:
+                  release: edgecdnx-monitoring
+              config:
+                inputs: |
+                  [INPUT]
+                      Name tail
+                      Path /var/log/pods/edgecdnx-cache_edgecdnx-cache-*/controller/*.log
+                      multiline.parser docker, cri
+                      Tag logs.{{ .name }}
+                      Mem_Buf_Limit 150MB
+                filters: |
+                  [FILTER]
+                      Name stdout
+                outputs: |
+                  [OUTPUT]
+                      name null
+                      match *
+      destination:
+        namespace: analytics
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
