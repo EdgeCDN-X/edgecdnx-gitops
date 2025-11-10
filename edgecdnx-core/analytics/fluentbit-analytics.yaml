@@ -37,13 +37,14 @@ spec:
                 selector:
                   release: edgecdnx-monitoring
               config:
+                # TOOD read from beginning
                 inputs: |
                   [INPUT]
                       Name tail
                       Path /var/log/pods/edgecdnx-cache_edgecdnx-cache-*/controller/*.log
                       multiline.parser docker, cri
                       Tag raw.cache
-                      Read_From_Head true
+                      Read_From_Head false
                       Mem_Buf_Limit 150MB
 
                 customParsers: |
