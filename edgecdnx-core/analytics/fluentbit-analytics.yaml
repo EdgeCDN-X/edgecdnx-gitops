@@ -30,6 +30,7 @@ spec:
           helm:
             releaseName: fluentbit-analytics
             valuesObject:
+              logLevel: debug
               testFamework:
                 enabled: false
               serviceMonitor:
