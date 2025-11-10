@@ -47,11 +47,11 @@ spec:
                 filters: |
                   [FILTER]
                       Name stdout
-                      match *
+                      Match *
                 outputs: |
                   [OUTPUT]
-                      name null
-                      match *
+                      name stdout
+                      Match *
       destination:
         namespace: analytics
         name: "{{ .name }}"
