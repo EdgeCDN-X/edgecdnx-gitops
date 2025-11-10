@@ -49,7 +49,18 @@ spec:
                   [PARSER]
                     Name        json
                     Format      json
+
                 filters: |
+                  [FILTER]
+                      Name                kubernetes
+                      Match               kube.*
+                      Kube_URL            https://kubernetes.default.svc:443
+                      Merge_Log           On
+                      Merge_Log_Key       log
+                      Keep_Log            Off
+                      K8S-Logging.Parser  On
+                      K8S-Logging.Exclude Off
+
                   [FILTER]
                       Name stdout
                       Match raw.cache
