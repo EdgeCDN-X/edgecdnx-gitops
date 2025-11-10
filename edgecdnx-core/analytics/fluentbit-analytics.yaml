@@ -42,16 +42,21 @@ spec:
                       Name tail
                       Path /var/log/pods/edgecdnx-cache_edgecdnx-cache-*/controller/*.log
                       multiline.parser docker, cri
-                      Tag logs.{{ .name }}
+                      Tag raw.cache
                       Mem_Buf_Limit 150MB
+                customParsers: |
+                  [PARSER]
+                    Name        json
+                    Format      json
                 filters: |
                   [FILTER]
-                      Name stdout
-                      Match *
+                      Name rewrite_tag
+                      Match raw.cache
+                      Rule $v ^(.*)$ logs.$1.{{ .name }} true
                 outputs: |
                   [OUTPUT]
                       name stdout
-                      Match *
+                      Match logs.*
       destination:
         namespace: analytics
         name: "{{ .name }}"
