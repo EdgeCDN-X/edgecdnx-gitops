@@ -50,6 +50,10 @@ spec:
                     Format      json
                 filters: |
                   [FILTER]
+                      Name stdout
+                      Match raw.cache
+
+                  [FILTER]
                       Name rewrite_tag
                       Match raw.cache
                       Rule $v ^(.*)$ logs.$1.{{ .name }} true
