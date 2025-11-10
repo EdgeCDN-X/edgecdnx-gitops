@@ -1,0 +1,72 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-ns-records
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - matrix:
+        generators:
+          - clusters:
+              flatList: true
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/routing
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+          - clusters:
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/control
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+                  - key: edgecdnx.com/create-ns-records
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+  template:
+    metadata:
+      name: ns-records
+    spec:
+      project: default
+      sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: ns-records
+            values: |
+              resources:
+              {{- range $cluster := .clusters }}
+                - apiVersion: externaldns.k8s.io/v1alpha1
+                  kind: DNSEndpoint
+                  metadata:
+                    name: ns-records-{{ $cluster.name }}
+                    namespace: edgecdnx-controller-system
+                  spec:
+                    endpoints:
+                      - dnsName: ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
+                        recordTTL: 300
+                        recordType: NS
+                        targets:
+                          - {{ index $cluster.metadata.annotations "edgecdnx.com/public-ip" }}
+              {{- end }}
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
+      destination:
+        namespace: edgecdnx-controller-system
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: false
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
