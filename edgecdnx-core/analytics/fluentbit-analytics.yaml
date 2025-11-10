@@ -59,11 +59,11 @@ spec:
                       Name stdout
                       Match raw.cache
 
-                  # [FILTER]
-                  #     Name       parser
-                  #     Match      raw.cache
-                  #     Key_Name   log
-                  #     Parser     cache-json
+                  [FILTER]
+                      Name       parser
+                      Match      raw.cache
+                      Key_Name   log
+                      Parser     cache-json
 
                   [FILTER]
                       Name rewrite_tag
