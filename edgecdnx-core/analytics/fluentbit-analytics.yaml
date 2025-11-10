@@ -58,7 +58,7 @@ spec:
                   [FILTER]
                       Name rewrite_tag
                       Match raw.cache
-                      Rule $log['v'] ^(.*)$ logs.$0.{{ .name }} false
+                      Rule $log['v'] ^([0-9]+)$ logs.$1.{{ .name }} false
                 outputs: |
                   [OUTPUT]
                       name stdout
