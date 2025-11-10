@@ -53,7 +53,7 @@ spec:
                 filters: |
                   [FILTER]
                       Name                kubernetes
-                      Match               kube.*
+                      Match               raw.cache
                       Kube_URL            https://kubernetes.default.svc:443
                       Merge_Log           On
                       Merge_Log_Key       log
