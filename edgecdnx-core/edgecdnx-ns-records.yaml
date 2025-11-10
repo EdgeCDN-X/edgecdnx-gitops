@@ -53,12 +53,12 @@ spec:
                   spec:
                     endpoints:
                       - dnsName: ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
-                        recordTTL: 300
+                        recordTTL: 43200
                         recordType: A
                         targets:
                           - {{ index $cluster.metadata.annotations "edgecdnx.com/public-ip" }}
                       - dnsName: {{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
-                        recordTTL: 300
+                        recordTTL: 43200
                         recordType: NS
                         targets:
                           - ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
