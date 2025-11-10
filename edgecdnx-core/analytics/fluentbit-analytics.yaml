@@ -66,14 +66,14 @@ spec:
                       Key_Name   log
                       Parser     cache-json
 
-                  [FILTER]
-                      Name rewrite_tag
-                      Match raw.cache
-                      Rule $log['v'] ^([0-9]+)$ logs.$1.{{ .name }} false
+                  # [FILTER]
+                  #     Name rewrite_tag
+                  #     Match raw.cache
+                  #     Rule $log['v'] ^([0-9]+)$ logs.$1.{{ .name }} false
                 outputs: |
                   [OUTPUT]
                       name stdout
-                      Match logs.*
+                      Match raw.cache
       destination:
         namespace: analytics
         name: "{{ .name }}"
