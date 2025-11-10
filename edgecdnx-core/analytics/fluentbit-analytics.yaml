@@ -47,6 +47,7 @@ spec:
                 filters: |
                   [FILTER]
                       Name stdout
+                      match *
                 outputs: |
                   [OUTPUT]
                       name null
