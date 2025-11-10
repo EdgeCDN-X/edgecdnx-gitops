@@ -49,8 +49,10 @@ spec:
 
                 customParsers: |
                   [PARSER]
-                    Name        json
+                    Name        cache-json
                     Format      json
+                    Time_Key    time
+                    Time_Format %Y-%m-%dT%H:%M:%S%z
 
                 filters: |
                   [FILTER]
@@ -61,7 +63,7 @@ spec:
                       Name       parser
                       Match      raw.cache
                       Key_Name   log
-                      Parser     json
+                      Parser     cache-json
 
                   [FILTER]
                       Name rewrite_tag
