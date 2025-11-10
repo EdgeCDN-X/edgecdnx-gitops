@@ -55,6 +55,7 @@ spec:
                       Name                kubernetes
                       Match               raw.cache
                       Kube_URL            https://kubernetes.default.svc:443
+                      kube_tag_prefix     raw.cache
                       Merge_Log           On
                       Merge_Log_Key       log
                       Keep_Log            Off
