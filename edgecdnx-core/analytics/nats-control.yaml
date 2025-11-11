@@ -55,7 +55,7 @@ spec:
                     type: LoadBalancer
         - chart: vector
           repoURL: https://helm.vector.dev
-          targetRevision: 0.48.0
+          targetRevision: 0.47.0
           helm:
             releaseName: vector-receiver
             valuesObject:
