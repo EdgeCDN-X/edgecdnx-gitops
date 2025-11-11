@@ -72,8 +72,10 @@ spec:
                       Rule $v ^([0-9]+)$ logs.$1.{{ .name }} false
                 outputs: |
                   [OUTPUT]
-                      name stdout
+                      name forward
                       Match logs.*
+                      Host analytics.demo.edgecdnx.com
+                      Port 24224
       destination:
         namespace: analytics
         name: "{{ .name }}"

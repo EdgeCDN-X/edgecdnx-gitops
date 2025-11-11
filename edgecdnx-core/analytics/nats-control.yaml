@@ -23,6 +23,36 @@ spec:
     spec:
       project: default
       sources:
+        - chart: fluent-bit
+          repoURL: https://fluent.github.io/helm-charts
+          targetRevision: 0.54.0
+          helm:
+            releaseName: fluentbit-analytics
+            valuesObject:
+              logLevel: debug
+              service:
+                port: 24224
+                type: LoadBalancer
+                annotations:
+                  external-dns.alpha.kubernetes.io/hostname: analytics.demo.edgecdnx.com
+              testFamework:
+                enabled: false
+              serviceMonitor:
+                enabled: true
+                selector:
+                  release: edgecdnx-monitoring
+              config:
+                inputs: |
+                  [INPUT]
+                      Name forward
+                      Listen              0.0.0.0
+                      Port                24224
+                outputs: |
+                  [OUTPUT]
+                      Name nats
+                      Match *
+                      NATS_Server nats://nats-analytics-headless:4222
+                      Subject fluentbit.logs
         - chart: nats
           repoURL: https://nats-io.github.io/k8s/helm/charts/
           targetRevision: 2.12.1
