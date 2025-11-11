@@ -72,6 +72,9 @@ spec:
                       Rule $v ^([0-9]+)$ logs.$1.{{ .name }} false
                 outputs: |
                   [OUTPUT]
+                      Name stdout
+                      match logs.*
+                  [OUTPUT]
                       name forward
                       Match logs.*
                       Host analytics.demo.edgecdnx.com

@@ -47,6 +47,10 @@ spec:
                       Name forward
                       Listen              0.0.0.0
                       Port                24224
+                filters: |
+                  [FILTER]
+                      Name stdout
+                      Match *
                 outputs: |
                   [OUTPUT]
                       Name nats
