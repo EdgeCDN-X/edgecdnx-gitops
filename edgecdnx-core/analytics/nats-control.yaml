@@ -38,6 +38,10 @@ spec:
                   external-dns.alpha.kubernetes.io/hostname: analytics.demo.edgecdnx.com
               testFramework:
                 enabled: false
+              extraPorts:
+                - name: forward
+                  containerPort: 24224
+                  protocol: TCP
               serviceMonitor:
                 enabled: true
                 selector:
@@ -53,6 +57,9 @@ spec:
                       Name stdout
                       Match *
                 outputs: |
+                  [OUTPUT]
+                      Name stdout
+                      Match *
                   [OUTPUT]
                       Name nats
                       Match *
