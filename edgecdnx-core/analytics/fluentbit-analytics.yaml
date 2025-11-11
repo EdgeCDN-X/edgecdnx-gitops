@@ -77,7 +77,8 @@ spec:
                   [OUTPUT]
                       Name forward
                       Match logs.*
-                      Host analytics.{{ .metadata.annotations.basedomain }}
+                      # Host analytics.{{ .metadata.annotations.basedomain }}
+                      Host 4b5e83d1-18a7-49e3-bd95-b1bb36d72661.lb.civo.com
                       Port 24224
       destination:
         namespace: analytics
