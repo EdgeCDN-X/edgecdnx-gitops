@@ -34,7 +34,6 @@ spec:
                 type: LoadBalancer
                 annotations:
                   external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
-              logLevel: debug
               readinessProbe:
                 httpGet:
                   path: /health

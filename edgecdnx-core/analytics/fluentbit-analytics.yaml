@@ -37,29 +37,31 @@ spec:
                 enabled: true
                 selector:
                   release: edgecdnx-monitoring
+              extraVolumes:
+                - name: fluentbit-cache-logs
+                  hostPath:
+                    path: /var/cache/fluentbit
+                    type: DirectoryOrCreate
+              extraVolumeMounts:
+                - name: fluentbit-cache-logs
+                  mountPath: /var/cache/fluentbit
               config:
-                # TOOD read from beginning
                 inputs: |
                   [INPUT]
                       Name tail
                       Path /var/log/pods/edgecdnx-cache_edgecdnx-cache-*/controller/*.log
                       multiline.parser docker, cri
+                      db /var/cache/fluentbit/flb_positions.db
                       Tag raw.cache
-                      Read_From_Head false
+                      Read_From_Head true
                       Mem_Buf_Limit 150MB
-
                 customParsers: |
                   [PARSER]
                     Name        cache-json
                     Format      json
                     Time_Key    time
                     Time_Format %Y-%m-%dT%H:%M:%S%z
-
                 filters: |
-                  [FILTER]
-                      Name stdout
-                      Match raw.cache
-
                   [FILTER]
                       Name       parser
                       Match      raw.cache
@@ -71,9 +73,6 @@ spec:
                       Match raw.cache
                       Rule $v ^([0-9]+)$ logs.$1.{{ .name }} false
                 outputs: |
-                  [OUTPUT]
-                      Name stdout
-                      match logs.*
                   [OUTPUT]
                       Name forward
                       Match logs.*
