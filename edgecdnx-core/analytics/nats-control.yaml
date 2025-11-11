@@ -62,6 +62,9 @@ spec:
               role: Stateless-Aggregator
               service:
                 type: LoadBalancer
+              env:
+                - name: VECTOR_LOG
+                  value: "debug"
               customConfig:
                 data_dir: /vector-data-dir
                 api:
