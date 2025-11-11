@@ -80,7 +80,7 @@ spec:
                     inputs: [fluent]
                     encoding:
                       codec: json
-                    subject: "{{`{{ tag }}`}}"
+                    subject: "{{`{{ .tag }}`}}"
                     url: nats://nats-analytics-headless:4222
                     jetstream:
                       enabled: true
