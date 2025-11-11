@@ -24,8 +24,10 @@ spec:
       project: default
       sources:
         - chart: resource-thrower
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
           helm:
-            releaseName: edgecdnx-mon-certs
+            releaseName: fluentbit-analytics-svc
             values: |
               resources:
                 apiVersion: v1
