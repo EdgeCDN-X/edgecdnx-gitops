@@ -30,29 +30,29 @@ spec:
             releaseName: nats-analytics
             valuesObject:
               tlsCA:
-                enabled: true
-                secretName: edgecdnx-root-ca-analytics
-              service:
-                merge:
-                  metadata:
-                    annotations:
-                      external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
-                  spec:
-                    type: LoadBalancer
+                enabled: false
+              #   secretName: edgecdnx-root-ca-analytics
+              # service:
+              #   merge:
+              #     metadata:
+              #       annotations:
+              #         external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
+              #     spec:
+              #       type: LoadBalancer
               config:
                 nats:
                   tls:
-                    enabled: true
-                    secretName: edgecdnx-tls-analytics-node
-                    merge:
-                      verify: true
+                    enabled: false
+                    # secretName: edgecdnx-tls-analytics-node
+                    # merge:
+                    #   verify: true
                 cluster:
                   enabled: true
                   tls:
-                    enabled: true
-                    secretName: edgecdnx-tls-analytics-node
-                    merge:
-                      verify: true
+                    enabled: false
+                    # secretName: edgecdnx-tls-analytics-node
+                    # merge:
+                    #   verify: true
                 jetstream:
                   enabled: true
                   fileStore:
