@@ -23,36 +23,6 @@ spec:
     spec:
       project: default
       sources:
-        - chart: resource-thrower
-          repoURL: https://edgecdn-x.github.io/helm-charts
-          targetRevision: 0.1.0
-          helm:
-            releaseName: fluentbit-analytics-svc
-            values: |
-              resources:
-                - apiVersion: v1
-                  kind: Service
-                  metadata:
-                    annotations:
-                      external-dns.alpha.kubernetes.io/hostname: analytics.{{ .metadata.annotations.basedomain }}
-                    name: fluentbit-analytics-fluent-bit-lb
-                  spec:
-                    allocateLoadBalancerNodePorts: true
-                    externalTrafficPolicy: Cluster
-                    internalTrafficPolicy: Cluster
-                    ipFamilies:
-                      - IPv4
-                    ipFamilyPolicy: SingleStack
-                    ports:
-                      - name: forward
-                        port: 24224
-                        protocol: TCP
-                        targetPort: forward
-                    selector:
-                      app.kubernetes.io/instance: fluentbit-analytics
-                      app.kubernetes.io/name: fluent-bit
-                    sessionAffinity: None
-                    type: LoadBalancer
         - chart: vector
           repoURL: https://helm.vector.dev
           targetRevision: 0.47.0
@@ -62,6 +32,8 @@ spec:
               role: Stateless-Aggregator
               service:
                 type: LoadBalancer
+                annotations:
+                  external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
               logLevel: debug
               readinessProbe:
                 httpGet:
@@ -89,44 +61,6 @@ spec:
                     url: nats://nats-analytics-headless:4222
                     jetstream:
                       enabled: true
-        - chart: fluent-bit
-          repoURL: https://fluent.github.io/helm-charts
-          targetRevision: 0.54.0
-          helm:
-            releaseName: fluentbit-analytics
-            valuesObject:
-              logLevel: debug
-              kind: Deployment
-              testFramework:
-                enabled: false
-              extraPorts:
-                - name: forward
-                  containerPort: 24224
-                  port: 24224
-                  protocol: TCP
-              serviceMonitor:
-                enabled: true
-                selector:
-                  release: edgecdnx-monitoring
-              config:
-                inputs: |
-                  [INPUT]
-                      Name forward
-                      Listen              0.0.0.0
-                      Port                24224
-                filters: |
-                  [FILTER]
-                      Name stdout
-                      Match *
-                outputs: |
-                  [OUTPUT]
-                      Name stdout
-                      Match *
-                  [OUTPUT]
-                      Name nats
-                      Match *
-                      Host nats-analytics-headless
-                      Port 4222
         - chart: nats
           repoURL: https://nats-io.github.io/k8s/helm/charts/
           targetRevision: 2.12.1
@@ -135,28 +69,14 @@ spec:
             valuesObject:
               tlsCA:
                 enabled: false
-              #   secretName: edgecdnx-root-ca-analytics
-              # service:
-              #   merge:
-              #     metadata:
-              #       annotations:
-              #         external-dns.alpha.kubernetes.io/hostname: analytics.{{ metadata.annotations.basedomain }}
-              #     spec:
-              #       type: LoadBalancer
               config:
                 nats:
                   tls:
                     enabled: false
-                    # secretName: edgecdnx-tls-analytics-node
-                    # merge:
-                    #   verify: true
                 cluster:
                   enabled: true
                   tls:
                     enabled: false
-                    # secretName: edgecdnx-tls-analytics-node
-                    # merge:
-                    #   verify: true
                 jetstream:
                   enabled: true
                   fileStore:
