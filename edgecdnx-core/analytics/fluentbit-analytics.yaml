@@ -31,7 +31,7 @@ spec:
             releaseName: fluentbit-analytics
             valuesObject:
               logLevel: debug
-              testFamework:
+              testFramework:
                 enabled: false
               serviceMonitor:
                 enabled: true
@@ -75,7 +75,7 @@ spec:
                       Name stdout
                       match logs.*
                   [OUTPUT]
-                      name forward
+                      Name forward
                       Match logs.*
                       Host analytics.demo.edgecdnx.com
                       Port 24224

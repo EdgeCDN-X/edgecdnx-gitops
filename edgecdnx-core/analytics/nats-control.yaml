@@ -30,12 +30,13 @@ spec:
             releaseName: fluentbit-analytics
             valuesObject:
               logLevel: debug
+              kind: Deployment
               service:
                 port: 24224
                 type: LoadBalancer
                 annotations:
                   external-dns.alpha.kubernetes.io/hostname: analytics.demo.edgecdnx.com
-              testFamework:
+              testFramework:
                 enabled: false
               serviceMonitor:
                 enabled: true
