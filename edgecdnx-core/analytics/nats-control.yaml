@@ -72,7 +72,7 @@ spec:
                 api:
                   enabled: true
                   graphql: false
-                  address: 127.0.0.1:8686
+                  address: 0.0.0.0:8686
                   playground: false
                 sources:
                   fluent:
