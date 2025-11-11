@@ -51,8 +51,8 @@ spec:
                   [OUTPUT]
                       Name nats
                       Match *
-                      NATS_Server nats://nats-analytics-headless:4222
-                      Subject fluentbit.logs
+                      Host nats-analytics-headless
+                      Port 4222
         - chart: nats
           repoURL: https://nats-io.github.io/k8s/helm/charts/
           targetRevision: 2.12.1
