@@ -77,7 +77,7 @@ spec:
                   [OUTPUT]
                       Name forward
                       Match logs.*
-                      Host analytics.demo.edgecdnx.com
+                      Host analytics.{{ .metadata.annotations.basedomain }}
                       Port 24224
       destination:
         namespace: analytics

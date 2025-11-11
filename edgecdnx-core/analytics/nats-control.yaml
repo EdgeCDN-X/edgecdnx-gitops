@@ -23,6 +23,35 @@ spec:
     spec:
       project: default
       sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: edgecdnx-mon-certs
+            values: |
+              resources:
+                apiVersion: v1
+                kind: Service
+                metadata:
+                  annotations:
+                    external-dns.alpha.kubernetes.io/hostname: analytics.{{ .metadata.annotations.basedomain }}
+                  name: fluentbit-analytics-fluent-bit-lb
+                  namespace: analytics
+                spec:
+                  allocateLoadBalancerNodePorts: true
+                  externalTrafficPolicy: Cluster
+                  internalTrafficPolicy: Cluster
+                  ipFamilies:
+                    - IPv4
+                  ipFamilyPolicy: SingleStack
+                  ports:
+                    - name: forward
+                      port: 24224
+                      protocol: TCP
+                      targetPort: forward
+                  selector:
+                    app.kubernetes.io/instance: fluentbit-analytics
+                    app.kubernetes.io/name: fluent-bit
+                  sessionAffinity: None
+                  type: LoadBalancer
         - chart: fluent-bit
           repoURL: https://fluent.github.io/helm-charts
           targetRevision: 0.54.0
