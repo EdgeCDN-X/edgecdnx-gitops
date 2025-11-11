@@ -53,6 +53,32 @@ spec:
                       app.kubernetes.io/name: fluent-bit
                     sessionAffinity: None
                     type: LoadBalancer
+        - chart: vector
+          repoURL: https://helm.vector.dev
+          targetRevision: 0.48.0
+          helm:
+            releaseName: vector-receiver
+            valuesObject:
+              role: Stateless-Aggregator
+              service:
+                type: LoadBalancer
+              customConfig:
+                data_dir: /vector-data-dir
+                api:
+                  enabled: true
+                  address: 127.0.0.1:8686
+                  playground: false
+                sources:
+                  fluent:
+                    type: fluent
+                    address: 0.0.0.0:24224
+                    mode: tcp
+                sinks:
+                  stdout:
+                    type: console
+                    inputs: [fluent]
+                    encoding:
+                      codec: json
         - chart: fluent-bit
           repoURL: https://fluent.github.io/helm-charts
           targetRevision: 0.54.0
