@@ -31,7 +31,7 @@ spec:
             valuesObject: 
               type: timescaledb
               version:
-                timescaledb: 2.22
+                timescaledb: "2.22"
               cluster:
                 instances: 2
                 storage:
