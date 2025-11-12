@@ -84,7 +84,7 @@ spec:
                       Host analytics.{{ .metadata.annotations.basedomain }}
                       Port 24224
                       tls On
-                      tls.verity On
+                      tls.verify On
                       tls.ca_file /fluentbit/tls/ca.crt
                       tls.crt_file /fluentbit/tls/tls.crt
                       tls.key_file /fluentbit/tls/tls.key
