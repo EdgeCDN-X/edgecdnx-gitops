@@ -1,0 +1,48 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: timescaledb
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: timescaledb
+    spec:
+      project: default
+      sources:
+        - chart: cluster
+          repoURL: https://cloudnative-pg.io/charts/
+          targetRevision: 0.3.1
+          helm:
+            releaseName: timescaledb
+            valuesObject: 
+              type: timescaledb
+              version:
+                timescaledb: 2.22
+              cluster:
+                instances: 2
+                storage:
+                  size: 8Gi
+                  storageClass: "{{ metadata.annotations.default_sc }}"
+      destination:
+        namespace: analytics
+        name: "{{ name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
