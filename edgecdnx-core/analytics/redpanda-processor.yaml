@@ -36,14 +36,24 @@ spec:
                       - nats://nats-analytics-headless:4222
                     queue: preprocessor
                     subject: "logs.1.>"
-                # buffer:
-                #   system_window:
-                #     timestamp_mapping: this.iso_time
-                #     size: 5m
-                # pipeline:
-                #   processors:
-                #     - mapping: |
-                #         root.message = this.message.uppercase() 
+                buffer:
+                  system_window:
+                    timestamp_mapping: this.timestamp
+                    size: 1m
+                pipeline:
+                  processors:
+                    - group_by_value:
+                        value: ${! json("vhost") }
+                    - mapping: |
+                        let is_first_message = batch_index() == 0
+                        root.vhost = this.vhost
+                        root.created_at = @window_end_timestamp
+                        root.total_bytes = if $is_first_message {
+                          json("bytes_sent").from_all().sum()
+                        }
+                        root = if ! $is_first_message {
+                          deleted()
+                        }
                 output:
                   stdout: {} 
                 
