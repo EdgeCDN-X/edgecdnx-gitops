@@ -1,0 +1,58 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: analytics-preprocessor
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: analytics-preprocessor
+    spec:
+      project: default
+      sources:
+        - chart: connect
+          repoURL: https://charts.redpanda.com
+          targetRevision: 3.1.0
+          helm:
+            releaseName: analytics-preprocessor-v1
+            valuesObject:
+              config:
+                input:
+                  nats:
+                    urls:
+                      - nats://nats-analytics-headless:4222
+                    queue: preprocessor
+                    subject: "logs.1.>"
+                # buffer:
+                #   system_window:
+                #     timestamp_mapping: this.iso_time
+                #     size: 5m
+                # pipeline:
+                #   processors:
+                #     - mapping: |
+                #         root.message = this.message.uppercase() 
+                output:
+                  stdout: {} 
+                
+      destination:
+        namespace: analytics
+        name: "{{ name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
