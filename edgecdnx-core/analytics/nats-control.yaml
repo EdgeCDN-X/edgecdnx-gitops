@@ -30,6 +30,8 @@ spec:
             releaseName: vector-receiver
             valuesObject:
               role: Stateless-Aggregator
+              serviceHeadless:
+                enabled: false
               service:
                 type: LoadBalancer
                 annotations:
