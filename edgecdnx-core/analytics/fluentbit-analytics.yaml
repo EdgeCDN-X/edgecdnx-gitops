@@ -37,6 +37,9 @@ spec:
                 selector:
                   release: edgecdnx-monitoring
               extraVolumes:
+                - name: fluentbit-tls
+                  secret:
+                    secretName: edgecdnx-tls-analytics-{{ .name }}-client
                 - name: fluentbit-cache-logs
                   hostPath:
                     path: /var/cache/fluentbit
@@ -44,6 +47,9 @@ spec:
               extraVolumeMounts:
                 - name: fluentbit-cache-logs
                   mountPath: /var/cache/fluentbit
+                - name: fluentbit-tls
+                  mountPath: /fluentbit/tls
+                  readOnly: true
               config:
                 inputs: |
                   [INPUT]

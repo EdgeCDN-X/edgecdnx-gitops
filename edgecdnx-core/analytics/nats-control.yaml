@@ -38,6 +38,14 @@ spec:
                 httpGet:
                   path: /health
                   port: api
+              extraVolumes:
+                - name: fluent-tls
+                  secret:
+                    secretName: edgecdnx-tls-analytics-node
+              extraVolumeMounts: 
+                - name: fluent-tls
+                  mountPath: /vector/fluent/tls
+                  readOnly: true
               customConfig:
                 data_dir: /vector-data-dir
                 api:
@@ -50,6 +58,13 @@ spec:
                     type: fluent
                     address: 0.0.0.0:24224
                     mode: tcp
+                    tls:
+                      enabled: true
+                      ca_file: /vector/fluent/tls/ca.crt
+                      crt_file: /vector/fluent/tls/tls.crt
+                      key_file: /vector/fluent/tls/tls.key
+                      verify_certificate: true
+                      verify_hostname: true
                 sinks:
                   nats:
                     type: nats
