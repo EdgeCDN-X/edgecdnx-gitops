@@ -74,9 +74,15 @@ spec:
                       Parser     cache-json
 
                   [FILTER]
+                      Name record_modifier
+                      Match raw.cache
+                      Record location {{ .name }}
+
+                  [FILTER]
                       Name rewrite_tag
                       Match raw.cache
                       Rule $v ^([0-9]+)$ logs.$1.{{ .name }} false
+
                 outputs: |
                   [OUTPUT]
                       Name forward
