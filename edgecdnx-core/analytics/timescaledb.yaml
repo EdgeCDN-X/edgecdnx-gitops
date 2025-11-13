@@ -89,6 +89,8 @@ spec:
                             containers:
                               - name: liquibase
                                 image: liquibase/liquibase:4
+                                args:
+                                  - update
                                 env:
                                   - name: LB_URL
                                     valueFrom:
