@@ -54,13 +54,13 @@ spec:
                           xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                               http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
                           <changeSet id="001" author="dev">
-                              <sqlFile path="changes/001_create_analytics_table"/>
+                              <sqlFile path="001_create_analytics_table"/>
                           </changeSet>
                           <changeSet id="002" author="dev">
-                              <sqlFile path="changes/002_create_hypertable.sql"/>
+                              <sqlFile path="002_create_hypertable.sql"/>
                           </changeSet>
                       </databaseChangeLog>
-                    "changes/001_create_analytics_table.sql": |
+                    "001_create_analytics_table.sql": |
                       CREATE TABLE IF NOT EXISTS public.analytics (
                         created_at TIMESTAMPTZ NOT NULL,
                         vhost TEXT NOT NULL,
@@ -71,7 +71,7 @@ spec:
                         upstream_response_time DOUBLE PRECISION NOT NULL,
                         request_count BIGINT NOT NULL,
                       );
-                    "changes/002_create_hypertable.sql": |
+                    "002_create_hypertable.sql": |
                       SELECT create_hypertable('public.analytics', 'created_at', if_not_exists => TRUE);
                 - apiVersion: batch/v1
                   kind: CronJob
