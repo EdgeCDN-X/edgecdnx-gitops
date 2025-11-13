@@ -89,10 +89,9 @@ spec:
                             containers:
                               - name: liquibase
                                 image: liquibase/liquibase:4
+                                command: ["/bin/sh", "-c"]
                                 args:
-                                  - update
-                                  - --changelog-file=/changelog/changelog-master.xml
-                                  - --url=${LB_URL}
+                                  - liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
                                 env:
                                   - name: LB_URL
                                     valueFrom:
