@@ -69,7 +69,7 @@ spec:
                         request_time DOUBLE PRECISION NOT NULL,
                         upstream_bytes BIGINT NOT NULL,
                         upstream_response_time DOUBLE PRECISION NOT NULL,
-                        request_count BIGINT NOT NULL,
+                        request_count BIGINT NOT NULL
                       );
                     "002_create_hypertable.sql": |
                       SELECT create_hypertable('public.analytics', 'created_at', if_not_exists => TRUE);
