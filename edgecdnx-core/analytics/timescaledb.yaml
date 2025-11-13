@@ -91,7 +91,7 @@ spec:
                                 image: liquibase/liquibase:4
                                 command: ["/bin/sh", "-c"]
                                 args:
-                                  - liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
+                                  - cp -r /source/changelog/.* /liquibase/changelog && liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
                                 env:
                                   - name: LB_URL
                                     valueFrom:
@@ -100,11 +100,15 @@ spec:
                                         key: fqdn-jdbc-uri
                                 volumeMounts:
                                   - name: changelog
+                                    mountPath: /source/changelog
+                                  - name: sync
                                     mountPath: /liquibase/changelog
                             volumes:
                               - name: changelog
                                 configMap:
                                   name: liquibase-changelog
+                              - name: sync
+                                emptyDir: {}
                             restartPolicy: OnFailure
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
