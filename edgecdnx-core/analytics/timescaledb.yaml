@@ -60,7 +60,7 @@ spec:
                               <sqlFile path="changes/002_create_hypertable.sql"/>
                           </changeSet>
                       </databaseChangeLog>
-                    changes/001_create_analytics_table.sql: |
+                    "changes/001_create_analytics_table.sql": |
                       CREATE TABLE IF NOT EXISTS public.analytics (
                         created_at TIMESTAMPTZ NOT NULL,
                         vhost TEXT NOT NULL,
@@ -71,7 +71,7 @@ spec:
                         upstream_response_time DOUBLE PRECISION NOT NULL,
                         request_count BIGINT NOT NULL,
                       );
-                    changes/002_create_hypertable.sql: |
+                    "changes/002_create_hypertable.sql": |
                       SELECT create_hypertable('public.analytics', 'created_at', if_not_exists => TRUE);
                 - apiVersion: batch/v1
                   kind: CronJob
