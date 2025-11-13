@@ -91,7 +91,7 @@ spec:
                                 image: liquibase/liquibase:4
                                 command: ["/bin/sh", "-c"]
                                 args:
-                                  - cp /changelog/* liquibase/changelog && liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
+                                  - cp /changelog/* /liquibase/changelog && liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
                                 env:
                                   - name: LB_URL
                                     valueFrom:
