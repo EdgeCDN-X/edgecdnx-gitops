@@ -29,6 +29,12 @@ spec:
           helm:
             releaseName: analytics-preprocessor-v1
             valuesObject:
+              env:
+                - name: ANALYTICS_DB_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: timescaledb-cluster-app
+                      key: fqdn-uri
               config:
                 input:
                   nats:
@@ -68,7 +74,20 @@ spec:
                           deleted()
                         }
                 output:
-                  stdout: {} 
+                  sql_insert:
+                    driver: postgres
+                    dsn: "${ANALYTICS_DB_URL}"
+                    table: "analytics"
+                    columns:
+                      - bytes_sent
+                      - created_at
+                      - location
+                      - request_count
+                      - request_time
+                      - upstream_bytes
+                      - upstream_response_time
+                      - vhost
+                    args_mapping: root = [ this.bytes_sent, this.created_at, this.location, this.request_count, this.request_time, this.upstream_bytes, this.upstream_response_time, this.vhost ]
       destination:
         namespace: analytics
         name: "{{ name }}"
