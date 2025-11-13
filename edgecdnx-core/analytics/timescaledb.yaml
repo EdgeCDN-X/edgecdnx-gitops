@@ -77,7 +77,6 @@ spec:
                   kind: CronJob
                   metadata:
                     name: liquibase-migration
-                    namespace: default
                   spec:
                     schedule: "0 * * * *"  # every hour at minute 0
                     concurrencyPolicy: "Forbid"  # prevent overlapping runs
