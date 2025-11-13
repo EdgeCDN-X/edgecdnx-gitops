@@ -91,14 +91,13 @@ spec:
                                 image: liquibase/liquibase:4
                                 args:
                                   - update
+                                  - --changelog-file=/changelog/changelog-master.xml
                                 env:
                                   - name: LB_URL
                                     valueFrom:
                                       secretKeyRef:
                                         name: timescaledb-cluster-app
                                         key: fqdn-jdbc-uri
-                                  - name: LB_CHANGELOG_FILE
-                                    value: "/changelog/changelog-master.xml"
                                 volumeMounts:
                                   - name: changelog
                                     mountPath: /changelog
