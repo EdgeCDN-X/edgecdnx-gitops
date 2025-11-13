@@ -92,6 +92,7 @@ spec:
                                 args:
                                   - update
                                   - --changelog-file=/changelog/changelog-master.xml
+                                  - --url=${LB_URL}
                                 env:
                                   - name: LB_URL
                                     valueFrom:
