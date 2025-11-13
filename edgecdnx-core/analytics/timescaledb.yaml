@@ -91,7 +91,7 @@ spec:
                                 image: liquibase/liquibase:4
                                 command: ["/bin/sh", "-c"]
                                 args:
-                                  - cp -r /src/.* /liquibase/changelog && liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
+                                  - cp /changelog/* liquibase/changelog && liquibase update --changelog-file=/changelog/changelog-master.xml --url=$LB_URL
                                 env:
                                   - name: LB_URL
                                     valueFrom:
@@ -99,10 +99,10 @@ spec:
                                         name: timescaledb-cluster-app
                                         key: fqdn-jdbc-uri
                                 volumeMounts:
-                                  - name: changelog
-                                    mountPath: /src
                                   - name: sync
                                     mountPath: /liquibase/changelog
+                                  - name: changelog
+                                    mountPath: /changelog
                             volumes:
                               - name: changelog
                                 configMap:
