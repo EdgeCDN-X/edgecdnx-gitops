@@ -51,12 +51,20 @@ spec:
                         root.total_bytes = if $is_first_message {
                           json("bytes_sent").from_all().sum()
                         }
+                        root.request_time = if $is_first_message {
+                          json("request_time").from_all().sum()
+                        }
+                        root.upstream_bytes = if $is_first_message {
+                          json("upstream_bytes").from_all().filter(val -> val != "-").map_each(val -> val.split(",")).flatten().map_each(val -> val.trim().int64().catch(0)).sum()
+                        }
+                        root.upstream_response_time = if $is_first_message {
+                          json("upstream_response_time").from_all().filter(val -> val != "-").map_each(val -> val.split(",")).flatten().map_each(val -> val.trim().float64().catch(0.0)).sum()
+                        }
                         root = if ! $is_first_message {
                           deleted()
                         }
                 output:
                   stdout: {} 
-                
       destination:
         namespace: analytics
         name: "{{ name }}"

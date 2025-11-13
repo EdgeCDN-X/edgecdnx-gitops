@@ -37,6 +37,77 @@ spec:
                 storage:
                   size: 8Gi
                   storageClass: "{{ metadata.annotations.default_sc }}"
+        - chart: resource-thrower
+          helm:
+            releaseName: timescaledb-liquibase
+            valuesObject:
+              resources:
+                - apiVersion: v1
+                  kind: ConfigMap
+                  metadata:
+                    name: liquibase-changelog
+                  data:
+                    changelog-master.xml: |
+                      <databaseChangeLog
+                          xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                              http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+                          <changeSet id="001" author="dev">
+                              <sqlFile path="changes/001_create_analytics_table"/>
+                          </changeSet>
+                          <changeSet id="002" author="dev">
+                              <sqlFile path="changes/002_create_hypertable.sql"/>
+                          </changeSet>
+                      </databaseChangeLog>
+                    changes/001_create_analytics_table.sql: |
+                      CREATE TABLE IF NOT EXISTS public.analytics (
+                        created_at TIMESTAMPTZ NOT NULL,
+                        vhost TEXT NOT NULL,
+                        location TEXT NOT NULL,
+                        bytes_sent BIGINT NOT NULL,
+                        request_time DOUBLE PRECISION NOT NULL,
+                        upstream_bytes BIGINT NOT NULL,
+                        upstream_response_time DOUBLE PRECISION NOT NULL,
+                        request_count BIGINT NOT NULL,
+                      );
+                    changes/002_create_hypertable.sql: |
+                      SELECT create_hypertable('public.analytics', 'created_at', if_not_exists => TRUE);
+                - apiVersion: batch/v1
+                  kind: CronJob
+                  metadata:
+                    name: liquibase-migration
+                    namespace: default
+                  spec:
+                    schedule: "0 * * * *"  # every hour at minute 0
+                    concurrencyPolicy: "Forbid"  # prevent overlapping runs
+                    successfulJobsHistoryLimit: 3
+                    failedJobsHistoryLimit: 1
+                    jobTemplate:
+                      spec:
+                        template:
+                          spec:
+                            containers:
+                              - name: liquibase
+                                image: liquibase/liquibase:5.0
+                                env:
+                                  - name: LB_URL
+                                    valueFrom:
+                                      secretKeyRef:
+                                        name: timescaledb-cluster-app
+                                        key: fqdn-jdbc-uri
+                                  - name: LB_CHANGELOG_FILE
+                                    value: "/liquibase/changelog-master.xml"
+                                volumeMounts:
+                                  - name: changelog
+                                    mountPath: /liquibase
+                            volumes:
+                              - name: changelog
+                                configMap:
+                                  name: liquibase-changelog
+                            restartPolicy: OnFailure
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
       destination:
         namespace: analytics
         name: "{{ name }}"
