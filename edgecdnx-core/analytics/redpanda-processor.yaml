@@ -49,7 +49,7 @@ spec:
                         root.vhost = this.vhost
                         root.location = this.location
                         root.created_at = @window_end_timestamp
-                        root.total_bytes = if $is_first_message {
+                        root.bytes_sent = if $is_first_message {
                           json("bytes_sent").from_all().sum()
                         }
                         root.request_time = if $is_first_message {
@@ -60,6 +60,9 @@ spec:
                         }
                         root.upstream_response_time = if $is_first_message {
                           json("upstream_response_time").from_all().filter(val -> val != "-").map_each(val -> val.split(",")).flatten().map_each(val -> val.trim().float64().catch(0.0)).sum()
+                        }
+                        root.request_count = if $is_first_message {
+                          json("request_time").from_all().length()
                         }
                         root = if ! $is_first_message {
                           deleted()
