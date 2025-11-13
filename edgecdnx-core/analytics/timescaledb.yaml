@@ -100,7 +100,7 @@ spec:
                                         key: fqdn-jdbc-uri
                                 volumeMounts:
                                   - name: changelog
-                                    mountPath: /changelog
+                                    mountPath: /liquibase/changelog
                             volumes:
                               - name: changelog
                                 configMap:
