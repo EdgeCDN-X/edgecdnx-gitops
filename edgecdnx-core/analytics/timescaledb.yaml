@@ -96,10 +96,10 @@ spec:
                                         name: timescaledb-cluster-app
                                         key: fqdn-jdbc-uri
                                   - name: LB_CHANGELOG_FILE
-                                    value: "/liquibase/changelog-master.xml"
+                                    value: "/changelog/changelog-master.xml"
                                 volumeMounts:
                                   - name: changelog
-                                    mountPath: /liquibase
+                                    mountPath: /changelog
                             volumes:
                               - name: changelog
                                 configMap:
