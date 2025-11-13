@@ -54,7 +54,7 @@ spec:
                           xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                               http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
                           <changeSet id="001" author="dev">
-                              <sqlFile path="001_create_analytics_table"/>
+                              <sqlFile path="001_create_analytics_table.sql"/>
                           </changeSet>
                           <changeSet id="002" author="dev">
                               <sqlFile path="002_create_hypertable.sql"/>
