@@ -50,7 +50,7 @@ spec:
                 pipeline:
                   processors:
                     - group_by_value:
-                        value: ${! json("vhost") }
+                        value: ${! json("vhost") }-${! json("location") }
                     - mapping: |
                         let is_first_message = batch_index() == 0
                         root.vhost = this.vhost
