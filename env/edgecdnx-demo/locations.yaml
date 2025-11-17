@@ -43,11 +43,11 @@ spec:
         - name: n1
           ipv4: 74.220.29.158
       cacheConfig:
-        "name": "ssd"
-        "path": "/var/cache/ssd"
-        "keys_zone": "100m"
-        "inactive": "10080m"
-        "max_size": "4096m"
+        name: "ssd"
+        path: "/var/cache/ssd"
+        keysZone: "100m"
+        inactive: "10080m"
+        maxSize: "4096m"
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
