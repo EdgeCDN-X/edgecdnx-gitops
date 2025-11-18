@@ -32,7 +32,7 @@ spec:
                   namespace: argocd
   template:
     metadata:
-      name: "cache-deployment-matricx-{{ .name }}-{{ .cacheConfig.name }}"
+      name: "cache-deployment-matricx-{{ .name }}-{{ .maxSize }}"
     spec:
       sources:
         - chart: resource-thrower
@@ -43,7 +43,7 @@ spec:
                 - apiVersion: v1
                   kind: ConfigMap
                   metadata:
-                    name: configmap-matrix-{{ .name }}-{{ .cacheConfig.name }}
+                    name: configmap-matrix-{{ .name }}-{{ .maxSize }}
                   data:
                     content: |
                       {{ toYaml . }}
