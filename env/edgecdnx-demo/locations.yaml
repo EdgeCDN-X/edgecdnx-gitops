@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   fallbackLocations:
-    - nyc1-c1
+    - nyc1-c1-deprecated
   geoLookup:
     attributes:
       geoip/continent/code:
@@ -24,7 +24,7 @@ spec:
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
-  name: fra1-c1-v2
+  name: fra1-c1
   namespace: argocd
 spec:
   fallbackLocations:
@@ -48,6 +48,16 @@ spec:
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
+    - name: tmpfs
+      nodes:
+        - name: c1
+          ipv4: 74.220.29.162
+      cacheConfig:
+        name: "tmpfs"
+        path: "/var/cache/tmpfs"
+        keysZone: "100m"
+        inactive: "10080m"
+        maxSize: "1024m"
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location

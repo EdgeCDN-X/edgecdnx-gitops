@@ -1,0 +1,45 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: locations-argocd-plugin
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          addonChart: locations-argocd-plugin
+          addonChartVersion: 0.1.0
+          addonChartRepository: "https://edgecdn-x.github.io/helm-charts/"
+          addonNamespace: argocd
+        selector:
+          matchExpressions:
+            - key: "argo_cd_enabled"
+              operator: In
+              values: ["true", "True", "TRUE", "yes", "Yes", "YES", "1"]
+  template:
+    metadata:
+      name: locations-argocd-plugin
+    spec:
+      project: default
+      sources:
+        - chart: "{{.values.addonChart}}"
+          repoURL: "{{.values.addonChartRepository}}"
+          targetRevision: "{{.values.addonChartVersion}}"
+          helm:
+            releaseName: locations-argocd-plugin
+            ignoreMissingValueFiles: true
+            values: |
+              image:
+                tag: latest
+      destination:
+        namespace: "{{.values.addonNamespace}}"
+        name: "{{.name}}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []

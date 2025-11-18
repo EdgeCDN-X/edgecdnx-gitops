@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cache-cluster-matrix-test
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - clusters:
+              values:
+                chart: ingress-nginx
+                chartVersion: 4.12.1
+                chartRepository: https://kubernetes.github.io/ingress-nginx
+                namespace: edgecdnx-cache
+                caches: '{{ index .metadata.annotations "edgecdnx.com/caches" }}'
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/caching
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+          - plugin:
+              configMapRef:
+                name: argocd-locations-plugin-generator
+              input:
+                parameters:
+                  name: "{{.name}}"
+                  # TODO do not hardcode this. Use variables from labels perhaps
+                  namespace: argocd
+  template:
+    metadata:
+      name: "cache-deployment-matricx-{{ .name }}-{{ .cacheConfig.name }}"
+    spec:
+      sources:
+        - chart: resource-thrower
+          helm:
+            releaseName: timescaledb-liquibase
+            valuesObject:
+              resources:
+                - apiVersion: v1
+                  kind: ConfigMap
+                  metadata:
+                    name: configmap-matrix-{{ .name }}-{{ .cacheConfig.name }}
+                  data:
+                    content: |
+                      {{ toYaml . }}
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.branch}}"
+      info:
+        - name: Link to the Application's branch
+          value: "{{values.branchLink}}"
