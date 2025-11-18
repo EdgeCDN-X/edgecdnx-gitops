@@ -11,7 +11,7 @@ spec:
     - clusters:
         values:
           addonChart: locations-argocd-plugin
-          addonChartVersion: 0.1.0
+          addonChartVersion: 0.1.1
           addonChartRepository: "https://edgecdn-x.github.io/helm-charts/"
           addonNamespace: argocd
         selector:
