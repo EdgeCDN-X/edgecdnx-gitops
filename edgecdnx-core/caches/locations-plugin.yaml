@@ -36,9 +36,10 @@ spec:
                 tag: latest
               env:
                 - name: TOKEN
-                  secretFrom:
-                    name: locations-plugin-token-secret
-                    key: plugin.locations.token
+                  valueFrom:
+                    secretKeyRef:
+                      name: locations-plugin-token-secret
+                      key: plugin.locations.token
                 - name: VERBOSE
                   value: "true"
       destination:
