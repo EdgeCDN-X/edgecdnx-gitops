@@ -2,11 +2,11 @@
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
-  name: fra1-c1
+  name: fra1-c1-deprecated
   namespace: argocd
 spec:
   fallbackLocations:
-    - nyc1-c1-deprecated
+    - nyc1-c1
   geoLookup:
     attributes:
       geoip/continent/code:
