@@ -34,6 +34,7 @@ spec:
             values: |
               image:
                 tag: latest
+                pullPolicy: Always
               env:
                 - name: TOKEN
                   valueFrom:
