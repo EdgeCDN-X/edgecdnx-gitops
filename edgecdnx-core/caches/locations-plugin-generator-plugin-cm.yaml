@@ -5,6 +5,6 @@ metadata:
   name: argocd-locations-plugin-generator
   namespace: argocd
 data:
-  token: "locations-plugin-token-secret:plugin.locations.token"
+  token: "$locations-plugin-token-secret:plugin.locations.token"
   baseUrl: "http://argocd-locations-plugin-generator"
   requestTimeout: "60"
