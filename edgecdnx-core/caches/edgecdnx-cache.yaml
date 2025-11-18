@@ -58,7 +58,4 @@ spec:
           - CreateNamespace=true
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{.branch}}"
-      info:
-        - name: Link to the Application's branch
-          value: "{{values.branchLink}}"
+        namespace: argocd
