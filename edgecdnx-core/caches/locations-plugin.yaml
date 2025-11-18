@@ -42,6 +42,8 @@ spec:
                       key: plugin.locations.token
                 - name: VERBOSE
                   value: "true"
+                - name: PORT
+                  value: "80"
       destination:
         namespace: "{{.values.addonNamespace}}"
         name: "{{.name}}"
