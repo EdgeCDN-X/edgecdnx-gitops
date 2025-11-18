@@ -11,7 +11,7 @@ spec:
     - clusters:
         values:
           addonChart: locations-argocd-plugin
-          addonChartVersion: 0.1.1
+          addonChartVersion: 0.1.2
           addonChartRepository: "https://edgecdn-x.github.io/helm-charts/"
           addonNamespace: argocd
         selector:
@@ -34,6 +34,13 @@ spec:
             values: |
               image:
                 tag: latest
+              env:
+                - name: TOKEN
+                  secretFrom:
+                    name: locations-plugin-token-secret
+                    key: plugin.locations.token
+                - name: VERBOSE
+                  value: "true"
       destination:
         namespace: "{{.values.addonNamespace}}"
         name: "{{.name}}"
