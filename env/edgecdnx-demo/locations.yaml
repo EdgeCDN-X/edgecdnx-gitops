@@ -2,28 +2,6 @@
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
-  name: fra1-c1-deprecated
-  namespace: argocd
-spec:
-  fallbackLocations:
-    - nyc1-c1
-  geoLookup:
-    attributes:
-      geoip/continent/code:
-        values:
-          - value: EU
-          - value: AF
-        weight: 1000
-    weight: 50
-  nodes:
-    - caches:
-        - ssd
-      ipv4: 74.220.29.158
-      name: n1
----
-apiVersion: infrastructure.edgecdnx.com/v1alpha1
-kind: Location
-metadata:
   name: fra1-c1
   namespace: argocd
 spec:
@@ -48,16 +26,6 @@ spec:
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
-    - name: tmpfs
-      nodes:
-        - name: c1
-          ipv4: 74.220.29.162
-      cacheConfig:
-        name: "tmpfs"
-        path: "/var/cache/tmpfs"
-        keysZone: "100m"
-        inactive: "10080m"
-        maxSize: "1024m"
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
@@ -78,8 +46,14 @@ spec:
           - value: AS
         weight: 1000
     weight: 50
-  nodes:
-    - caches:
-        - ssd
-      ipv4: 74.220.29.173
-      name: n1
+  nodeGroups:
+    - name: ssd
+      nodes:
+        - name: n1
+          ipv4: 74.220.29.173
+      cacheConfig:
+        name: "ssd"
+        path: "/var/cache/ssd"
+        keysZone: "100m"
+        inactive: "10080m"
+        maxSize: "4096m"
