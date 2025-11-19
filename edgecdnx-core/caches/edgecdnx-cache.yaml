@@ -55,6 +55,10 @@ spec:
                   default: false
                   name: {{ .cacheName }}
                   controllerValue: "edgecdnx.com/{{ .cacheName }}"
+                {{- with .nodeSelector }}
+                nodeSelector:
+                  {{- toYaml . | nindent 12 }}
+                {{- end }}
                 service:
                   enabled: true
                 hostPort:
