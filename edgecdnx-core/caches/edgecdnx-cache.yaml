@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: cache-cluster-matrix-test
+  name: edgecdnx-cache-v2
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -14,7 +14,6 @@ spec:
                 chartVersion: 4.12.1
                 chartRepository: https://kubernetes.github.io/ingress-nginx
                 namespace: edgecdnx-cache
-                caches: '{{ index .metadata.annotations "edgecdnx.com/caches" }}'
               selector:
                 matchExpressions:
                   - key: edgecdnx.com/caching
@@ -27,35 +26,72 @@ spec:
                 name: argocd-locations-plugin-generator
               input:
                 parameters:
-                  name: "{{.name}}"
-                  # TODO do not hardcode this. Use variables from labels perhaps
-                  namespace: argocd
+                  name: "{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}"
+                  namespace: "{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}"
   template:
     metadata:
-      name: "cache-deployment-matricx-{{ .name }}-{{ .cacheName }}"
+      name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}"
     spec:
-      sources:
-        - chart: resource-thrower
-          helm:
-            releaseName: timescaledb-liquibase
-            valuesObject:
-              resources:
-                - apiVersion: v1
-                  kind: ConfigMap
-                  metadata:
-                    name: configmap-matrix-{{ .name }}-{{ .cacheName }}
-                  data:
-                    content: |
-                      {{ toYaml . }}
-          repoURL: https://edgecdn-x.github.io/helm-charts
-          targetRevision: 0.1.0
       project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: edgecdnx-cache-{{ .cacheName }}
+            ignoreMissingValueFiles: true
+            values: |
+              controller:
+                metrics:
+                  enabled: true
+                  serviceMonitor:
+                    enabled: true
+                    additionalLabels:
+                      release: edgecdnx-monitoring
+                allowSnippetAnnotations: true
+                ingressClass: {{ .cacheName }}
+                ingressClassResource:
+                  enabled: true
+                  default: false
+                  name: {{ .cacheName }}
+                  controllerValue: "edgecdnx.com/{{ .cacheName }}"
+                service:
+                  enabled: true
+                hostPort:
+                  enabled: false
+                kind: DaemonSet
+                extraVolumes:
+                  - name: cache-{{ .cacheName }}
+                    hostPath:
+                      path: "{{ .path }}"
+                      type: DirectoryOrCreate
+                extraVolumeMounts:
+                - name: cache-{{ .cacheName }}
+                  mountPath: "{{ .path }}"
+                extraInitContainers:
+                  - name: init-cache-dirs
+                    image: busybox:1.34
+                    command: ["/bin/sh", "-c"]
+                    args:
+                      - "mkdir -p {{ .path }} && chmod 777 {{ .path }};"
+                    volumeMounts:
+                      - name: cache-{{ .cacheName }}
+                        mountPath: "{{ .path }}"
+                config:
+                  proxy-buffering: "on"
+                  annotations-risk-level: "Critical"
+                  http-snippet: |
+                    # Cache configuration for {{ .cacheName }}
+                    proxy_cache_path {{ .path }} levels=1:2 keys_zone={{ .cacheName }}:{{ .keysZone }} inactive={{ .inactive }} use_temp_path=off max_size={{ .maxSize }};
+                  log-format-upstream: |-
+                    {"time": "$time_iso8601", "v": "1", "remote_addr": "$proxy_protocol_addr", "request_id": "$req_id", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_length": $request_length, "method": "$request_method", "http_user_agent": "$http_user_agent", "upstream_bytes": "$upstream_response_length", "upstream_response_time": "$upstream_response_time" }
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
       syncPolicy:
         automated:
-          prune: true
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: argocd
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
