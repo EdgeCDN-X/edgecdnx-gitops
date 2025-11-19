@@ -26,8 +26,8 @@ spec:
                 name: argocd-locations-plugin-generator
               input:
                 parameters:
-                  name: "{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}"
-                  namespace: "{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}"
+                  name: "{{ index .metadata.annotations 'edgecdnx.com/cache-spec-resource' }}"
+                  namespace: "{{ index .metadata.annotations 'edgecdnx.com/cache-spec-namespace' }}"
   template:
     metadata:
       name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}"
