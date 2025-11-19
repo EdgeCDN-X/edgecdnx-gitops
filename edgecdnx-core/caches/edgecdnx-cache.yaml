@@ -57,7 +57,7 @@ spec:
                   controllerValue: "edgecdnx.com/{{ .cacheName }}"
                 {{- with .nodeSelector }}
                 nodeSelector:
-                  {{- toYaml . | nindent 12 }}
+                  {{- toYaml . | nindent 4 }}
                 {{- end }}
                 service:
                   enabled: true
