@@ -13,6 +13,16 @@ spec:
         values:
           - value: EU
           - value: AF
+          - value: AN
+            weight: -100
+          - value: NA
+            weight: -100
+          - value: OC
+            weight: -100
+          - value: SA
+            weight: -100
+          - value: AS
+            weight: -100
         weight: 1000
     weight: 50
   nodeGroups:
