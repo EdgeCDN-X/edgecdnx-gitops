@@ -7,7 +7,7 @@ metadata:
   labels:
     type: static
 spec:
-  cache: ssd
+  cache: hdd
   cacheKey:
     queryParams:
     - v
