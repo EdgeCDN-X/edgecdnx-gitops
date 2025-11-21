@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           chart: healthchecker
-          chartVersion: 0.1.4
+          chartVersion: 0.1.5
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-routing
         selector:
@@ -37,6 +37,7 @@ spec:
             valuesObject:
               image:
                 tag: latest
+              replicas: 1
               command:
                 - /healthchecker
                 - --leader-elect
