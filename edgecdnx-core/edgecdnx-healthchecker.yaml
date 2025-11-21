@@ -1,0 +1,52 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-healthchecker
+  namespace: argocd
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          chart: healthchecker
+          chartVersion: 0.1.2
+          chartRepository: https://edgecdn-x.github.io/helm-charts/
+          namespace: edgecdnx-routing
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/routing
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: healthchecker-{{ .name }}
+    spec:
+      project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: healthchecker
+            ignoreMissingValueFiles: true
+            valuesObject:
+              image:
+                tag: latest
+              command:
+                - /healthchecker
+                - --leader-elect
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
