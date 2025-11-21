@@ -37,7 +37,7 @@ spec:
             valuesObject:
               image:
                 tag: latest
-              replicas: 1
+              replicaCount: 1
               command:
                 - /healthchecker
                 - --leader-elect
