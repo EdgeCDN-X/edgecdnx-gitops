@@ -29,7 +29,7 @@ spec:
           chartVersion: 0.10.1
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
-          role: router
+          role: unknown
           consulEndpoint: http://edgecdnx-consul-consul-server.edgecdnx-routing.svc.cluster.local:8500
         selector:
           matchExpressions:
