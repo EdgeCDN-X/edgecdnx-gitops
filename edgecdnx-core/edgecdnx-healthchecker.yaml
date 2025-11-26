@@ -35,8 +35,6 @@ spec:
             releaseName: healthchecker
             ignoreMissingValueFiles: true
             valuesObject:
-              image:
-                tag: v0.1.0
               replicaCount: 2
               command:
                 - /healthchecker
