@@ -36,8 +36,8 @@ spec:
             ignoreMissingValueFiles: true
             valuesObject:
               image:
-                tag: latest
-              replicaCount: 0
+                tag: 0.1.0
+              replicaCount: 2
               command:
                 - /healthchecker
                 - --leader-elect

@@ -25,6 +25,8 @@ spec:
   template:
     metadata:
       name: edgecdnx-consul-{{ .name }}
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       sources:
