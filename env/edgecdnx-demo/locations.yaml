@@ -42,8 +42,6 @@ spec:
       nodes:
         - name: n2
           ipv4: 74.220.31.22
-        - name: n3
-          ipv4: 74.220.31.23
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-hdd1
       cacheConfig:
