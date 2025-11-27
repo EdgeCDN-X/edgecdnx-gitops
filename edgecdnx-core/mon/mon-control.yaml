@@ -76,7 +76,7 @@ spec:
                         - targetLabel: role
                           replacement: "{{ values.role }}"
                           action: replace
-                  retention: 60d
+                  retention: 3d
                   storageSpec:
                     volumeClaimTemplate:
                       spec:
