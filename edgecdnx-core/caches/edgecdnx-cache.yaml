@@ -84,6 +84,7 @@ spec:
                 config:
                   proxy-buffering: "on"
                   annotations-risk-level: "Critical"
+                  enable-modsecurity: "true"
                   http-snippet: |
                     # Cache configuration for {{ .cacheName }}
                     proxy_cache_path {{ .path }} levels=1:2 keys_zone={{ .cacheName }}:{{ .keysZone }} inactive={{ .inactive }} use_temp_path=off max_size={{ .maxSize }};
