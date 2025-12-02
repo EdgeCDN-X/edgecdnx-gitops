@@ -1,0 +1,43 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dashboards
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: dashboards
+    spec:
+      project: default
+      sources:
+        - chart: dashboards
+          repoURL: https://edgecdn-x.github.io/helm-charts/
+          targetRevision: 0.1.0
+          helm:
+            releaseName: dashboards
+            valuesObject:
+              labels:
+                grafana_dashboard: '1'
+                release: edgecdnx-monitoring
+      destination:
+        namespace: analytics
+        name: "{{ name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
