@@ -41,7 +41,7 @@ spec:
                   enabled: true
                   ingressClassName: nginx
                   annotations:
-                    cert-manager.io/issuer: cert-manager-http
+                    cert-manager.io/cluster-issuer: cert-manager-http
                   hosts:
                     - "grafana.{{ metadata.annotations.basedomain }}"
                   tls:
