@@ -77,11 +77,17 @@ spec:
                     url: nats://nats-analytics-headless:4222
                     jetstream:
                       enabled: true
+        - repoURL: '{{ index metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
         - chart: nats
           repoURL: https://nats-io.github.io/k8s/helm/charts/
           targetRevision: 2.12.1
           helm:
             releaseName: nats-analytics
+            ignoreMissingValueFiles: true
+            valuesFiles:
+              - $overrides/{{ index metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/nats-analytics.values.yaml
             valuesObject:
               tlsCA:
                 enabled: false
@@ -101,7 +107,7 @@ spec:
                     pvc:
                       enabled: true
                       size: 10Gi
-                      storageClassName: "{{ metadata.annotations.default_sc }}"
+#                      storageClassName: "{{ metadata.annotations.default_sc }}"
       destination:
         namespace: monitoring
         name: "{{ name }}"
