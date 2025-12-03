@@ -4,6 +4,7 @@ kind: ApplicationSet
 metadata:
   name: edgecdnx-monitoring
 spec:
+  goTemplate: true
   syncPolicy:
     preserveResourcesOnDeletion: false
   generators:
@@ -23,11 +24,17 @@ spec:
     spec:
       project: default
       sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
         - chart: "kube-prometheus-stack"
           repoURL: "https://prometheus-community.github.io/helm-charts"
           targetRevision: 79.0.1
           helm:
             releaseName: edgecdnx-monitoring
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/monitoring.values.yaml
             valuesObject:
               kubeApiServer:
                 enabled: false
@@ -60,10 +67,10 @@ spec:
                   annotations:
                     cert-manager.io/cluster-issuer: cert-manager-http
                   hosts:
-                    - "grafana.{{ metadata.annotations.basedomain }}"
+                    - "grafana.{{ .metadata.annotations.basedomain }}"
                   tls:
                     - hosts:
-                        - "grafana.{{ metadata.annotations.basedomain }}"
+                        - "grafana.{{ .metadata.annotations.basedomain }}"
                       secretName: grafana-cert-tls
                 sidecar:
                   dashboards:
@@ -85,10 +92,10 @@ spec:
                     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
                     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
                   hosts:
-                  - "prometheus.{{ metadata.annotations.basedomain }}"
+                  - "prometheus.{{ .metadata.annotations.basedomain }}"
                   tls:
                   - hosts:
-                    - "prometheus.{{ metadata.annotations.basedomain }}"
+                    - "prometheus.{{ .metadata.annotations.basedomain }}"
                     secretName: prometheus-cert-tls
                 prometheusSpec:
                   enableRemoteWriteReceiver: true
@@ -99,22 +106,15 @@ spec:
                       name: local-cluster
                       relabelings:
                         - targetLabel: cluster
-                          replacement: "{{ name }}"
+                          replacement: "{{ .name }}"
                           action: replace
                         - targetLabel: role
-                          replacement: "{{ values.role }}"
+                          replacement: "{{ .values.role }}"
                           action: replace
-                  retention: 3d
-                  storageSpec:
-                    volumeClaimTemplate:
-                      spec:
-                        storageClassName: "{{ metadata.annotations.default_sc }}"
-                        resources:
-                          requests:
-                            storage: 10Gi
+                  retention: 60d
       destination:
         namespace: monitoring
-        name: "{{ name }}"
+        name: "{{ .name }}"
       syncPolicy:
         automated: {}
         syncOptions:

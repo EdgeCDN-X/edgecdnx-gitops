@@ -1,0 +1,10 @@
+prometheus:
+  retention: 7d
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: civo-volume
