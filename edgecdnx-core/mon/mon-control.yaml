@@ -111,7 +111,6 @@ spec:
                         - targetLabel: role
                           replacement: "{{ .values.role }}"
                           action: replace
-                  retention: 60d
       destination:
         namespace: monitoring
         name: "{{ .name }}"
