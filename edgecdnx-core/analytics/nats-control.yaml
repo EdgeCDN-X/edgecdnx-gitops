@@ -4,6 +4,7 @@ kind: ApplicationSet
 metadata:
   name: analytics
 spec:
+  goTemplate: true
   syncPolicy:
     preserveResourcesOnDeletion: false
   generators:
@@ -77,8 +78,8 @@ spec:
                     url: nats://nats-analytics-headless:4222
                     jetstream:
                       enabled: true
-        - repoURL: '{{ index metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
-          targetRevision: '{{ index metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
           ref: overrides
         - chart: nats
           repoURL: https://nats-io.github.io/k8s/helm/charts/
@@ -87,7 +88,7 @@ spec:
             releaseName: nats-analytics
             ignoreMissingValueFiles: true
             valueFiles:
-              - $overrides/{{ index metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/nats-analytics.values.yaml
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/nats-analytics.values.yaml
             valuesObject:
               tlsCA:
                 enabled: false
@@ -110,7 +111,7 @@ spec:
 #                      storageClassName: "{{ metadata.annotations.default_sc }}"
       destination:
         namespace: monitoring
-        name: "{{ name }}"
+        name: "{{ .name }}"
       syncPolicy:
         automated: {}
         syncOptions:
