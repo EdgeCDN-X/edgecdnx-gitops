@@ -1,0 +1,5 @@
+config:
+  jetstream:
+    fileStore:
+      pvc:
+        storageClassName: civo-volume
