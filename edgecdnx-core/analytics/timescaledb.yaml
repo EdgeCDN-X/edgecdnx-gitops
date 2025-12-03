@@ -32,6 +32,7 @@ spec:
           targetRevision: 0.3.1
           helm:
             releaseName: timescaledb
+            ignoreMissingValueFiles: true
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/timescaledb.values.yaml
             valuesObject: 
