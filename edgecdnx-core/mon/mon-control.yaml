@@ -43,6 +43,7 @@ spec:
                       key: password
                 additionalDataSources:
                   - name: timescaledb
+                    uid: analytics-timescaledb
                     type: postgres
                     access: proxy
                     url: timescaledb-cluster-r:5432
