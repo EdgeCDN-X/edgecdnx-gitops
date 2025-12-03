@@ -39,7 +39,7 @@ spec:
                   kind: Certificate
                   metadata:
                     name: edgecdnx-ca-analytics
-                    namespace: analytics
+                    namespace: monitoring
                   spec:
                     isCA: true
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
@@ -56,7 +56,7 @@ spec:
                   kind: Issuer
                   metadata:
                     name: analytics-tls-issuer
-                    namespace: analytics
+                    namespace: monitoring
                   spec:
                     ca:
                       secretName: edgecdnx-root-ca-analytics
