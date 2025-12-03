@@ -45,7 +45,7 @@ spec:
                   - name: timescaledb
                     uid: analytics-timescaledb
                     type: postgres
-                    url: timescaledb-cluster-r:5432
+                    url: timescaledb-cluster-rw:5432
                     user: app
                     jsonData:
                       timescaledb: true
