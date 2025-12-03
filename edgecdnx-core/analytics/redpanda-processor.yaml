@@ -90,7 +90,7 @@ spec:
                       - vhost
                     args_mapping: root = [ this.bytes_sent, this.created_at, this.location, this.request_count, this.request_time, this.upstream_bytes, this.upstream_response_time, this.vhost ]
       destination:
-        namespace: analytics
+        namespace: monitoring
         name: "{{ name }}"
       syncPolicy:
         automated: {}

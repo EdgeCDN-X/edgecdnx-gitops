@@ -33,7 +33,7 @@ spec:
                 grafana_dashboard: '1'
                 release: edgecdnx-monitoring
       destination:
-        namespace: analytics
+        namespace: monitoring
         name: "{{ name }}"
       syncPolicy:
         automated: {}

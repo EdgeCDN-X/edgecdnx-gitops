@@ -95,7 +95,7 @@ spec:
                       tls.crt_file /fluentbit/tls/tls.crt
                       tls.key_file /fluentbit/tls/tls.key
       destination:
-        namespace: analytics
+        namespace: monitoring
         name: "{{ .name }}"
       syncPolicy:
         automated: {}

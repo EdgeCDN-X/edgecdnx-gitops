@@ -28,7 +28,6 @@ spec:
                   kind: Certificate
                   metadata:
                     name: edgecdnx-tls-analytics-node
-                    namespace: analytics
                   spec:
                     secretName: edgecdnx-tls-analytics-node
                     commonName: "analytics.{{ .metadata.annotations.basedomain }}"
@@ -50,7 +49,6 @@ spec:
                   kind: Certificate
                   metadata:
                     name: edgecdnx-tls-analytics-{{ $cluster.name }}-client
-                    namespace: analytics
                   spec:
                     secretName: edgecdnx-tls-analytics-{{ $cluster.name }}-client
                     commonName: analytics-{{ $cluster.name }}.{{ $cluster.metadata.annotations.basedomain }}

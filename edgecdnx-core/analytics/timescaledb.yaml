@@ -113,7 +113,7 @@ spec:
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
       destination:
-        namespace: analytics
+        namespace: monitoring
         name: "{{ name }}"
       syncPolicy:
         automated: {}
