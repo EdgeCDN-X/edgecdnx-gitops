@@ -86,7 +86,7 @@ spec:
           helm:
             releaseName: nats-analytics
             ignoreMissingValueFiles: true
-            valuesFiles:
+            valueFiles:
               - $overrides/{{ index metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/nats-analytics.values.yaml
             valuesObject:
               tlsCA:
