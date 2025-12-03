@@ -4,6 +4,7 @@ kind: ApplicationSet
 metadata:
   name: timescaledb
 spec:
+  goTemplate: true
   syncPolicy:
     preserveResourcesOnDeletion: false
   generators:
@@ -23,11 +24,16 @@ spec:
     spec:
       project: default
       sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
         - chart: cluster
           repoURL: https://cloudnative-pg.io/charts/
           targetRevision: 0.3.1
           helm:
             releaseName: timescaledb
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/timescaledb.values.yaml
             valuesObject: 
               type: timescaledb
               version:
@@ -36,7 +42,6 @@ spec:
                 instances: 2
                 storage:
                   size: 8Gi
-                  storageClass: "{{ metadata.annotations.default_sc }}"
         - chart: resource-thrower
           helm:
             releaseName: timescaledb-liquibase
@@ -114,7 +119,7 @@ spec:
           targetRevision: 0.1.0
       destination:
         namespace: monitoring
-        name: "{{ name }}"
+        name: "{{ .name }}"
       syncPolicy:
         automated: {}
         syncOptions:
