@@ -36,11 +36,16 @@ spec:
               alertmanager:
                 enabled: true
               grafana:
+                envValueFrom:
+                  ANALYTICS_DB_PASSWORD:
+                    secretKeyRef:
+                      name: timescaledb-cluster-app
+                      key: password
                 additionalDataSources:
                   - name: timescaledb
                     type: postgres
                     access: proxy
-                    url: timescaledb-cluster-r.analytics.svc.cluster.local:5432
+                    url: timescaledb-cluster-r:5432
                     database: app
                     user: app
                     jsonData:
