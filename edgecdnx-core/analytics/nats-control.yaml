@@ -30,6 +30,9 @@ spec:
           helm:
             releaseName: vector-receiver
             valuesObject:
+              env:
+                - name: VECTOR_LOG
+                  value: debug
               role: Stateless-Aggregator
               serviceHeadless:
                 enabled: false
