@@ -46,7 +46,7 @@ spec:
                     - unarchive:
                         format: json_array
                     - mapping: |
-                        root = this[1]
+                        root = this.index(1)
                 buffer:
                   system_window:
                     timestamp_mapping: this.time
