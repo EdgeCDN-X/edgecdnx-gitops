@@ -24,61 +24,101 @@ spec:
     spec:
       project: default
       sources:
-        - chart: vector
-          repoURL: https://helm.vector.dev
-          targetRevision: 0.47.0
+        - chart: fluent-bit
+          repoURL: https://fluent.github.io/helm-charts
+          targetRevision: 0.54.0
           helm:
-            releaseName: vector-receiver
+            releaseName: fluentbit-analytics
             valuesObject:
-              logLevel: debug
-              role: Stateless-Aggregator
-              serviceHeadless:
+              testFramework:
                 enabled: false
+              serviceMonitor:
+                enabled: true
+                selector:
+                  release: edgecdnx-monitoring
               service:
                 type: LoadBalancer
                 annotations:
                   external-dns.alpha.kubernetes.io/hostname: analytics.{{ .metadata.annotations.basedomain }}
-              readinessProbe:
-                httpGet:
-                  path: /health
-                  port: api
               extraVolumes:
-                - name: fluent-tls
+                - name: fluentbit-tls
                   secret:
                     secretName: edgecdnx-tls-analytics-node
-              extraVolumeMounts: 
-                - name: fluent-tls
-                  mountPath: /vector/fluent/tls
+              extraVolumeMounts:
+                - name: fluentbit-tls
+                  mountPath: /fluentbit/tls
                   readOnly: true
-              customConfig:
-                data_dir: /vector-data-dir
-                api:
-                  enabled: true
-                  graphql: false
-                  address: 0.0.0.0:8686
-                  playground: false
-                sources:
-                  fluent:
-                    type: fluent
-                    address: 0.0.0.0:24224
-                    mode: tcp
-                    tls:
-                      enabled: true
-                      ca_file: /vector/fluent/tls/ca.crt
-                      crt_file: /vector/fluent/tls/tls.crt
-                      key_file: /vector/fluent/tls/tls.key
-                      verify_certificate: true
-                      verify_hostname: true
-                sinks:
-                  nats:
-                    type: nats
-                    inputs: [fluent]
-                    encoding:
-                      codec: json
-                    subject: "{{`{{ .tag }}`}}"
-                    url: nats://nats-analytics-headless:4222
-                    jetstream:
-                      enabled: true
+              config:
+                inputs: |
+                  [INPUT]
+                      Name forward
+                      Listen 0.0.0.0:24224
+                      TLS On
+                      TLS.Verify On
+                      TLS.Ca_File /fluentbit/tls/ca.crt
+                      TLS.Crt_File /fluentbit/tls/tls.crt
+                      TLS.Key_File /fluentbit/tls/tls.key
+                outputs: |
+                  [OUTPUT]
+                      Name  nats
+                      Match *
+                      Host  nats-analytics-headless.monitoring.svc.cluster.local
+                      Port  4222
+        # - chart: vector
+        #   repoURL: https://helm.vector.dev
+        #   targetRevision: 0.47.0
+        #   helm:
+        #     releaseName: vector-receiver
+        #     valuesObject:
+        #       logLevel: debug
+        #       role: Stateless-Aggregator
+        #       serviceHeadless:
+        #         enabled: false
+        #       service:
+        #         type: LoadBalancer
+        #         annotations:
+        #           external-dns.alpha.kubernetes.io/hostname: analytics.{{ .metadata.annotations.basedomain }}
+        #       readinessProbe:
+        #         httpGet:
+        #           path: /health
+        #           port: api
+        #       extraVolumes:
+        #         - name: fluent-tls
+        #           secret:
+        #             secretName: edgecdnx-tls-analytics-node
+        #       extraVolumeMounts: 
+        #         - name: fluent-tls
+        #           mountPath: /vector/fluent/tls
+        #           readOnly: true
+        #       customConfig:
+        #         data_dir: /vector-data-dir
+        #         api:
+        #           enabled: true
+        #           graphql: false
+        #           address: 0.0.0.0:8686
+        #           playground: false
+        #         sources:
+        #           fluent:
+        #             type: fluent
+        #             address: 0.0.0.0:24224
+        #             mode: tcp
+        #             tls:
+        #               enabled: true
+        #               ca_file: /vector/fluent/tls/ca.crt
+        #               crt_file: /vector/fluent/tls/tls.crt
+        #               key_file: /vector/fluent/tls/tls.key
+        #               verify_certificate: true
+        #               verify_hostname: true
+        #         sinks:
+        #           nats:
+        #             type: nats
+        #             inputs: [fluent]
+        #             encoding:
+        #               codec: json
+        #             subject: "{{`{{ .tag }}`}}"
+        #             url: nats://nats-analytics-headless:4222
+        #             jetstream:
+        #               enabled: true
         - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
           targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
           ref: overrides
