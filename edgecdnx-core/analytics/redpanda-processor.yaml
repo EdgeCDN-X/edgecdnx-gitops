@@ -44,7 +44,7 @@ spec:
                     subject: "logs.1.>"
                 buffer:
                   system_window:
-                    # timestamp_mapping: this.timestamp
+                    timestamp_mapping: this.time
                     size: 5m
                     allowed_lateness: 1m
                 pipeline:
@@ -55,7 +55,7 @@ spec:
                         let is_first_message = batch_index() == 0
                         root.vhost = this.vhost
                         root.location = this.location
-                        root.created_at = meta("window_end_timestamp")
+                        root.created_at = metadata("window_end_timestamp")
                         root.bytes_sent = if $is_first_message {
                           json("bytes_sent").from_all().sum()
                         }
