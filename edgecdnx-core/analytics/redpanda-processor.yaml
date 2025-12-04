@@ -42,6 +42,11 @@ spec:
                       - nats://nats-analytics-headless:4222
                     queue: preprocessor
                     subject: "logs.1.>"
+                  processors:
+                    - unarchive:
+                        format: json_array
+                    - mapping: |
+                        root = this[1]
                 buffer:
                   system_window:
                     timestamp_mapping: this.time
