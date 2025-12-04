@@ -45,8 +45,8 @@ spec:
                 buffer:
                   system_window:
                     timestamp_mapping: this.time
-                    size: 5m
-                    allowed_lateness: 1m
+                    size: 1m
+                    allowed_lateness: 1s
                 pipeline:
                   processors:
                     - group_by_value:
