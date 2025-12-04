@@ -67,6 +67,10 @@ spec:
                       TLS.Key_File /fluentbit/tls/tls.key
                 outputs: |
                   [OUTPUT]
+                      Name stdout
+                      Match *
+
+                  [OUTPUT]
                       Name  nats
                       Match *
                       Host  nats-analytics-headless.monitoring.svc.cluster.local
