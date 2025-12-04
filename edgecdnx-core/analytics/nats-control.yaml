@@ -52,7 +52,8 @@ spec:
                 inputs: |
                   [INPUT]
                       Name forward
-                      Listen 0.0.0.0:24224
+                      Listen 0.0.0.0
+                      Port 24224
                       TLS On
                       TLS.Verify On
                       TLS.Ca_File /fluentbit/tls/ca.crt
