@@ -25,8 +25,8 @@ spec:
       project: default
       sources:
         - chart: fluent-bit
-          repoURL: https://fluent.github.io/helm-charts
-          targetRevision: 0.54.0
+          repoURL: https://edgecdn-x.github.io/helm-charts/
+          targetRevision: 0.55.0
           helm:
             releaseName: fluentbit-analytics
             valuesObject:
