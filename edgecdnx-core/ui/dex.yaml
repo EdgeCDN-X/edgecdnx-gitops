@@ -74,6 +74,20 @@ spec:
                   hash: "$2y$10$fPguV7t0dugf4HHkbArbReMRrzpw3DvD.Ps4zjFGtZ5tfNGlSVp7y"
                   username: "edvin"
                   userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+              ingress:
+                enabled: true
+                className: nginx
+                hosts:
+                  - host: dex.{{ .metadata.annotations.basedomain }}
+                    paths:
+                      - path: /dex
+                        pathType: ImplementationSpecific
+                annotations:
+                  cert-manager.io/cluster-issuer: cert-manager-http
+                tls:
+                  - hosts:
+                      - dex.{{ .metadata.annotations.basedomain }}
+                    secretName: dex-cert-tls
       destination:
         namespace: edgecdnx-controller-system
         name: "{{ .name }}"
