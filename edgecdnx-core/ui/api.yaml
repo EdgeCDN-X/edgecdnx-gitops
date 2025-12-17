@@ -38,6 +38,7 @@ spec:
             valuesObject:
               image:
                 tag: latest
+                pullPolicy: Always
               livenessProbe: {}
               readinessProbe: {}
               env:
