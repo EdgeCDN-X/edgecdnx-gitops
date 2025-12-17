@@ -1,0 +1,63 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: api
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: api
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
+        - chart: "edgecdnx-api"
+          repoURL: https://edgecdn-x.github.io/helm-charts/
+          targetRevision: 0.1.1
+          helm:
+            releaseName: edgecdnx-api
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/edgecdnx-api.values.yaml
+            valuesObject:
+              livenessProbe: {}
+              readinessProbe: {}
+              ingress:
+                enabled: true
+                className: nginx
+                hosts:
+                  - host: api.{{ .metadata.annotations.basedomain }}
+                    paths:
+                      - path: /
+                        pathType: ImplementationSpecific
+                annotations:
+                  cert-manager.io/cluster-issuer: cert-manager-http
+                tls:
+                  - hosts:
+                      - api.{{ .metadata.annotations.basedomain }}
+                    secretName: api-cert-tls
+      destination:
+        namespace: edgecdnx-controller-system
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
