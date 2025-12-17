@@ -29,7 +29,7 @@ spec:
           ref: overrides
         - chart: "edgecdnx-api"
           repoURL: https://edgecdn-x.github.io/helm-charts/
-          targetRevision: 0.1.4
+          targetRevision: 0.1.5
           helm:
             releaseName: edgecdnx-api
             ignoreMissingValueFiles: true
@@ -39,8 +39,6 @@ spec:
               image:
                 tag: latest
                 pullPolicy: Always
-              livenessProbe: {}
-              readinessProbe: {}
               env:
                 - name: OIDC_CLIENT_ID
                   value: edgecdnx
