@@ -37,6 +37,7 @@ spec:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/dex.values.yaml
             valuesObject:
               config:
+                issuer: https://dex.{{ .metadata.annotations.basedomain }}/dex
                 storage:
                   type: kubernetes
                   config:
