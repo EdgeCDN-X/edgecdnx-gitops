@@ -1,0 +1,84 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dex
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: dex
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
+        - chart: "dex"
+          repoURL: https://charts.dexidp.io
+          targetRevision: 0.24.0
+          helm:
+            releaseName: dex
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/dex.values.yaml
+            valuesObject:
+              config:
+                storage:
+                  type: kubernetes
+                  config:
+                    inCluster: true
+                web:
+                  allowedOrigins: ['*']
+                  http: 0.0.0.0:5556
+                telemetry:
+                  http: 0.0.0.0:5558
+                oauth2:
+                  grantTypes:
+                    - "authorization_code"
+                    - "refresh_token"
+                    - "implicit"
+                    - "password"
+                    - "urn:ietf:params:oauth:grant-type:device_code"
+                    - "urn:ietf:params:oauth:grant-type:token-exchange"
+                staticClients:
+                - id: edgecdnx
+                  redirectURIs:
+                  - https://oauth.pstmn.io/v1/callback
+                  - http://localhost:4200/callback
+                  - https://portal.{{ .metadata.annotations.basedomain }}/callback
+                  name: 'EdgeCDN-X'
+                  public: true
+                connectors: []
+                enablePasswordDB: true
+                staticPasswords:
+                - email: "tbo@tbotech.sk"
+                  hash: "$2y$10$fPguV7t0dugf4HHkbArbReMRrzpw3DvD.Ps4zjFGtZ5tfNGlSVp7y"
+                  username: "tbo"
+                  userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+                - email: "edvin@tbotech.sk"
+                  hash: "$2y$10$fPguV7t0dugf4HHkbArbReMRrzpw3DvD.Ps4zjFGtZ5tfNGlSVp7y"
+                  username: "edvin"
+                  userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+      destination:
+        namespace: edgecdnx-controller-system
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
