@@ -29,7 +29,7 @@ spec:
           ref: overrides
         - chart: "edgecdnx-api"
           repoURL: https://edgecdn-x.github.io/helm-charts/
-          targetRevision: 0.1.3
+          targetRevision: 0.1.4
           helm:
             releaseName: edgecdnx-api
             ignoreMissingValueFiles: true
@@ -40,6 +40,11 @@ spec:
                 tag: latest
               livenessProbe: {}
               readinessProbe: {}
+              env:
+                - name: OIDC_CLIENT_ID
+                  value: edgecdnx
+                - name: OIDC_ISSUER_URL
+                  value: https://dex.{{ .metadata.annotations.basedomain }}/dex
               ingress:
                 enabled: true
                 className: nginx
