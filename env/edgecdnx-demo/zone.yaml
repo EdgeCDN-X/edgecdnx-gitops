@@ -1,0 +1,9 @@
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Zone
+metadata:
+  name: democdn.edgecdnx.com
+  namespace: argocd
+spec:
+  zone: democdn.edgecdnx.com
+  email: noc.democdn.edgecdnx.com
