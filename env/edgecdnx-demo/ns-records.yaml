@@ -9,7 +9,7 @@ spec:
       recordTTL: 3600
       recordType: NS
       targets:
-        - ns1.democdn.edgecdnx.com
+        - ns1.democdn.edgecdnx.com.
     - dnsName: ns1.democdn.edgecdnx.com
       recordTTL: 300
       recordType: A
