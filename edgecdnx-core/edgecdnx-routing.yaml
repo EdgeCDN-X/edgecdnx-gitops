@@ -48,7 +48,7 @@ spec:
             valuesObject:
               image:
                 repository: fr6nco/coredns
-                tag: 1.12.1-ex-6
+                tag: 1.12.1-ex-7
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
@@ -86,7 +86,6 @@ spec:
                       configBlock: |-
                         namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         soa {{- range .clusters -}}{{ if eq .name $.name }} ns{{ index .metadata.annotations "edgecdnx.com/ns" }}{{ end -}}{{- end }}
-                        email {{ index .metadata.annotations "edgecdnx.com/domainemail" }}
                         {{- range .clusters }}
                         ns ns{{ index .metadata.annotations "edgecdnx.com/ns" }} {{ index .metadata.annotations "edgecdnx.com/public-ip" }}
                         {{- end }}
@@ -111,7 +110,7 @@ spec:
                   mountPath: /etc/edgecdnx/geolookup
         - chart: coredns-rbac
           repoURL: https://edgecdn-x.github.io/helm-charts
-          targetRevision: 0.1.1
+          targetRevision: 0.1.3
           helm:
             releaseName: edgecdnx-coredns-rbac
             ignoreMissingValueFiles: true
