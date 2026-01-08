@@ -20,6 +20,8 @@ spec:
   domain: ytdemo.democdn.edgecdnx.com
   name: ytdemo.democdn.edgecdnx.com
   originType: static
+  hostAliases:
+    - name: cdn.tbotech.sk
   waf:
     enabled: true
   staticOrigins:
