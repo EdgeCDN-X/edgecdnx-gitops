@@ -67,7 +67,7 @@ spec:
             valuesObject:
               image:
                 tag: latest
-                imagePullPolicy: Always
+                pullPolicy: Always
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
       destination:
