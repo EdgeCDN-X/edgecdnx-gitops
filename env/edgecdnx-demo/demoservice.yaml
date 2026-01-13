@@ -22,6 +22,7 @@ spec:
   originType: static
   hostAliases:
     - name: cdn.tbotech.sk
+    - name: cdncname.tbotech.sk
   waf:
     enabled: true
   staticOrigins:
