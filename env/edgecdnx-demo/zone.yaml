@@ -7,3 +7,12 @@ metadata:
 spec:
   zone: democdn.edgecdnx.com
   email: noc.democdn.edgecdnx.com
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Zone
+metadata:
+  name: cdn.tbotech.sk
+  namespace: argocd
+spec:
+  zone: cdn.tbotech.sk
+  email: noc.cdn.tbotech.sk
