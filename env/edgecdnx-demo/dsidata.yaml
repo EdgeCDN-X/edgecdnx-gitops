@@ -8,11 +8,7 @@ metadata:
     type: static
 spec:
   cache: ssd
-  cacheKey:
-    queryParams:
-    - v
-    - ver
-    - version
+  cacheKey: {}
   certificate: {}
   customer:
     id: 1
@@ -23,7 +19,7 @@ spec:
   waf:
     enabled: true
   staticOrigins:
-  - hostHeader: tbotech.sk
+  - hostHeader: dash.akamaized.net
     port: 443
     scheme: Https
-    upstream: tbotech.sk
+    upstream: dash.akamaized.net
