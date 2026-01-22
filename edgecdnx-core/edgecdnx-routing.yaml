@@ -48,7 +48,7 @@ spec:
             valuesObject:
               image:
                 repository: fr6nco/coredns
-                tag: 1.14.1-edgecdnx-v1.1.0
+                tag: 1.14.1-edgecdnx-v1.1.1
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
