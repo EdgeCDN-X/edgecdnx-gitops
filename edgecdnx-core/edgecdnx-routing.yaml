@@ -48,7 +48,7 @@ spec:
             valuesObject:
               image:
                 repository: fr6nco/coredns
-                tag: 1.12.1-ex-8
+                tag: 1.14.1-edgecdnx-v1.1.0
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
@@ -72,19 +72,14 @@ spec:
                     - name: health
                       configBlock: |-
                         lameduck 5s
-                    - name: edgecdnxprefixlist
-                      parameters: '{{ index .metadata.annotations "edgecdnx.com/namespace" }}'
                     - name: geoip
                       parameters: /etc/edgecdnx/geolookup/GeoLite2-City.mmdb
                       configBlock: |-
                         edns-subnet
-                    - name: edgecdnxgeolookup
-                      configBlock: |-
+                    - name: edgecdnx
+                      configBlock:
                         namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         recordttl 30
-                    - name: edgecdnxservices
-                      configBlock: |-
-                        namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         soa {{- range .clusters -}}{{ if eq .name $.name }} ns{{ index .metadata.annotations "edgecdnx.com/ns" }}{{ end -}}{{- end }}
                         {{- range .clusters }}
                         ns ns{{ index .metadata.annotations "edgecdnx.com/ns" }} {{ index .metadata.annotations "edgecdnx.com/public-ip" }}
