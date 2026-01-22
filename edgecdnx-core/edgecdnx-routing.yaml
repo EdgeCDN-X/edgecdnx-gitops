@@ -77,7 +77,7 @@ spec:
                       configBlock: |-
                         edns-subnet
                     - name: edgecdnx
-                      configBlock:
+                      configBlock: |-
                         namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
                         recordttl 30
                         soa {{- range .clusters -}}{{ if eq .name $.name }} ns{{ index .metadata.annotations "edgecdnx.com/ns" }}{{ end -}}{{- end }}
