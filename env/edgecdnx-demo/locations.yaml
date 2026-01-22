@@ -16,7 +16,16 @@ spec:
         weight: 1000
       geoip/subdivisions/code:
         values:
-          - value: "NI"
+          - value: "TC"
+        weight: 100
+      geoip/asn/number:
+        values:
+          - value: "14061"
+        weight: 100
+      geoip/asn/org:
+        values:
+          - value: "O2 Slovakia"
+        weight: 100
     weight: 50
   nodeGroups:
     - name: ssd
