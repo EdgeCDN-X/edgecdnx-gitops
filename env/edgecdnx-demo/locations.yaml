@@ -14,6 +14,9 @@ spec:
           - value: EU
           - value: AF
         weight: 1000
+      geoip/subdivisions/code:
+        values:
+          - value: "NI"
     weight: 50
   nodeGroups:
     - name: ssd
