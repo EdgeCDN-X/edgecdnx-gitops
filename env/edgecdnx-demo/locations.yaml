@@ -13,18 +13,20 @@ spec:
         values:
           - value: EU
           - value: AF
+          - value: AN
+            weight: -900
+          - value: NA
+            weight: -900
+          - value: OC
+            weight: -900
+          - value: SA
+            weight: -900
+          - value: AS
+            weight: -900
         weight: 1000
       geoip/subdivisions/code:
         values:
           - value: "TC"
-        weight: 100
-      geoip/asn/number:
-        values:
-          - value: "14061"
-        weight: 100
-      geoip/asn/org:
-        values:
-          - value: "O2 Slovakia"
         weight: 100
     weight: 50
   nodeGroups:
@@ -70,6 +72,10 @@ spec:
           - value: OC
           - value: SA
           - value: AS
+          - value: EU
+            weight: -900
+          - value: AF
+            weight: -900
         weight: 1000
     weight: 50
   nodeGroups:
