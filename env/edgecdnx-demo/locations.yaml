@@ -35,25 +35,25 @@ spec:
         - name: n1
           ipv4: 74.220.31.189
       nodeSelector:
-        kubernetes.civo.com/civo-node-pool: fra1-c1
+        kubernetes.civo.com/civo-node-pool: fra1-c2
       cacheConfig:
         name: "ssd"
         path: "/var/cache/ssd"
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
-    - name: hdd
-      nodes:
-        - name: n2
-          ipv4: 74.220.30.112
-      nodeSelector:
-        kubernetes.civo.com/civo-node-pool: fra1-hdd1
-      cacheConfig:
-        name: "hdd"
-        path: "/var/cache/hdd"
-        keysZone: "100m"
-        inactive: "10080m"
-        maxSize: "4096m"
+    # - name: hdd
+    #   nodes:
+    #     - name: n2
+    #       ipv4: 74.220.30.112
+    #   nodeSelector:
+    #     kubernetes.civo.com/civo-node-pool: fra1-hdd1
+    #   cacheConfig:
+    #     name: "hdd"
+    #     path: "/var/cache/hdd"
+    #     keysZone: "100m"
+    #     inactive: "10080m"
+    #     maxSize: "4096m"
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
@@ -84,7 +84,7 @@ spec:
         - name: n1
           ipv4: 74.220.25.40
       nodeSelector:
-        kubernetes.civo.com/civo-node-pool: nyc1-c1
+        kubernetes.civo.com/civo-node-pool: nyc1-c2
       cacheConfig:
         name: "ssd"
         path: "/var/cache/ssd"
