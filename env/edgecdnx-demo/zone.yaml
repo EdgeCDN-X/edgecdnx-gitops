@@ -6,4 +6,4 @@ metadata:
   namespace: argocd
 spec:
   zone: democdn.edgecdnx.com
-  email: noc.democdn.edgecdnx.com
+  email: noc.democdn.edgecdnx.com.
