@@ -16,6 +16,7 @@ spec:
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: cache-controller
+          webhooks: false
         selector:
           matchExpressions:
             - key: edgecdnx.com/caching
@@ -30,6 +31,7 @@ spec:
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: router
+          webhooks: false
         selector:
           matchExpressions:
             - key: edgecdnx.com/routing
@@ -45,6 +47,7 @@ spec:
           namespace: edgecdnx-controller-system
           role: controller
           targetNamespace: "edgecdnx"
+          webhooks: true
         selector:
           matchExpressions:
             - key: edgecdnx.com/control
@@ -71,6 +74,8 @@ spec:
                 pullPolicy: Always
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
+              webhook:
+                enabled: {{ .values.webhooks }}
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
