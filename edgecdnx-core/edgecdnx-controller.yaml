@@ -75,7 +75,7 @@ spec:
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
               webhook:
-                enabled: {{ .values.webhooks }}
+                enabled: "{{ .values.webhooks }}"
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
