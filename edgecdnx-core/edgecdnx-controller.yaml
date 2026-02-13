@@ -42,7 +42,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.15.0-alpha.2
+          chartVersion: 0.15.0-alpha.3
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: controller
