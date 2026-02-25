@@ -36,6 +36,7 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/edgecdnx-api.values.yaml
             valuesObject:
+              replicaCount: 0
               image:
                 tag: latest
                 pullPolicy: Always
