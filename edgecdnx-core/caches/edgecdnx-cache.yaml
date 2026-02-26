@@ -41,6 +41,9 @@ spec:
             releaseName: edgecdnx-cache-{{ .cacheName }}
             ignoreMissingValueFiles: true
             values: |
+              global:
+                image:
+                  registry: "docker.io"
               controller:
                 image:
                   image: fr6nco/ingress-nginx
