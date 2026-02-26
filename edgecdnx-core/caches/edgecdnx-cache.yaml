@@ -41,14 +41,12 @@ spec:
             releaseName: edgecdnx-cache-{{ .cacheName }}
             ignoreMissingValueFiles: true
             values: |
-              global:
-                image:
-                  registry: "docker.io"
               controller:
                 image:
                   image: fr6nco/ingress-nginx
                   tag: "v1.14.0-lfs"
                   digest: ""
+                  repository: docker.io
                 metrics:
                   enabled: true
                   serviceMonitor:
