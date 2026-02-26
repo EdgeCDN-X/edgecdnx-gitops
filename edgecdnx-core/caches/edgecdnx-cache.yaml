@@ -43,7 +43,7 @@ spec:
             values: |
               controller:
                 image:
-                  tag: "v1.14.0-lfs"
+                  tag: "v1.14.0-lfs.1"
                   digest: ""
                   repository: fr6nco/ingress-nginx
                 metrics:
