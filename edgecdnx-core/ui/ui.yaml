@@ -46,7 +46,7 @@ spec:
                     clientId: edgecdnx
                     scope: openid profile email
                     requireHttps: true
-                    redirectUris: "https://portal.{{ .metadata.annotations.basedomain }}"
+                    redirectUri: "https://portal.{{ .metadata.annotations.basedomain }}"
               ingress:
                 enabled: true
                 className: nginx
