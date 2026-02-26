@@ -43,10 +43,9 @@ spec:
             values: |
               controller:
                 image:
-                  image: fr6nco/ingress-nginx
                   tag: "v1.14.0-lfs"
                   digest: ""
-                  repository: docker.io
+                  repository: fr6nco/ingress-nginx
                 metrics:
                   enabled: true
                   serviceMonitor:
