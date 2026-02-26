@@ -1,8 +1,8 @@
 ---
-apiVersion: argoproj.io/v1alpha1
+uiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: api
+  name: ui
 spec:
   goTemplate: true
   syncPolicy:
@@ -20,32 +20,38 @@ spec:
                 - "yes"
   template:
     metadata:
-      name: api
+      name: ui
     spec:
       project: default
       sources:
         - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
           targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
           ref: overrides
-        - chart: "edgecdnx-api"
+        - chart: "edgecdnx-ui"
           repoURL: https://edgecdn-x.github.io/helm-charts/
-          targetRevision: 0.1.5
+          targetRevision: 0.1.0
           helm:
-            releaseName: edgecdnx-api
+            releaseName: edgecdnx-ui
             ignoreMissingValueFiles: true
             valueFiles:
-              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/edgecdnx-api.values.yaml
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/edgecdnx-ui.values.yaml
             valuesObject:
-              env:
-                - name: OIDC_CLIENT_ID
-                  value: edgecdnx
-                - name: OIDC_ISSUER_URL
-                  value: https://dex.{{ .metadata.annotations.basedomain }}/dex
+              config:
+                production: true
+                apiUrl: https://api.{{ .metadata.annotations.basedomain }}
+                auth:
+                  oidc:
+                    issuer: https://dex.{{ .metadata.annotations.basedomain }}/dex
+                    token: https://api.{{ .metadata.annotations.basedomain }}/dex/token_endpoint
+                    clientId: edgecdnx
+                    scope: openid profile email
+                    requireHttps: true
+                    redirectUris: "https://portal.{{ .metadata.annotations.basedomain }}"
               ingress:
                 enabled: true
                 className: nginx
                 hosts:
-                  - host: api.{{ .metadata.annotations.basedomain }}
+                  - host: portal.{{ .metadata.annotations.basedomain }}
                     paths:
                       - path: /
                         pathType: ImplementationSpecific
@@ -53,8 +59,8 @@ spec:
                   cert-manager.io/cluster-issuer: cert-manager-http
                 tls:
                   - hosts:
-                      - api.{{ .metadata.annotations.basedomain }}
-                    secretName: api-cert-tls
+                      - portal.{{ .metadata.annotations.basedomain }}
+                    secretName: portal-cert-tls
       destination:
         namespace: edgecdnx-controller-system
         name: "{{ .name }}"
