@@ -27,14 +27,14 @@ spec:
         - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
           targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
           ref: overrides
-        - chart: "edgecdnx-authentik"
+        - chart: "authentik"
           repoURL: https://charts.goauthentik.io/
           targetRevision: 2026.2.0
           helm:
-            releaseName: edgecdnx-authentik
+            releaseName: authentik
             ignoreMissingValueFiles: true
             valueFiles:
-              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/edgecdnx-authentik.values.yaml
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/authentik.values.yaml
             valuesObject:
               global:
                 env:
