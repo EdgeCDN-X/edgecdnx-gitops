@@ -36,13 +36,12 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/authentikdb.values.yaml
             valuesObject: 
-              type: authentikdb
               cluster:
                 instances: 2
                 storage:
                   size: 4Gi
       destination:
-        namespace: monitoring
+        namespace: edgecdnx-controller-system
         name: "{{ .name }}"
       syncPolicy:
         automated: {}
