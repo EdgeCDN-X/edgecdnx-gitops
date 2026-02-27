@@ -59,7 +59,8 @@ spec:
                         name: authentikdb-cluster-app
                         key: dbname
               authentik:
-                existingSecret: authentik-secret
+                existingSecret: 
+                  secretName: authentik-secret
               postgresql:
                 enabled: false
               server:
