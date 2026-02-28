@@ -40,7 +40,10 @@ spec:
                 enabled: true
                 className: nginx
                 hosts:
-                  - zitadel.{{ .metadata.annotations.basedomain }}
+                  - host: zitadel.{{ .metadata.annotations.basedomain }}
+                    paths:
+                      - path: /ui/v2/login
+                        pathType: Prefix
                 annotations:
                   cert-manager.io/cluster-issuer: cert-manager-http
                 tls:
