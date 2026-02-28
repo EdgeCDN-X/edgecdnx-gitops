@@ -1,0 +1,51 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: zitadeldb
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: zitadeldb
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
+        - chart: cluster
+          repoURL: https://cloudnative-pg.io/charts/
+          targetRevision: 0.3.1
+          helm:
+            releaseName: zitadeldb
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadeldb.values.yaml
+            valuesObject: 
+              cluster:
+                instances: 2
+                storage:
+                  size: 4Gi
+      destination:
+        namespace: edgecdnx-controller-system
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []

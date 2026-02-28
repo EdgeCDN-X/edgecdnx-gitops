@@ -36,6 +36,29 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadel.values.yaml
             valuesObject:
+              env:
+                - name: ZITADEL_DATABASE_POSTGRES_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: zitadeldb-cluster-app
+                      key: host
+                - name: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: zitadeldb-cluster-app
+                      key: username
+                - name: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: zitadeldb-cluster-app
+                      key: password
+                - name: ZITADEL_DATABASE_POSTGRES_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: zitadeldb-cluster-app
+                      key: dbname
+                - name: ZITADEL_EXTERNALSECURE
+                  value: "true"
               zitadel:
                 masterkeySecretName: zitadel-masterkey
               ingress:
