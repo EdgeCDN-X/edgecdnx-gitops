@@ -65,6 +65,8 @@ spec:
                     fields:
                       - fieldName: "masterkey"
                         length: "32"
+          repoURL: https://edgecdn-x.github.io/helm-charts
+          targetRevision: 0.1.0         
       destination:
         namespace: edgecdnx-controller-system
         name: "{{ .name }}"
