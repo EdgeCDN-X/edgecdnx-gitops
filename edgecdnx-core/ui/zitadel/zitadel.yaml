@@ -63,6 +63,11 @@ spec:
                   value: "require"
               zitadel:
                 masterkeySecretName: zitadel-masterkey
+                configmapConfig:
+                  Database:
+                    Postgres:
+                      Username: app
+                      Database: app
               ingress:
                 enabled: true
                 className: nginx
