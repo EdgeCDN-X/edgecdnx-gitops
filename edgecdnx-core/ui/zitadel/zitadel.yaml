@@ -59,6 +59,8 @@ spec:
                       key: dbname
                 - name: ZITADEL_EXTERNALSECURE
                   value: "true"
+                - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE
+                  value: "require"
               zitadel:
                 masterkeySecretName: zitadel-masterkey
               ingress:
