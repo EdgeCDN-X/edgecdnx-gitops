@@ -1,0 +1,58 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: zitadel
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: zitadel
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
+        - chart: "zitadel"
+          repoURL: https://charts.zitadel.com
+          targetRevision: 9.24.0
+          helm:
+            releaseName: zitadel
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadel.values.yaml
+            valuesObject:
+              ingress:
+                enabled: true
+                className: nginx
+                hosts:
+                  - zitadel.{{ .metadata.annotations.basedomain }}
+                annotations:
+                  cert-manager.io/cluster-issuer: cert-manager-http
+                tls:
+                  - hosts:
+                      - zitadel.{{ .metadata.annotations.basedomain }}
+                    secretName: zitadel-cert-tls            
+      destination:
+        namespace: edgecdnx-controller-system
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
