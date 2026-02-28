@@ -36,6 +36,7 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadel.values.yaml
             valuesObject:
+              masterkeySecretName: zitadel-masterkey
               ingress:
                 enabled: true
                 className: nginx
@@ -49,7 +50,21 @@ spec:
                 tls:
                   - hosts:
                       - zitadel.{{ .metadata.annotations.basedomain }}
-                    secretName: zitadel-cert-tls            
+                    secretName: zitadel-cert-tls  
+        - chart: resource-thrower
+          helm:
+            releaseName: zitadel-masterkey
+            valuesObject:
+              resources:
+                - apiVersion: "secretgenerator.mittwald.de/v1alpha1"
+                  kind: "StringSecret"
+                  metadata:
+                    name: zitadel-masterkey
+                  spec:
+                    data: {}
+                    fields:
+                      - fieldName: "masterkey"
+                        length: "32"
       destination:
         namespace: edgecdnx-controller-system
         name: "{{ .name }}"
