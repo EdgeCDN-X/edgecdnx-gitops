@@ -36,7 +36,8 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadel.values.yaml
             valuesObject:
-              masterkeySecretName: zitadel-masterkey
+              zitadel:
+                masterkeySecretName: zitadel-masterkey
               ingress:
                 enabled: true
                 className: nginx
