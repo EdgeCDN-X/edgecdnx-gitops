@@ -88,6 +88,9 @@ spec:
                   kind: "StringSecret"
                   metadata:
                     name: zitadel-masterkey
+                    annotations:
+                      helm.sh/hook: pre-install,pre-upgrade
+                      helm.sh/hook-weight: '2'
                   spec:
                     data: {}
                     fields:
