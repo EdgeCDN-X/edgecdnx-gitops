@@ -36,6 +36,8 @@ spec:
             valueFiles:
               - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/zitadel.values.yaml
             valuesObject:
+              initJob:
+                enabled: false
               env:
                 - name: ZITADEL_DATABASE_POSTGRES_HOST
                   valueFrom:
@@ -63,11 +65,6 @@ spec:
                   value: "require"
               zitadel:
                 masterkeySecretName: zitadel-masterkey
-                configmapConfig:
-                  Database:
-                    Postgres:
-                      Username: app
-                      Database: app
               ingress:
                 enabled: true
                 className: nginx
