@@ -92,7 +92,7 @@ spec:
                   spec:
                     fields:
                       - fieldName: KEYCLOAK_ADMIN_PASSWORD
-                        length: 32
+                        length: "32"
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
       destination:
