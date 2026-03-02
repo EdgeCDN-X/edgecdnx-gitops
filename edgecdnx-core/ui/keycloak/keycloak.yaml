@@ -84,14 +84,15 @@ spec:
           helm:
             releaseName: keycloak-admin-secret
             values: |
-              apiVersion: "secretgenerator.mittwald.de/v1alpha1"
-              kind: "StringSecret"
-              metadata:
-                name: keycloak-admin-secret
-              spec:
-                fields:
-                  - fieldName: "KEYCLOAK_ADMIN_PASSWORD"
-                    length: "32"
+              resources:
+                - apiVersion: secretgenerator.mittwald.de/v1alpha1
+                  kind: StringSecret
+                  metadata:
+                    name: keycloak-admin-secret
+                  spec:
+                    fields:
+                      - fieldName: KEYCLOAK_ADMIN_PASSWORD
+                        length: 32
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
       destination:
