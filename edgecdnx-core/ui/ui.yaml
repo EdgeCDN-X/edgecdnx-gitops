@@ -29,7 +29,7 @@ spec:
           ref: overrides
         - chart: "edgecdnx-ui"
           repoURL: https://edgecdn-x.github.io/helm-charts/
-          targetRevision: 0.1.1
+          targetRevision: 0.1.2
           helm:
             releaseName: edgecdnx-ui
             ignoreMissingValueFiles: true
@@ -40,9 +40,10 @@ spec:
                 production: true
                 apiUrl: https://api.{{ .metadata.annotations.basedomain }}
                 auth:
+                  allowSignup: true
                   oidc:
-                    issuer: https://dex.{{ .metadata.annotations.basedomain }}/dex
-                    token: https://api.{{ .metadata.annotations.basedomain }}/dex/token_endpoint
+                    issuer: https://auth.{{ .metadata.annotations.basedomain }}/realms/edgecdnx
+                    token: https://auth.{{ .metadata.annotations.basedomain }}/realms/edgecdnx/protocol/openid-connect/token
                     clientId: edgecdnx
                     scope: openid profile email
                     requireHttps: true

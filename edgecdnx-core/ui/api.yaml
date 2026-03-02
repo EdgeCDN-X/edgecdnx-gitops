@@ -40,7 +40,7 @@ spec:
                 - name: OIDC_CLIENT_ID
                   value: edgecdnx
                 - name: OIDC_ISSUER_URL
-                  value: https://dex.{{ .metadata.annotations.basedomain }}/dex
+                  value: https://auth.{{ .metadata.annotations.basedomain }}/realms/edgecdnx
               ingress:
                 enabled: true
                 className: nginx
