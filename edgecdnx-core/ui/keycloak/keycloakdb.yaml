@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: authentikdb
+  name: keycloakdb
 spec:
   goTemplate: true
   syncPolicy:
@@ -20,7 +20,7 @@ spec:
                 - "yes"
   template:
     metadata:
-      name: authentikdb
+      name: keycloakdb
     spec:
       project: default
       sources:
@@ -31,10 +31,10 @@ spec:
           repoURL: https://cloudnative-pg.io/charts/
           targetRevision: 0.3.1
           helm:
-            releaseName: authentikdb
+            releaseName: keycloakdb
             ignoreMissingValueFiles: true
             valueFiles:
-              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/authentikdb.values.yaml
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/keycloakdb.values.yaml
             valuesObject: 
               cluster:
                 instances: 2

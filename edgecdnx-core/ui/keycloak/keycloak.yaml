@@ -1,0 +1,84 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: auth
+spec:
+  goTemplate: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: auth
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-repo"}}'
+          targetRevision: '{{ index .metadata.annotations "edgecdnx.com/gitops-override-revision"}}'
+          ref: overrides
+        - chart: "keycloak"
+          repoURL: https://edgecdn-x.github.io/helm-charts/
+          targetRevision: 0.1.0
+          helm:
+            releaseName: auth
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $overrides/{{ index .metadata.annotations "edgecdnx.com/gitops-override-basepath"}}/auth.values.yaml
+            valuesObject:
+              ingress:
+                enabled: true
+                className: nginx
+                hosts:
+                  - host: auth.{{ .metadata.annotations.basedomain }}
+                    paths:
+                      - path: /
+                        pathType: ImplementationSpecific
+                annotations:
+                  cert-manager.io/cluster-issuer: cert-manager-http
+                tls:
+                  - hosts:
+                      - auth.{{ .metadata.annotations.basedomain }}
+                    secretName: auth-cert-tls
+              env:
+                - name: 'KC_DB_URL_DATABASE'
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloakdb-cluster-app
+                      key: dbname
+                - name: 'KC_DB_URL_HOST'
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloakdb-cluster-app
+                      key: host
+                - name: 'KC_DB'
+                  value: 'postgres'
+                - name: 'KC_DB_PASSWORD'
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloakdb-cluster-app
+                      key: password
+                - name: 'KC_DB_USERNAME'
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloakdb-cluster-app
+                      key: username
+      destination:
+        namespace: edgecdnx-controller-system
+        name: "{{ .name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
