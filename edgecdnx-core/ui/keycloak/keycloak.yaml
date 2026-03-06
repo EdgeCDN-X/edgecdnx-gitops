@@ -80,6 +80,8 @@ spec:
                     secretKeyRef:
                       name: keycloakdb-cluster-app
                       key: username
+                - name: JAVA_OPTS_APPEND
+                  value: "-Djava.net.preferIPv4Stack=true"
         - chart: resource-thrower
           helm:
             releaseName: keycloak-admin-secret
