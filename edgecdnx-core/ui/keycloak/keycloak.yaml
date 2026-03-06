@@ -82,6 +82,8 @@ spec:
                       key: username
                 - name: JAVA_OPTS_APPEND
                   value: "-Djava.net.preferIPv4Stack=true"
+              startupProbe:
+                initialDelaySeconds: 30
         - chart: resource-thrower
           helm:
             releaseName: keycloak-admin-secret
