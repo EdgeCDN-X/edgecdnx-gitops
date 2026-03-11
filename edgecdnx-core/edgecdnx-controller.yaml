@@ -71,6 +71,9 @@ spec:
             valuesObject:
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
+              image:
+                tag: latest
+                pullPolicy: Always
               webhook:
                 enabled: "{{ .values.webhooks }}"
       destination:
