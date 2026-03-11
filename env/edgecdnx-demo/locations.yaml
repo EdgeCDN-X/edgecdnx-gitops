@@ -33,7 +33,7 @@ spec:
     - name: ssd
       nodes:
         - name: n1
-          ipv4: 74.220.31.189
+          ipv4: 74.220.26.197
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c2
       cacheConfig:
@@ -82,7 +82,7 @@ spec:
     - name: ssd
       nodes:
         - name: n1
-          ipv4: 74.220.25.40
+          ipv4: 74.220.27.251
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
       cacheConfig:
