@@ -22,6 +22,7 @@ spec:
                       - "true"
                       - "yes"
           - plugin:
+              requeueAfterSeconds: 300
               configMapRef:
                 name: argocd-locations-plugin-generator
               input:
