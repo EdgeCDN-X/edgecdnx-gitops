@@ -91,3 +91,16 @@ spec:
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
+    - name: ssd
+      flavor: lg
+      nodes:
+        - name: n2
+          ipv4: 74.220.27.252
+      nodeSelector:
+        kubernetes.civo.com/civo-node-pool: nyc1-c3
+      cacheConfig:
+        name: "ssd"
+        path: "/var/cache/ssd"
+        keysZone: "100m"
+        inactive: "10080m"
+        maxSize: "4096m"
