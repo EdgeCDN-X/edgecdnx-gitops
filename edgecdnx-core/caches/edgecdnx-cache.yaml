@@ -39,7 +39,7 @@ spec:
           repoURL: "{{ .values.chartRepository }}"
           targetRevision: "{{ .values.chartVersion }}"
           helm:
-            releaseName: edgecdnx-cache-{{ .cacheName }}{{- if .flavor }}-{{ .flavor }}{{ end }}
+            releaseName: edgecdnx-cache-{{ .cacheName }}{{- if kindIs "string" .flavor }}-{{ .flavor }}{{ end }}
             ignoreMissingValueFiles: true
             values: |
               controller:
