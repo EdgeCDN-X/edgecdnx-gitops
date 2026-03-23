@@ -31,6 +31,7 @@ spec:
     weight: 50
   nodeGroups:
     - name: ssd
+      flavor: ""
       nodes:
         - name: n1
           ipv4: 74.220.26.43
@@ -80,6 +81,7 @@ spec:
     weight: 50
   nodeGroups:
     - name: ssd
+      flavor: ""
       nodes:
         - name: n1
           ipv4: 74.220.27.251
