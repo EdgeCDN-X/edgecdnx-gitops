@@ -31,7 +31,7 @@ spec:
                   namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
   template:
     metadata:
-      name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}{{- if kindIs "string" .flavor }}-{{ .flavor }}{{ end }}"
+      name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}{{- if kindIs 'string' .flavor }}-{{ .flavor }}{{ end }}"
     spec:
       project: default
       sources:
