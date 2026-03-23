@@ -31,7 +31,7 @@ spec:
                   namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
   template:
     metadata:
-      name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}"
+      name: "edgecdnx-cache-{{ .name }}-{{ .cacheName }}{{- if .flavor }}-{{ .flavor }}{{ end }}"
     spec:
       project: default
       sources:
@@ -39,7 +39,7 @@ spec:
           repoURL: "{{ .values.chartRepository }}"
           targetRevision: "{{ .values.chartVersion }}"
           helm:
-            releaseName: edgecdnx-cache-{{ .cacheName }}
+            releaseName: edgecdnx-cache-{{ .cacheName }}{{- if .flavor }}-{{ .flavor }}{{ end }}
             ignoreMissingValueFiles: true
             values: |
               controller:
