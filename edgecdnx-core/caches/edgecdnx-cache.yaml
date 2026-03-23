@@ -56,10 +56,7 @@ spec:
                 allowSnippetAnnotations: true
                 ingressClass: {{ .cacheName }}
                 ingressClassResource:
-                  enabled: true
-                  default: false
-                  name: {{ .cacheName }}
-                  controllerValue: "edgecdnx.com/{{ .cacheName }}"
+                  enabled: false
                 {{- with .nodeSelector }}
                 nodeSelector:
                   {{- toYaml . | nindent 4 }}
