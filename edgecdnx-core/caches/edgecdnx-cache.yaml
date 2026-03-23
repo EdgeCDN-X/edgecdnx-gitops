@@ -58,6 +58,8 @@ spec:
                 ingressClassResource:
                   enabled: false
                   controllerValue: "edgecdnx.com/{{ .cacheName }}"
+                publishService:
+                  enabled: false
                 {{- with .nodeSelector }}
                 nodeSelector:
                   {{- toYaml . | nindent 4 }}
