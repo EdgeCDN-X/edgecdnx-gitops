@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.16.0
+          chartVersion: 0.17.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: cache-controller
@@ -27,7 +27,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.16.0
+          chartVersion: 0.17.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: router
@@ -42,7 +42,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.16.0
+          chartVersion: 0.17.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: controller
@@ -65,7 +65,6 @@ spec:
           repoURL: "{{ .values.chartRepository }}"
           targetRevision: "{{ .values.chartVersion }}"
           helm:
-            # TODO unify
             releaseName: edgecdnx-controller
             ignoreMissingValueFiles: true
             valuesObject:
