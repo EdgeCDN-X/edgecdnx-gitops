@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-ingressclass
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - clusters:
+              values:
+                chart: resource-thrower
+                chartVersion: 0.1.0
+                chartRepository: https://edgecdn-x.github.io/helm-charts/
+                namespace: edgecdnx-cache
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/caching
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+          - plugin:
+              requeueAfterSeconds: 300
+              configMapRef:
+                name: argocd-locations-plugin-generator
+              input:
+                parameters:
+                  name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
+                  namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
+                  resource: 'IngressClass'
+  template:
+    metadata:
+      name: edgecdnx-ingressclass-{{ .name }}-{{ .ingressClassName }}
+    spec:
+      project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: edgecdnx-ingressclass-{{ .ingressClassName }}
+            ignoreMissingValueFiles: true
+            values: |
+              resources:
+                - apiVersion: networking.k8s.io/v1
+                  kind: IngressClass
+                  metadata:
+                    name: {{ .ingressClassName }}
+                  spec:
+                    controller: edgecdnx.com/{{ .ingressClassName }}
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
