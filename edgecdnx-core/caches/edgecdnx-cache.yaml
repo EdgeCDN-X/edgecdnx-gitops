@@ -95,7 +95,7 @@ spec:
                     # Cache configuration for {{ .cacheName }}
                     proxy_cache_path {{ .path }} levels=1:2 keys_zone={{ .cacheName }}:{{ .keysZone }} inactive={{ .inactive }} use_temp_path=off max_size={{ .maxSize }};
                   log-format-upstream: |-
-                    {"time": "$time_iso8601", "v": "1", "remote_addr": "$remote_addr", "request_id": "$req_id", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_length": $request_length, "method": "$request_method", "http_user_agent": "$http_user_agent", "upstream_bytes": "$upstream_response_length", "upstream_response_time": "$upstream_response_time" }
+                    {"time": "$time_iso8601", "v": "1", "remote_addr": "$remote_addr", "request_id": "$req_id", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$request_uri", "request_length": $request_length, "method": "$request_method", "http_user_agent": "$http_user_agent", "upstream_bytes": "$upstream_response_length", "upstream_response_time": "$upstream_response_time" }
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
