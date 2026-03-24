@@ -65,6 +65,7 @@ spec:
                   {{- toYaml . | nindent 4 }}
                 {{- end }}
                 service:
+                  externalTrafficPolicy: Local
                   enabled: true
                 hostPort:
                   enabled: false
