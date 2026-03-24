@@ -34,7 +34,7 @@ spec:
       flavor: ""
       nodes:
         - name: n1
-          ipv4: 74.220.27.63
+          ipv4: 74.220.31.183
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c3
       cacheConfig:
@@ -84,7 +84,7 @@ spec:
       flavor: ""
       nodes:
         - name: n1
-          ipv4: 74.220.30.95
+          ipv4: 74.220.24.46
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
       cacheConfig:
@@ -97,7 +97,7 @@ spec:
       flavor: lg
       nodes:
         - name: n2
-          ipv4: 74.220.28.167
+          ipv4: 74.220.29.107
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c3
       cacheConfig:
