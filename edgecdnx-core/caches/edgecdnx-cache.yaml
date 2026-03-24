@@ -67,8 +67,6 @@ spec:
                 service:
                   externalTrafficPolicy: Local
                   enabled: true
-                  annotations:
-                    kubernetes.civo.com/loadbalancer-enable-proxy-protocol: "send-proxy-v2"
                 hostPort:
                   enabled: false
                 kind: DaemonSet
@@ -91,7 +89,6 @@ spec:
                         mountPath: "{{ .path }}"
                 config:
                   proxy-buffering: "on"
-                  use-proxy-protocol: "true"
                   annotations-risk-level: "Critical"
                   enable-modsecurity: "false"
                   http-snippet: |
