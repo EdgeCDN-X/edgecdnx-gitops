@@ -39,7 +39,7 @@ spec:
             - alertName: KubeJobFailed
               labels:
                 cluster: "in-cluster"
-                job_name: "zitadel-cleanup"
+                job_name: "liquibase-migration-29530200"
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c3
       cacheConfig:
