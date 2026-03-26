@@ -46,7 +46,7 @@ spec:
                       group: cert-manager.io
               {{- end }}
               {{- range $cluster := .clusters }}
-              {{- if eq ( index $cluster.metadata.annotations "edgecdnx.com/routing" ) "true" }}
+              {{- if eq ( index $cluster.metadata.labels "edgecdnx.com/routing" ) "true" }}
                 - apiVersion: cert-manager.io/v1
                   kind: Certificate
                   metadata:
