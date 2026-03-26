@@ -45,6 +45,32 @@ spec:
                       kind: Issuer
                       group: cert-manager.io
               {{- end }}
+              {{- range $cluster := .clusters }}
+              {{- if eq ( index $cluster.metadata.annotations "edgecdnx.com/routing" ) "true" }}
+                - apiVersion: cert-manager.io/v1
+                  kind: Certificate
+                  metadata:
+                    name: edgecdnx-tls-monitoring-{{ $cluster.name }}-client-healthchecker
+                    namespace: monitoring
+                  spec:
+                    secretName: edgecdnx-tls-monitoring-{{ $cluster.name }}-client-healthchecker
+                    commonName: prometheus-{{ $cluster.name }}-healthchecker.{{ $cluster.metadata.annotations.basedomain }}
+                    secretTemplate:
+                      annotations:
+                        target: "{{ $cluster.server }}"
+                        targetName: "{{ $cluster.name }}"
+                        targetNamespace: edgecdnx-routing
+                      labels:
+                        edgecdnx.com/resource-type: healthchecker-tls
+                    usages:
+                      - client auth
+                    duration: 8760h0m0s
+                    issuerRef:
+                      name: mon-tls-issuer
+                      kind: Issuer
+                      group: cert-manager.io
+              {{- end }}
+              {{- end }}              
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
       destination:
