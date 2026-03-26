@@ -29,11 +29,11 @@ spec:
           - value: "TC"
         weight: 100
     weight: 50
-  alerts:
-    - alertName: KubeJobFailed
-      labels:
-        cluster: "in-cluster"
-        job_name: "liquibase-migration-29530200"    
+  alerts: []
+    # - alertName: KubeJobFailed
+    #   labels:
+    #     cluster: "in-cluster"
+    #     job_name: "liquibase-migration-29530200"    
   nodeGroups:
     - name: ssd
       flavor: ""
