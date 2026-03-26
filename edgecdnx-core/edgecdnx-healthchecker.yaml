@@ -39,6 +39,18 @@ spec:
               command:
                 - /healthchecker
                 - --leader-elect
+                - --prometheus-endpoint=https://prometheus.{{ .metadata.annotations.basedomain }}
+                - --prometheus-client-cert=/tls/tls.crt
+                - --prometheus-client-key=/tls/tls.key
+                - --prometheus-ca=/tls/ca.crt
+              volumeMounts:
+                - name: tls
+                  mountPath: /tls
+                  readOnly: true
+              volumes:
+                - name: tls
+                  secret:
+                    secretName: edgecdnx-tls-monitoring-{{ .name }}-client-healthchecker
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
