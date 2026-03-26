@@ -35,6 +35,11 @@ spec:
       nodes:
         - name: n1
           ipv4: 74.220.31.183
+          alerts:
+            - alertName: KubeJobFailed
+              labels:
+                cluster: "in-cluster"
+                job_name: "zitadel-cleanup"
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c3
       cacheConfig:
