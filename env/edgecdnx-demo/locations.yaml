@@ -64,6 +64,36 @@ spec:
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
+  name: fra1-c1-sub1
+  namespace: argocd
+spec:
+  geoLookup:
+    attributes:
+      geoip/continent/code:
+        values:
+        - value: EU
+        - value: AF
+        weight: 1000
+    weight: 50
+  nodeGroups:
+  - cacheConfig:
+      inactive: 10080m
+      keysZone: 100m
+      maxSize: 4096m
+      name: ssd
+      path: /var/cache/ssd
+    flavor: ""
+    name: ssd
+    nodeSelector:
+      kubernetes.civo.com/civo-node-pool: fra1-c4
+    nodes:
+    - ipv4: 74.220.31.184
+      name: n1
+  parent: fra1-c1 
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: Location
+metadata:
   name: nyc1-c1
   namespace: argocd
 spec:
