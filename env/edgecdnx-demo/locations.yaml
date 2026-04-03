@@ -89,6 +89,7 @@ spec:
     nodes:
     - ipv4: 74.220.31.184
       name: n1
+      maintenanceMode: true
   parent: fra1-c1 
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
@@ -133,6 +134,7 @@ spec:
       nodes:
         - name: n2
           ipv4: 74.220.29.107
+          maintenanceMode: true
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c3
       cacheConfig:
