@@ -67,7 +67,6 @@ metadata:
   name: fra1-c1-sub1
   namespace: edgecdnx
 spec:
-  maintenanceMode: true
   geoLookup:
     attributes:
       geoip/continent/code:
@@ -134,7 +133,6 @@ spec:
       nodes:
         - name: n2
           ipv4: 74.220.29.107
-          maintenanceMode: true
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c3
       cacheConfig:
