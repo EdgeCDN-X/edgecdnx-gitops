@@ -3,7 +3,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
   name: fra1-c1
-  namespace: argocd
+  namespace: edgecdnx
 spec:
   fallbackLocations:
     - nyc1-c1
@@ -65,7 +65,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
   name: fra1-c1-sub1
-  namespace: argocd
+  namespace: edgecdnx
 spec:
   geoLookup:
     attributes:
@@ -95,7 +95,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
 metadata:
   name: nyc1-c1
-  namespace: argocd
+  namespace: edgecdnx
 spec:
   fallbackLocations:
     - fra1-c1

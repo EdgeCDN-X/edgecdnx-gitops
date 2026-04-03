@@ -3,6 +3,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: PrefixList
 metadata:
   name: nyc1-c1
+  namespace: edgecdnx
 spec:
   source: Static
   destination: nyc1-c1
@@ -16,6 +17,7 @@ apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: PrefixList
 metadata:
   name: nyc1-c1-p2
+  namespace: edgecdnx
 spec:
   source: Static
   destination: nyc1-c1
