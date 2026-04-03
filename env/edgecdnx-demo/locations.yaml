@@ -67,6 +67,7 @@ metadata:
   name: fra1-c1-sub1
   namespace: edgecdnx
 spec:
+  maintenanceMode: true
   geoLookup:
     attributes:
       geoip/continent/code:
@@ -89,7 +90,6 @@ spec:
     nodes:
     - ipv4: 74.220.31.184
       name: n1
-      maintenanceMode: true
   parent: fra1-c1 
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
