@@ -67,7 +67,6 @@ metadata:
   name: fra1-c1-sub1
   namespace: edgecdnx
 spec:
-  maintenanceMode: true
   geoLookup:
     attributes:
       geoip/continent/code:
