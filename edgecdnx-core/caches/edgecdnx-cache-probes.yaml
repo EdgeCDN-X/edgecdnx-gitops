@@ -8,17 +8,6 @@ spec:
   generators:
     - matrix:
         generators:
-          - clusters:
-              values:
-                chart: resource-thrower
-                chartVersion: 0.1.0
-                chartRepository: https://edgecdn-x.github.io/helm-charts/
-                namespace: edgecdnx-cache
-              selector:
-                matchExpressions:
-                  - key: edgecdnx.com/routing
-                    operator: In
-                    values: ["yes", "true"]
           - matrix:
               generators:
                 - clusters:
@@ -38,6 +27,17 @@ spec:
                         name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
                         namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
                         resource: 'Probe'                  
+          - clusters:
+              values:
+                chart: resource-thrower
+                chartVersion: 0.1.0
+                chartRepository: https://edgecdn-x.github.io/helm-charts/
+                namespace: edgecdnx-cache
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/routing
+                    operator: In
+                    values: ["yes", "true"]        
   template:
     metadata:
       name: 'probe-{{ .nodeName }}-{{ .address | replace "/" "-" | replace ":" "-" }}-{{ .name }}'
