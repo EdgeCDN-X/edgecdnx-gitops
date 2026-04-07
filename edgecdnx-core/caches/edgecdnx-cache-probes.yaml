@@ -8,28 +8,30 @@ spec:
   generators:
     - matrix:
         generators:
-          - clusters:
-              values:
-                chart: resource-thrower
-                chartVersion: 0.1.0
-                chartRepository: https://edgecdn-x.github.io/helm-charts/
-                namespace: edgecdnx-cache
-              selector:
-                matchExpressions:
-                  - key: edgecdnx.com/caching
-                    operator: In
+          - matrix:
+              generators:
+                - clusters:
                     values:
-                      - "true"
-                      - "yes"
-          - plugin:
-              requeueAfterSeconds: 300
-              configMapRef:
-                name: argocd-locations-plugin-generator
-              input:
-                parameters:
-                  name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
-                  namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
-                  resource: 'Probe'
+                      chart: resource-thrower
+                      chartVersion: 0.1.0
+                      chartRepository: https://edgecdn-x.github.io/helm-charts/
+                      namespace: edgecdnx-cache
+                    selector:
+                      matchExpressions:
+                        - key: edgecdnx.com/caching
+                          operator: In
+                          values:
+                            - "true"
+                            - "yes"
+                - plugin:
+                    requeueAfterSeconds: 300
+                    configMapRef:
+                      name: argocd-locations-plugin-generator
+                    input:
+                      parameters:
+                        name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
+                        namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
+                        resource: 'Probe'
           - clusters:
               selector:
                 matchExpressions:
