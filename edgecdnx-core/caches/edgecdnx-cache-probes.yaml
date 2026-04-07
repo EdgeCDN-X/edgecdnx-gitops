@@ -18,7 +18,7 @@ spec:
                 matchExpressions:
                   - key: edgecdnx.com/routing
                     operator: In
-                    values: ["yes"]
+                    values: ["yes", "true"]
           - matrix:
               generators:
                 - clusters:
