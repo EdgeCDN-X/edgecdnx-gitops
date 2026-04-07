@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edgecdnx-probe
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - clusters:
+              values:
+                chart: resource-thrower
+                chartVersion: 0.1.0
+                chartRepository: https://edgecdn-x.github.io/helm-charts/
+                namespace: edgecdnx-cache
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/caching
+                    operator: In
+                    values:
+                      - "true"
+                      - "yes"
+          - plugin:
+              requeueAfterSeconds: 300
+              configMapRef:
+                name: argocd-locations-plugin-generator
+              input:
+                parameters:
+                  name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
+                  namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
+                  resource: 'Probe'
+          - clusters:
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/routing
+                    operator: In
+                    values: ["yes"]
+  template:
+    metadata:
+      name: 'probe-{{ .nodeName }}-{{ .address | replace "/" "-" | replace ":" "-" }}-{{ .name }}'
+    spec:
+      project: default
+      sources:
+        - chart: "{{ .values.chart }}"
+          repoURL: "{{ .values.chartRepository }}"
+          targetRevision: "{{ .values.chartVersion }}"
+          helm:
+            releaseName: edgecdnx-probe-{{ .nodeName }}-{{ .address | replace "/" "-" | replace ":" "-" }}-{{ .name }}
+            ignoreMissingValueFiles: true
+            values: |
+              resources:
+                - apiVersion: v1
+                  kind: ConfigMap
+                  metadata:
+                    name: {{ .nodeName }}
+                  data:
+                    content: {{ .nodeName }} {{ .flavor }} {{ .address }} {{ .cache }}
+      destination:
+        namespace: "{{ .values.namespace }}"
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
