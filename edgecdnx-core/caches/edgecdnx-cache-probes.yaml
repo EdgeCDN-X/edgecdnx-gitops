@@ -4,7 +4,6 @@ metadata:
   name: edgecdnx-probe
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
   generators:
     - matrix:
         generators:
@@ -57,7 +56,7 @@ spec:
                   metadata:
                     name: {{ .nodeName }}
                   data:
-                    content: {{ .nodeName }} {{ .flavor }} {{ .address }} {{ .cache }}
+                    content: {{ .nodeName }} {{ .flavor  }} {{ .address }} {{ .cache }}
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
