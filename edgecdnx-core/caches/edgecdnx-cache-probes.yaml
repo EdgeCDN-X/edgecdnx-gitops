@@ -9,6 +9,11 @@ spec:
     - matrix:
         generators:
           - clusters:
+              values:
+                chart: resource-thrower
+                chartVersion: 0.1.0
+                chartRepository: https://edgecdn-x.github.io/helm-charts/
+                namespace: edgecdnx-cache
               selector:
                 matchExpressions:
                   - key: edgecdnx.com/routing
@@ -17,11 +22,6 @@ spec:
           - matrix:
               generators:
                 - clusters:
-                    values:
-                      chart: resource-thrower
-                      chartVersion: 0.1.0
-                      chartRepository: https://edgecdn-x.github.io/helm-charts/
-                      namespace: edgecdnx-cache
                     selector:
                       matchExpressions:
                         - key: edgecdnx.com/caching
