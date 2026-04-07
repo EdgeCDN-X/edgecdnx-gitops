@@ -8,6 +8,12 @@ spec:
   generators:
     - matrix:
         generators:
+          - clusters:
+              selector:
+                matchExpressions:
+                  - key: edgecdnx.com/routing
+                    operator: In
+                    values: ["yes"]
           - matrix:
               generators:
                 - clusters:
@@ -31,13 +37,7 @@ spec:
                       parameters:
                         name: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-resource" }}'
                         namespace: '{{ index .metadata.annotations "edgecdnx.com/cache-spec-namespace" }}'
-                        resource: 'Probe'
-          - clusters:
-              selector:
-                matchExpressions:
-                  - key: edgecdnx.com/routing
-                    operator: In
-                    values: ["yes"]
+                        resource: 'Probe'                  
   template:
     metadata:
       name: 'probe-{{ .nodeName }}-{{ .address | replace "/" "-" | replace ":" "-" }}-{{ .name }}'
