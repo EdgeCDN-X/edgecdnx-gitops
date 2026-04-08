@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.19.0
+          chartVersion: 0.21.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: cache-controller
@@ -27,7 +27,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.19.0
+          chartVersion: 0.21.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: router
@@ -42,7 +42,7 @@ spec:
     - clusters:
         values:
           chart: edgecdnx-controller
-          chartVersion: 0.19.0
+          chartVersion: 0.21.0
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-controller-system
           role: controller
@@ -67,11 +67,17 @@ spec:
           helm:
             releaseName: edgecdnx-controller
             ignoreMissingValueFiles: true
-            valuesObject:
+            values: |
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
               webhook:
                 enabled: "{{ .values.webhooks }}"
+              {{- if eq .values.role "router" }}
+              probes:
+                enabled: "true"
+                probeUrl: edgecdnx-blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+                releaseLabel: edgecdnx-monitoring
+              {{- end }}
       destination:
         namespace: "{{ .values.namespace }}"
         server: "{{ .server }}"
