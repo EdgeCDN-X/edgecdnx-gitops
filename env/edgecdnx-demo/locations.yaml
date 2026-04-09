@@ -32,7 +32,7 @@ spec:
   alerts:
     - alertName: PrometheusOutOfOrderTimestamps
       labels:
-        cluster: "fra1-c1"
+        cluster: "unknown"
   nodeGroups:
     - name: ssd
       flavor: ""
