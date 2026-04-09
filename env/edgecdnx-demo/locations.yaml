@@ -122,7 +122,7 @@ spec:
           alerts:
             - alertName: PrometheusOutOfOrderTimestamps
               labels:
-                cluster: "nyc1-c1"
+                cluster: "unknown"
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
       cacheConfig:
