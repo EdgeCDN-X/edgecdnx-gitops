@@ -29,11 +29,10 @@ spec:
           - value: "TC"
         weight: 100
     weight: 50
-  alerts: []
-    # - alertName: KubeJobFailed
-    #   labels:
-    #     cluster: "in-cluster"
-    #     job_name: "liquibase-migration-29530200"    
+  alerts:
+    - alertName: PrometheusOutOfOrderTimestamps
+      labels:
+        cluster: "fra1-c1"
   nodeGroups:
     - name: ssd
       flavor: ""
@@ -120,6 +119,10 @@ spec:
       nodes:
         - name: n1
           ipv4: 74.220.24.46
+          alerts:
+            - alertName: PrometheusOutOfOrderTimestamps
+              labels:
+                cluster: "nyc1-c1"
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
       cacheConfig:
