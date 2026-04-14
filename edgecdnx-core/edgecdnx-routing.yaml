@@ -64,6 +64,7 @@ spec:
                     - name: proxyproto
                       configBlock: |-
                         allow 192.168.41.4/32
+                        default reject
                     - name: ready
                     - name: debug
                     - name: metadata
