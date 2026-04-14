@@ -62,6 +62,8 @@ spec:
                   nodePort: 30053
                   plugins:
                     - name: proxyproto
+                      configBlock: |-
+                        allow 192.168.41.4/32
                     - name: ready
                     - name: debug
                     - name: metadata
