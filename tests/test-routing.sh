@@ -14,9 +14,9 @@ print_color() {
 
 print_location() {
     local ip=$1
-    if [[ "$ip" == "74.220.27.251" ]]; then
+    if [[ "$ip" == "74.220.29.107" ]]; then
         echo -e "\033[32m${ip} - NYC\033[0m"
-    elif [[ "$ip" == "74.220.26.197" ]]; then
+    elif [[ "$ip" == "74.220.31.183" ]]; then
         echo -e "\033[32m${ip} - FRA1\033[0m"
     else
         echo -e "\033[32m${ip} - Unknown\033[0m"
@@ -28,8 +28,8 @@ print_color "$GREEN" "║           ROUTING TEST - Geolocation Resolution       
 print_color "$GREEN" "╚════════════════════════════════════════════════════════════╝"
 echo
 print_color "$YELLOW" "This test will verify if the domain is correctly routed to:"
-print_color "$GREEN" "  ✓ NYC    - 74.220.27.251"
-print_color "$GREEN" "  ✓ FRA1   - 74.220.26.197"
+print_color "$GREEN" "  ✓ NYC    - 74.220.29.107"
+print_color "$GREEN" "  ✓ FRA1   - 74.220.31.183"
 echo
 
 sleep 5
