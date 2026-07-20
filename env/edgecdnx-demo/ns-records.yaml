@@ -14,4 +14,4 @@ spec:
       recordTTL: 300
       recordType: A
       targets:
-        - 74.220.25.73
+        - 74.220.24.88
