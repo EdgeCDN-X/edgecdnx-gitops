@@ -35,6 +35,9 @@ spec:
             releaseName: secure-urls
             ignoreMissingValueFiles: true
             valuesObject:
+              image:
+                tag: latest
+                pullPolicy: Always
               command:
                 - /secure-urls
                 - --log-level
