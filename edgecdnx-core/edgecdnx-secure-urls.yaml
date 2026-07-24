@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           chart: secure-urls
-          chartVersion: 0.1.1
+          chartVersion: 0.1.2
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-cache
         selector:
@@ -35,9 +35,6 @@ spec:
             releaseName: secure-urls
             ignoreMissingValueFiles: true
             valuesObject:
-              image:
-                tag: latest
-                pullPolicy: Always
               command:
                 - /secure-urls
                 - --log-level
