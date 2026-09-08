@@ -68,6 +68,9 @@ spec:
             releaseName: edgecdnx-controller
             ignoreMissingValueFiles: true
             values: |
+              image:
+                tag: latest
+                pullPolicy: Always
               role: "{{ .values.role }}"
               targetNamespace: '{{ .values.targetNamespace | default "edgecdnx" }}'
               webhook:
