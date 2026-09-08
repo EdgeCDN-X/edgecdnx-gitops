@@ -4,6 +4,8 @@ kind: Location
 metadata:
   name: fra1-c1
   namespace: edgecdnx
+  labels:
+    edgecdnx.com/tenant: global
 spec:
   fallbackLocations:
     - nyc1-c1
@@ -65,6 +67,8 @@ kind: Location
 metadata:
   name: nyc1-c1
   namespace: edgecdnx
+  labels:
+    edgecdnx.com/tenant: global
 spec:
   fallbackLocations:
     - fra1-c1
