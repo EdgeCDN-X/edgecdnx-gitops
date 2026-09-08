@@ -30,3 +30,19 @@ spec:
       - address: 85.50.16.0
         size: 22
     v6: []
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: PrefixList
+metadata:
+  name: fra1-c1-tenant1
+  namespace: edgecdnx
+  labels:
+    edgecdnx.com/tenant: tenant1
+spec:
+  source: Static
+  destination: fra1-c1
+  prefix:
+    v4:
+      - address: 85.50.16.0
+        size: 24
+    v6: []
