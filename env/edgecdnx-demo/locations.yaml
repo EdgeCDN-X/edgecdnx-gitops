@@ -41,7 +41,7 @@ spec:
           ipv4: 74.220.31.183
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c3
-      cacheConfig:
+      metadata:
         name: "ssd"
         path: "/var/cache/ssd"
         keysZone: "100m"
@@ -53,7 +53,7 @@ spec:
     #       ipv4: 74.220.30.112
     #   nodeSelector:
     #     kubernetes.civo.com/civo-node-pool: fra1-hdd1
-    #   cacheConfig:
+    #   metadata:
     #     name: "hdd"
     #     path: "/var/cache/hdd"
     #     keysZone: "100m"
@@ -91,7 +91,7 @@ spec:
           ipv4: 74.220.24.46
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
-      cacheConfig:
+      metadata:
         name: "ssd"
         path: "/var/cache/ssd"
         keysZone: "100m"
