@@ -49,18 +49,8 @@ spec:
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
-    # - name: hdd
-    #   nodes:
-    #     - name: n2
-    #       ipv4: 74.220.30.112
-    #   nodeSelector:
-    #     kubernetes.civo.com/civo-node-pool: fra1-hdd1
-    #   metadata:
-    #     name: "hdd"
-    #     path: "/var/cache/hdd"
-    #     keysZone: "100m"
-    #     inactive: "10080m"
-    #     maxSize: "4096m"
+      labels:
+        cache: ssd
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
 kind: Location
@@ -101,3 +91,5 @@ spec:
         keysZone: "100m"
         inactive: "10080m"
         maxSize: "4096m"
+      labels:
+        cache: ssd
