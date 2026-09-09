@@ -48,7 +48,7 @@ spec:
             valuesObject:
               image:
                 repository: fr6nco/coredns
-                tag: 1.14.2-edgecdnx-1dd32f2
+                tag: 1.14.2-edgecdnx-v1.4.0
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
@@ -61,10 +61,6 @@ spec:
                 - port: 53
                   nodePort: 30053
                   plugins:
-                    - name: proxyproto
-                      configBlock: |-
-                        allow 192.168.41.4/32
-                        default reject
                     - name: ready
                     - name: debug
                     - name: metadata
