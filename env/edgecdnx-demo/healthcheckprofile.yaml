@@ -1,6 +1,6 @@
 ---
 apiVersion: infrastructure.edgecdnx.com/v1alpha1
-kind: HealthcheckProfile
+kind: HealthCheckProfile
 metadata:
   name: edgecdnx
   namespace: edgecdnx
