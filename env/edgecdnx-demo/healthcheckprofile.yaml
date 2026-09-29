@@ -1,0 +1,16 @@
+---
+apiVersion: infrastructure.edgecdnx.com/v1alpha1
+kind: HealthcheckProfile
+metadata:
+  name: edgecdnx
+  namespace: edgecdnx
+spec:
+  probes:
+    - type: HTTP
+      timeout: 3s
+      interval: 15s
+      name: http
+      http:
+        stack: IPv4
+        protocol: http
+        path: /healthz

@@ -38,6 +38,8 @@ spec:
   nodeGroups:
     - name: ssd
       flavor: ""
+      healthCheck:
+        name: edgecdnx
       nodes:
         - name: n1
           ipv4: 74.220.31.183
@@ -83,6 +85,8 @@ spec:
       nodes:
         - name: n1
           ipv4: 74.220.24.46
+      healthCheck:
+        name: edgecdnx
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: nyc1-c2
       metadata:
