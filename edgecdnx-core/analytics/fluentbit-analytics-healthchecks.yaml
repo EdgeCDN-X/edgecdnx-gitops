@@ -13,7 +13,7 @@ spec:
           role: caching
         selector:
           matchExpressions:
-            - key: edgecdnx.com/router
+            - key: edgecdnx.com/routing
               operator: In
               values:
                 - "true"
