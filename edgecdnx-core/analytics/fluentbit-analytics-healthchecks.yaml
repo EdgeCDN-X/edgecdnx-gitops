@@ -49,6 +49,15 @@ spec:
                 - name: fluentbit-tls
                   mountPath: /fluentbit/tls
                   readOnly: true
+              luascripts:
+                process_otlp_attributes.lua: |
+                  function process_otlp_attributes(tag, timestamp, group, metadata, record)
+                      local attributes = metadata["otlp"] and metadata["otlp"]["attributes"]
+                      if attributes and attributes["v"] ~= nil then
+                          record["v"] = tostring(attributes["v"])
+                      end
+                      return 1, timestamp, metadata, record
+                  end
               config:
                 inputs: |
                   [INPUT]
@@ -64,10 +73,10 @@ spec:
                       Record location {{ .name }}
 
                   [FILTER]
-                      Name         lua
-                      Match        healthchecker
-                      Call         process_otlp_attributes
-                      Code         function process_otlp_attributes(tag, timestamp, group, metadata, record) local attributes = metadata["otlp"] and metadata["otlp"]["attributes"] if attributes and attributes["v"] ~= nil then record["v"] = tostring(attributes["v"]) end return tag, timestamp, metadata, record end
+                      Name lua
+                      Match healthchecker
+                      Script process_otlp_attributes.lua
+                      Call process_otlp_attributes
 
                   [FILTER]
                       Name rewrite_tag
