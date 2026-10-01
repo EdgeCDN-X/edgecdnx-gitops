@@ -87,6 +87,7 @@ spec:
 
                   [OUTPUT]
                       Name stdout
+                      Format json_lines
                       Match *
 
                   [OUTPUT]
