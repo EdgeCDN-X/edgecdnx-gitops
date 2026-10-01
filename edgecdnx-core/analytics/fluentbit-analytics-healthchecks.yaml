@@ -53,8 +53,10 @@ spec:
                 process_otlp_attributes.lua: |
                   function process_otlp_attributes(tag, timestamp, group, metadata, record)
                       local attributes = metadata["otlp"] and metadata["otlp"]["attributes"]
-                      if attributes and attributes["v"] ~= nil then
-                          record["v"] = tostring(attributes["v"])
+                      if attributes then
+                        for key, value in pairs(attributes) do
+                          record[key] = value
+                        end
                       end
                       return 1, timestamp, metadata, record
                   end
