@@ -26,7 +26,7 @@ spec:
       sources:
         - chart: fluent-bit
           repoURL: https://fluent.github.io/helm-charts
-          targetRevision: 0.54.0
+          targetRevision: 0.58.3
           helm:
             releaseName: fluentbit-analytics-healthchecks
             valuesObject:
