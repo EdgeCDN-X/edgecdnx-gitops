@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           chart: healthchecker
-          chartVersion: 0.3.0
+          chartVersion: 0.3.1
           chartRepository: https://edgecdn-x.github.io/helm-charts/
           namespace: edgecdnx-routing
         selector:
@@ -36,6 +36,9 @@ spec:
             ignoreMissingValueFiles: true
             valuesObject:
               replicaCount: 2
+              extraEnv:
+                - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+                  value: "http://fluentbit-analytics-healthchecks-fluent-bit.monitoring.svc.cluster.local:4319/v1/logs"
               command:
                 - /healthchecker
                 - --leader-elect
