@@ -75,7 +75,7 @@ spec:
                   [FILTER]
                       Name lua
                       Match healthchecker
-                      Script process_otlp_attributes.lua
+                      Script /fluent-bit/scripts/process_otlp_attributes.lua
                       Call process_otlp_attributes
 
                   [FILTER]
