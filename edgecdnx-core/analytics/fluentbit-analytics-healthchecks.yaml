@@ -78,7 +78,7 @@ spec:
 
                   [OUTPUT]
                       Name stdout
-                      Match healthchecks.*
+                      Match *
 
                   [OUTPUT]
                       Name forward
