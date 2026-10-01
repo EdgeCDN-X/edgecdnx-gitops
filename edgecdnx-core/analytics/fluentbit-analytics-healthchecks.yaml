@@ -50,7 +50,7 @@ spec:
                       Name opentelemetry
                       Tag healthchecker
                       Listen 0.0.0.0
-                      Port 4319
+                      Port 2020
 
                 filters: |
                   [FILTER]
