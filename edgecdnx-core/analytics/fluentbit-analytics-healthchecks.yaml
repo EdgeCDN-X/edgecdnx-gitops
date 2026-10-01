@@ -36,6 +36,11 @@ spec:
                 enabled: true
                 selector:
                   release: edgecdnx-monitoring
+              extraPorts:
+                - name: otlp
+                  containerPort: 4319
+                  protocol: TCP
+                  port: 4319
               extraVolumes:
                 - name: fluentbit-tls
                   secret:
@@ -50,7 +55,7 @@ spec:
                       Name opentelemetry
                       Tag healthchecker
                       Listen 0.0.0.0
-                      Port 2020
+                      Port 4319
 
                 filters: |
                   [FILTER]
