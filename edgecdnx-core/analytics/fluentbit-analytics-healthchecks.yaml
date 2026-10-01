@@ -75,6 +75,11 @@ spec:
                       Rule $v ^([0-9]+)$ healthchecks.$1.{{ .name }} false
 
                 outputs: |
+
+                  [OUTPUT]
+                      Name stdout
+                      Match healthchecks.*
+
                   [OUTPUT]
                       Name forward
                       Match healthchecks.*
