@@ -42,10 +42,12 @@ spec:
                       - nats://nats-analytics-headless:4222
                     queue: preprocessor
                     subject: "healthchecks.1.>"
-                pipeline:
                   processors:
+                    - unarchive:
+                        format: json_array
                     - mapping: |
                         root = this.index(1)
+                pipeline: []
                 output:
                   sql_insert:
                     driver: postgres
