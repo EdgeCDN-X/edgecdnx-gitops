@@ -47,7 +47,8 @@ spec:
                         format: json_array
                     - mapping: |
                         root = this.index(1)
-                pipeline: []
+                pipeline:
+                  processors: []
                 output:
                   sql_insert:
                     driver: postgres
