@@ -43,7 +43,9 @@ spec:
                     queue: preprocessor
                     subject: "healthchecks.1.>"
                 pipeline:
-                  processors: []
+                  processors:
+                    - mapping: |
+                        root = this.index(1)
                 output:
                   sql_insert:
                     driver: postgres
