@@ -65,6 +65,9 @@ spec:
                           <changeSet id="002" author="dev">
                               <sqlFile path="changelog/002_create_hypertable.sql"/>
                           </changeSet>
+                          <changeSet id="003" author="dev">
+                              <sqlFile path="changelog/003_create_healthchecks_table.sql"/>
+                          </changeSet>
                       </databaseChangeLog>
                     "001_create_analytics_table.sql": |
                       CREATE TABLE IF NOT EXISTS public.analytics (
@@ -79,6 +82,35 @@ spec:
                       );
                     "002_create_hypertable.sql": |
                       SELECT create_hypertable('public.analytics', 'created_at', if_not_exists => TRUE);
+                    "003_create_healthchecks_table.sql": |
+                      CREATE TABLE IF NOT EXISTS public.healthchecks (
+                        time      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                        start     TIMESTAMPTZ,
+                        name      TEXT,
+                        type      TEXT,
+                        node      TEXT,
+                        location  TEXT,
+                        code      INTEGER,
+                        message   TEXT,
+                        target    TEXT,
+                        alive     BOOLEAN,
+                        duration  BIGINT
+                      );
+
+                      SELECT create_hypertable(
+                        'public.healthchecks',
+                        'time',
+                        chunk_time_interval => INTERVAL '1 day',
+                        if_not_exists => TRUE
+                      );
+
+                      SELECT add_retention_policy(
+                          'public.healthchecks',
+                          INTERVAL '30 days',
+                          if_not_exists => TRUE
+                      );
+
+                      CREATE INDEX IF NOT EXISTS idx_healthchecks_node_time ON public.healthchecks (node, time DESC);
                 - apiVersion: batch/v1
                   kind: CronJob
                   metadata:

@@ -1,0 +1,72 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: healthcheck-processor
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          role: control
+        selector:
+          matchExpressions:
+            - key: edgecdnx.com/control
+              operator: In
+              values:
+                - "true"
+                - "yes"
+  template:
+    metadata:
+      name: healthcheck-processor
+    spec:
+      project: default
+      sources:
+        - chart: connect
+          repoURL: https://charts.redpanda.com
+          targetRevision: 3.1.0
+          helm:
+            releaseName: healthcheck-processor-v1
+            valuesObject:
+              env:
+                - name: HEALTHCHECKS_DB_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: timescaledb-cluster-app
+                      key: fqdn-uri
+              config:
+                input:
+                  nats:
+                    urls:
+                      - nats://nats-analytics-headless:4222
+                    queue: preprocessor
+                    subject: "healthchecks.1.>"
+                pipeline:
+                  processors: []
+                output:
+                  sql_insert:
+                    driver: postgres
+                    dsn: "${HEALTHCHECKS_DB_URL}"
+                    table: "healthchecks"
+                    columns:
+                      - start
+                      - name
+                      - type
+                      - node
+                      - location
+                      - code
+                      - message
+                      - target
+                      - alive
+                      - duration
+                    args_mapping: root = [ this.start, this.name, this.type, this.node, this.location, this.code, this.message, this.target, this.alive, this.duration ]
+      destination:
+        namespace: monitoring
+        name: "{{ name }}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true # Big CRDs.
+      ignoreDifferences: []
