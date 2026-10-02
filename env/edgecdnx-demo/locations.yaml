@@ -43,6 +43,8 @@ spec:
       nodes:
         - name: n1
           ipv4: 74.220.31.183
+        - name: n2
+          ipv4: 74.220.31.184
       nodeSelector:
         kubernetes.civo.com/civo-node-pool: fra1-c3
       metadata:
