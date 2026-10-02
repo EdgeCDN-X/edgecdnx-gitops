@@ -65,7 +65,7 @@ spec:
                       - target
                       - alive
                       - duration
-                    args_mapping: root = [ this.start, this.name, this.type, this.node, this.location, this.code, this.message, this.target, this.alive, this.duration ]
+                    args_mapping: root = [ (this.start.int64() / 1000000000.0).ts_format("2006-01-02T15:04:05.999999Z07:00", "UTC"), this.name, this.type, this.node, this.location, this.code, this.message, this.target, this.alive, this.duration ]
       destination:
         namespace: monitoring
         name: "{{ name }}"
