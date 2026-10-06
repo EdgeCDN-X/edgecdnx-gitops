@@ -29,7 +29,7 @@ spec:
           ref: overrides
         - chart: "edgecdnx-api"
           repoURL: https://edgecdn-x.github.io/helm-charts/
-          targetRevision: 0.3.5
+          targetRevision: 0.4.0
           helm:
             releaseName: edgecdnx-api
             ignoreMissingValueFiles: true
@@ -41,6 +41,11 @@ spec:
                   value: edgecdnx
                 - name: OIDC_ISSUER_URL
                   value: https://auth.{{ .metadata.annotations.basedomain }}/realms/edgecdnx
+                - name: HEALTHCHECK_DB_DSN
+                  valueFrom:
+                    secretKeyRef:
+                      name: timescaledb-cluster-app
+                      key: uri
               ingress:
                 enabled: true
                 className: nginx
