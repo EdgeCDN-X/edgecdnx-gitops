@@ -68,6 +68,9 @@ spec:
                           <changeSet id="003" author="dev">
                               <sqlFile path="changelog/003_create_healthchecks_table.sql"/>
                           </changeSet>
+                          <changeSet id="004" author="dev">
+                              <sqlFile path="changelog/004_add_healthchecks_source.sql"/>
+                          </changeSet>
                       </databaseChangeLog>
                     "001_create_analytics_table.sql": |
                       CREATE TABLE IF NOT EXISTS public.analytics (
@@ -111,6 +114,9 @@ spec:
                       );
 
                       CREATE INDEX IF NOT EXISTS idx_healthchecks_node_time ON public.healthchecks (node, time DESC);
+                    "004_add_healthchecks_source.sql": |
+                      ALTER TABLE public.healthchecks
+                      ADD COLUMN IF NOT EXISTS source TEXT;
                 - apiVersion: batch/v1
                   kind: CronJob
                   metadata:
