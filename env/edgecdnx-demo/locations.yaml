@@ -5,7 +5,7 @@ metadata:
   name: fra1-c1
   namespace: edgecdnx
   labels:
-    edgecdnx.com/tenant: global
+    project: global
 spec:
   fallbackLocations:
     - nyc1-c1
@@ -62,7 +62,7 @@ metadata:
   name: nyc1-c1
   namespace: edgecdnx
   labels:
-    edgecdnx.com/tenant: global
+    project: global
 spec:
   fallbackLocations:
     - fra1-c1
