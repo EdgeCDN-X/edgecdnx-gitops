@@ -43,6 +43,8 @@ spec:
                 instances: 2
                 storage:
                   size: 8Gi
+                annotations:
+                  replicator.v1.mittwald.de/replicate-to: "edgecdnx-controller-system"
         - chart: resource-thrower
           helm:
             releaseName: timescaledb-liquibase
