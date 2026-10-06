@@ -4,6 +4,8 @@ kind: Zone
 metadata:
   name: democdn.edgecdnx.com
   namespace: edgecdnx
+  labels:
+    project: admin
 spec:
   zone: democdn.edgecdnx.com
   email: noc.democdn.edgecdnx.com.

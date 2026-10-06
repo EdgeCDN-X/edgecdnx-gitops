@@ -4,6 +4,8 @@ kind: HealthCheckProfile
 metadata:
   name: edgecdnx
   namespace: edgecdnx
+  labels:
+    project: admin
 spec:
   probes:
     - type: HTTP
