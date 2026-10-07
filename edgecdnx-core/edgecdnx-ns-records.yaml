@@ -52,16 +52,16 @@ spec:
                     namespace: edgecdnx-controller-system
                   spec:
                     endpoints:
-                      - dnsName: ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
+                      - dnsName: ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "basedomain" }}
                         recordTTL: 43200
                         recordType: A
                         targets:
                           - {{ index $cluster.metadata.annotations "edgecdnx.com/public-ip" }}
-                      - dnsName: {{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
+                      - dnsName: {{ index $cluster.metadata.annotations "basedomain" }}
                         recordTTL: 43200
                         recordType: NS
                         targets:
-                          - ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
+                          - ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "basedomain" }}
               {{- end }}
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
