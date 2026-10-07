@@ -57,7 +57,7 @@ spec:
                         recordType: A
                         targets:
                           - {{ index $cluster.metadata.annotations "edgecdnx.com/public-ip" }}
-                      - dnsName: {{ index $cluster.metadata.annotations "basedomain" }}
+                      - dnsName: {{ index $cluster.metadata.annotations "edgecdnx.com/basedomain" }}
                         recordTTL: 43200
                         recordType: NS
                         targets:
