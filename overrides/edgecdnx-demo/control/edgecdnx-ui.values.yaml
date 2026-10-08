@@ -1,0 +1,2 @@
+config:
+  dnsNameservers: ["ns1.demo.edgecdnx.com"]
