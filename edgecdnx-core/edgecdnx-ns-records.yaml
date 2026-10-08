@@ -61,7 +61,7 @@ spec:
                         recordTTL: 43200
                         recordType: NS
                         targets:
-                          - ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "basedomain" }}.
+                          - ns{{ index $cluster.metadata.annotations "edgecdnx.com/ns" }}.{{ index $cluster.metadata.annotations "basedomain" }}
               {{- end }}
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.0
