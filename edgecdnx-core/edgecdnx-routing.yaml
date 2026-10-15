@@ -85,9 +85,9 @@ spec:
                         {{- end }}
                   zones:
                     - zone: '.'
-                    - zone: 
-                        zone: '.'
-                        scheme: grpc
+                    - zone: '.'
+                      scheme: grpc
+                      use_tcp: true
               initContainers:
                 - name: edgecdnx-mmdb-init
                   image: curlimages/curl:8.14.1
