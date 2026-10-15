@@ -53,8 +53,6 @@ spec:
               serviceType: LoadBalancer
               service:
                 externalTrafficPolicy: Local
-                annotations:
-                  kubernetes.civo.com/loadbalancer-enable-proxy-protocol: send-proxy-v2
               isClusterService: false
               replicaCount: 2
               servers:
