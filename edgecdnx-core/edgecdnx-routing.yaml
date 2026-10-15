@@ -23,7 +23,7 @@ spec:
           - clusters:
               values:
                 chart: coredns
-                chartVersion: 1.48.2
+                chartVersion: 1.49.0
                 chartRepository: https://edgecdn-x.github.io/helm-charts/
                 namespace: edgecdnx-routing
               selector:
@@ -112,15 +112,21 @@ spec:
                   image: fr6nco/http-router:latest
                   imagePullPolicy: Always
                   ports:
-                    - containerPort: 8081
+                    - name: http-router
+                      containerPort: 8081
+                      protocol: TCP
                   args:
                     - --listen-addr=:8081
                   readinessProbe:
                     httpGet:
                       path: /healthz
-                      port: 8081
+                      port: http-router
                     initialDelaySeconds: 5
                     periodSeconds: 10
+              extraPorts:
+                - name: http-router
+                  port: 8081
+                  protocol: TCP
         - chart: coredns-rbac
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.5
