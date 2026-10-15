@@ -58,7 +58,8 @@ spec:
               isClusterService: false
               replicaCount: 2
               servers:
-                - port: 1053
+                - port: 53
+                  nodePort: 30053
                   plugins:
                     - name: ready
                     - name: debug
@@ -85,36 +86,8 @@ spec:
                         {{- end }}
                   zones:
                     - zone: '.'
-                      scheme: grpc://
+                      scheme: "grpc://.1053 dns://"
                       use_tcp: true
-                - nodePort: 30053
-                  port: 53
-                  plugins:
-                    - name: ready
-                    - name: debug
-                    - name: metadata
-                    - name: log
-                      parameters: . "{combined}"
-                    - name: errors
-                      configBlock: |-
-                        stacktrace
-                    - name: health
-                      configBlock: |-
-                        lameduck 5s
-                    - name: geoip
-                      parameters: /etc/edgecdnx/geolookup/GeoLite2-City.mmdb
-                      configBlock: |-
-                        edns-subnet
-                    - name: edgecdnx
-                      configBlock: |-
-                        namespace {{ index .metadata.annotations "edgecdnx.com/namespace" }}
-                        recordttl 30
-                        soa {{- range .clusters -}}{{ if eq .name $.name }} ns{{ index .metadata.annotations "edgecdnx.com/ns" }}.{{ index .metadata.annotations "basedomain" }}.{{ end -}}{{- end }}
-                        {{- range .clusters }}
-                        ns ns{{ index .metadata.annotations "edgecdnx.com/ns" }}.{{ index .metadata.annotations "basedomain" }}.
-                        {{- end }}
-                  zones:
-                    - zone: '.'
               initContainers:
                 - name: edgecdnx-mmdb-init
                   image: curlimages/curl:8.14.1
