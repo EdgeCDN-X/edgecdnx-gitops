@@ -1,2 +1,4 @@
 config:
-  dnsNameservers: ["ns1.demo.edgecdnx.com"]
+  dnsNameservers:
+    - ns: "ns1.demo.edgecdnx.com"
+      routeResolver: http://ns1.demo.edgecdnx.com:8081/route
