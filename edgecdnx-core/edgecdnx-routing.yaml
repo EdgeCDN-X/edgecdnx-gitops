@@ -23,8 +23,8 @@ spec:
           - clusters:
               values:
                 chart: coredns
-                chartVersion: 1.43.3
-                chartRepository: https://coredns.github.io/helm
+                chartVersion: 1.48.2
+                chartRepository: https://edgecdn-x.github.io/helm-charts/
                 namespace: edgecdnx-routing
               selector:
                 matchExpressions:
@@ -58,8 +58,7 @@ spec:
               isClusterService: false
               replicaCount: 2
               servers:
-                - port: 53
-                  plugins:
+                - plugins:
                     - name: ready
                     - name: debug
                     - name: metadata
@@ -86,9 +85,11 @@ spec:
                   zones:
                     - zone: '.'
                       scheme: dns://
+                      port: 53
                     - zone: '.'
                       scheme: grpc://
                       use_tcp: true
+                      port: 1053
               initContainers:
                 - name: edgecdnx-mmdb-init
                   image: curlimages/curl:8.14.1
