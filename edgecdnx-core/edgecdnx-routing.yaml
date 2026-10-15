@@ -135,7 +135,7 @@ spec:
               extraContainers:
                 - name: http-router
                   image: fr6nco/http-router:latest
-                  imagePullPolicy: alywas
+                  imagePullPolicy: Always
                   ports:
                     - containerPort: 8080
                   readinessProbe:
