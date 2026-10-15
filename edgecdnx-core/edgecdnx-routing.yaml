@@ -58,7 +58,8 @@ spec:
               isClusterService: false
               replicaCount: 2
               servers:
-                - plugins:
+                - port: 53
+                  plugins:
                     - name: ready
                     - name: debug
                     - name: metadata
