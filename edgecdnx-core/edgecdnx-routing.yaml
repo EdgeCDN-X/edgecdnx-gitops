@@ -86,8 +86,9 @@ spec:
                         {{- end }}
                   zones:
                     - zone: '.'
+                      scheme: dns://
                     - zone: '.'
-                      scheme: "grpc://.:1053"
+                      scheme: grpc://
                       use_tcp: true
               initContainers:
                 - name: edgecdnx-mmdb-init
