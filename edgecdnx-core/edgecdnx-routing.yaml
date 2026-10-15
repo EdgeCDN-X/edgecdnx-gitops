@@ -137,11 +137,13 @@ spec:
                   image: fr6nco/http-router:latest
                   imagePullPolicy: Always
                   ports:
-                    - containerPort: 8080
+                    - containerPort: 8081
+                  args:
+                    - --listen-addr=:8081
                   readinessProbe:
                     httpGet:
                       path: /healthz
-                      port: 8080
+                      port: 8081
                     initialDelaySeconds: 5
                     periodSeconds: 10
         - chart: coredns-rbac
