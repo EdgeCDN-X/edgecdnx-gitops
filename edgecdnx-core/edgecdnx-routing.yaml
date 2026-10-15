@@ -58,8 +58,7 @@ spec:
               isClusterService: false
               replicaCount: 2
               servers:
-                - port: 53
-                  nodePort: 30053
+                - nodePort: 30053
                   plugins:
                     - name: ready
                     - name: debug
@@ -86,6 +85,9 @@ spec:
                         {{- end }}
                   zones:
                     - zone: '.'
+                    - zone: 
+                        zone: '.'
+                        scheme: grpc
               initContainers:
                 - name: edgecdnx-mmdb-init
                   image: curlimages/curl:8.14.1
@@ -103,6 +105,18 @@ spec:
               extraVolumeMounts:
                 - name: geolookup-mmdb
                   mountPath: /etc/edgecdnx/geolookup
+              extraContainers:
+                - name: http-router
+                  image: fr6nco/http-router:latest
+                  imagePullPolicy: alywas
+                  ports:
+                    - containerPort: 8080
+                  readinessProbe:
+                    httpGet:
+                      path: /healthz
+                      port: 8080
+                    initialDelaySeconds: 5
+                    periodSeconds: 10
         - chart: coredns-rbac
           repoURL: https://edgecdn-x.github.io/helm-charts
           targetRevision: 0.1.5
