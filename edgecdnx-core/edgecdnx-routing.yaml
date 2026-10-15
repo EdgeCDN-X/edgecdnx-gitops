@@ -52,6 +52,8 @@ spec:
                 pullPolicy: Always
               serviceType: LoadBalancer
               service:
+                annotations:
+                  kubernetes.civo.com/loadbalancer-enable-proxy-protocol: "false"
                 externalTrafficPolicy: Local
               isClusterService: false
               replicaCount: 2
